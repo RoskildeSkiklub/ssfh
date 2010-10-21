@@ -8,11 +8,11 @@ DONE =============================================================
     0.1.2) Add metadata
     0.1.3) Add item to database
 
-TODO =============================================================
-
 10) Configuration
   10.1) Need to read database location from command line
   10.2) Need to read location of log file from command line
+
+TODO =============================================================
 
 20) Backup
   20.1) Need startup script
