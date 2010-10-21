@@ -34,7 +34,7 @@ namespace Log {
         s_file.close();
         s_file.setFileName( filename );
         if ( ! s_file.open( QIODevice::WriteOnly | QIODevice::Truncate ) ) {
-            throw Exception( Errors::UnableToOpenFile, "Unable to open file" );
+            throw Exception( Errors::UnableToOpenFile, QString( "Unable to open logfile '%0'" ).arg( filename ) );
         }
         s_textStream.setDevice( &s_file );
         indent = 0;

@@ -1,3 +1,6 @@
+// C++
+#include <iostream>
+
 // Qt
 #include <QtGui/QApplication>
 #include <QTranslator>
@@ -6,6 +9,8 @@
 #include <QMessageBox>
 #include <QSqlDatabase>
 #include <QEvent>
+#include <QStringList>
+#include <QSqlQuery>
 
 // app
 #include "globals.h"
@@ -13,6 +18,7 @@
 #include "mainwindow.h"
 #include "log.h"
 #include "exception.h"
+#include "utility.h"
 
 /** \brief Toplevel error handling, handled through QApplication override */
 class RshApplication : public QApplication {
@@ -58,10 +64,31 @@ public:
 
 int main(int argc, char **argv) {
     RshApplication app(argc, argv);
-    int res;
+    int res = 0;
+
+    // Need two arguments, the path to the database, and the path to the log file.
+    QStringList args = app.arguments();
+    if ( args.size() != 3 ) {
+        std::cerr << "Usage: " << args.at(0).toLocal8Bit().constData() << " <databasefile> <logfile>" << std::endl;
+        return -1;
+    }
+
+    QString databasefile = args.at(1);
+    QString logfile = args.at(2);
+
+    std::cout << "Starting SnowStuffForHire" << std::endl
+            << "Database: '" << databasefile.toLocal8Bit().constData() << "'" << std::endl
+            << "Log: '" << logfile.toLocal8Bit().constData() << "'" << std::endl;
 
     // Set up log
-    Log::Log::init( "/tmp/ssfh.log");
+    try {
+        Log::Log::init( logfile );
+    } catch ( Exception & e ) {
+        std::cerr << "Unable to start log system" << std::endl;
+        QMessageBox::critical( NULL, "Unable to start log system", QString( "Unable to start log system. Message is '%0'" ).arg( e.toString() ) );
+        return -1;
+    }
+
     {
         Log::Logger log( "main" );
 
@@ -89,16 +116,31 @@ int main(int argc, char **argv) {
 
         // Database stuff
         log.stream() << "Setting up database";
-        // TODO: This wont do in production...
         QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+        if ( ! db.isValid() ) {
+            log.stream( Log::fatal ) << "Unable to load QSQLITE database driver";
+            QMessageBox::critical( NULL, "Unable to load QSQLITE database driver", QString( "Unable to load QSQLITE database driver. Aborting." ) );
+            return -1;
+        }
         db.setHostName("localhost");
-        db.setDatabaseName("/home/madsdyd/Kode/RSK-mockup/SnowStuffForHire/schema/test.db");
+        db.setDatabaseName( databasefile );
         db.setUserName("");
         db.setPassword("");
-        // fix up.
         if ( ! db.open() ) {
-            QMessageBox::critical( NULL, "Unable to open database", "Unable to open database, Mads, aborting" );
-            exit(1);
+            log.stream( Log::fatal ) << "Unable to open database '" << databasefile << "'";
+            QMessageBox::critical( NULL, "Unable to open database", QString( "Unable to open database specified as '%0'. Aborting." ).arg( databasefile ) );
+            return -1;
+        }
+        log.stream() << "Database successfully opened, performing test select";
+        try {
+            QSqlQuery query;
+            query_check_prepare( query, "select * from itemtypes" );
+            query_check_exec( query );
+        }
+        catch( ... ) {
+            log.stream( Log::fatal ) << "Unable to perform initial select on database '" << databasefile << "'";
+            QMessageBox::critical( NULL, "Unable to perform initial select on database", QString( "Unable to perform initial select on database '%0'. Aborting." ).arg( databasefile ) );
+            return -1;
         }
 
         // Mainwindow stuff
