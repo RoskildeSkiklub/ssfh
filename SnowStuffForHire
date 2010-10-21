@@ -1,0 +1,81 @@
+#!/bin/bash
+
+# Script to wrap SnowStuffForHire to ease kiosk mode usage.
+
+# The purpose of the script is to backup the log and database prior
+# and after run, and pass the command parameters to the program.
+
+# Some constants.
+
+# Datadir holds the database *and* the log
+DATADIR=/store/SnowStuffForHire/data
+DATABASE=$DATADIR/ssfh.db
+LOGFILE=$DATADIR/ssfh.log
+OUTFILE=$DATADIR/ssfh.out
+
+# This is where faubackup does its backups.
+BACKUPDIR=/store/SnowStuffForHire/backup
+
+# Path to kdialog
+KDIALOG=/usr/bin/kdialog
+
+# Path to faubackup
+FAUBACKUP=/usr/sbin/faubackup
+
+# Path to SnowStuffForHire - assumed to be this directory
+SSFH=./SnowStuffForHire.bin
+
+############################################################
+# Helper functions
+function die() {
+    ARGS="$@"
+    ERROR="En fatal fejl er opstået<br><b>$ARGS</b>"
+    echo "FATAL FEJL: $ERROR"
+    $KDIALOG --title "Fatal fejl - ude af stand til at forsætte" --error "$ERROR"
+    exit 1;
+}
+
+function info() {
+    ARGS="$@"
+    DATE=`date +"%Y-%m-%dT%H:%M:%S"`
+    echo $DATE $ARGS
+}
+
+info Starting SnowStuffForHire
+
+############################################################
+# Check binaries, then directories
+if ! test -x $KDIALOG ; then
+    die "Kan ikke finde kdialog binær angivet til '$KDIALOG'"
+fi
+if ! test -x $FAUBACKUP ; then
+    die "Kan ikke finde faubackup binær angivet til '$FAUBACKUP'"
+fi
+if ! test -x $SSFH ; then
+    die "Kan ikke finde SnowStuffForHire binær angivet til '$SSFH'"
+fi
+
+if ! test -d $DATADIR -a -w $DATADIR ; then
+    die "Kataloget '$DATADIR' der anvendes som data katalog, findes ikke, eller kan ikke skrives til"
+fi
+# TODO: Måske noget test af mount punkt, eller noget i den stil?
+if ! test -d $BACKUPDIR -a -w $BACKUPDIR ; then
+    die "Kataloget '$BACKUPDIR' der anvendes som backup katalog, findes ikke, eller kan ikke skrives til"
+fi
+# The binary checks the log file and database, so we leave it at that.
+
+info All checks passed, performing backup
+
+############################################################
+# Take a backup before starting. This should be quick.
+$FAUBACKUP "$DATADIR" "$BACKUPDIR" || die "Kunne ikke lave backup af data inden start af SnowStuffForHire"
+
+info Backup OK, starting binary
+$SSFH $DATABASE $LOGFILE &> $OUTFILE
+
+info Binary terminated with exit code $? - doing post backup
+$FAUBACKUP "$DATADIR" "$BACKUPDIR" || die "Kunne ikke lave backup af data efter start af SnowStuffForHire"
+info Postbackup done, exiting
+
+ 
+

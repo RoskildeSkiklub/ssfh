@@ -2,7 +2,7 @@
 # Project created by QtCreator 2010-05-08T22:29:54
 # -------------------------------------------------
 QT += sql
-TARGET = SnowStuffForHire
+TARGET = SnowStuffForHire.bin
 TEMPLATE = app
 SOURCES += main.cpp \
     mainwindow.cpp \
