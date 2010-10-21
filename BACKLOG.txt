@@ -59,5 +59,6 @@ Open issues:
 - Remove all PROTECT_BLOCK calls.
 - Indent properly
 - "Blank" in hirer dialog.
+- "Tilføj" does not work in hirer dialog...
 
 
