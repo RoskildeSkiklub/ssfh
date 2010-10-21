@@ -11,7 +11,9 @@
   *
   * A statemachine is used to control the availability of buttons, etc. */
 
+// Qt
 #include <QDialog>
+#include <QStateMachine>
 
 // App
 #include "contract.h"
@@ -25,7 +27,11 @@ namespace Ui {
 class RentDialog : public QDialog {
     Q_OBJECT
 private:
+    /** \brief This holds the contract, which is mostly a struct like entity */
     Contract contract;
+
+    /** \brief Our state machine. This is mostly used to control the avialability of buttons, etc. */
+    QStateMachine state_machine;
 
 public:
     RentDialog(QWidget *parent = 0);
@@ -45,7 +51,12 @@ private:
     bool try_set_hirer( const DKSundhedskort & dsk ); // Actually try to add the hirer.
 
 private slots:
-    void on_pushButton_clicked(bool checked);
+    void on_input_hirer_pushButton_clicked();
+
+signals:
+    void hirer_set(); // emitted when a hirer has successfully been set on the contract
+    void duration_changed(); // emitted when a contracts has succesfully has its duration changed.
+    void item_added(); // emitted when an item has succesfully been set on the contract
 };
 
 #endif // RENTDIALOG_H

@@ -6,96 +6,123 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>575</width>
-    <height>476</height>
+    <width>507</width>
+    <height>378</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Rent out items</string>
   </property>
-  <widget class="QGroupBox" name="groupBox">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>10</y>
-     <width>331</width>
-     <height>171</height>
-    </rect>
-   </property>
-   <property name="title">
-    <string>Hirer</string>
-   </property>
-   <widget class="QPushButton" name="pushButton">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>130</y>
-      <width>75</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Add/Search</string>
-    </property>
-   </widget>
-   <widget class="QTextEdit" name="textEdit_hirer">
-    <property name="enabled">
-     <bool>false</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>20</y>
-      <width>271</width>
-      <height>101</height>
-     </rect>
-    </property>
-   </widget>
-  </widget>
-  <widget class="QTextEdit" name="textEdit_items">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>260</y>
-     <width>251</width>
-     <height>171</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QWidget" name="layoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>220</y>
-     <width>197</width>
-     <height>28</height>
-    </rect>
-   </property>
-   <layout class="QHBoxLayout" name="horizontalLayout_7">
-    <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_6">
-      <item>
-       <widget class="QLabel" name="label_5">
-        <property name="text">
-         <string>Item</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLineEdit" name="lineEdit_item"/>
-      </item>
-     </layout>
-    </item>
-    <item>
-     <widget class="QPushButton" name="addButton">
-      <property name="text">
-       <string>Add</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QTextEdit" name="output_contract_textEdit">
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QPushButton" name="input_hirer_pushButton">
+       <property name="text">
+        <string>Set &amp;hirer</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="input_duration_pushButton">
+       <property name="text">
+        <string>Change &amp;duration</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_6">
+       <item>
+        <widget class="QLabel" name="label_5">
+         <property name="text">
+          <string>&amp;Item</string>
+         </property>
+         <property name="buddy">
+          <cstring>input_item_lineEdit</cstring>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="input_item_lineEdit">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QPushButton" name="input_addItem_pushButton">
+       <property name="text">
+        <string>&amp;Add item</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="input_rentalgroup_pushButton">
+       <property name="text">
+        <string>Change &amp;rentalgroup</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="input_finish_pushButton">
+       <property name="text">
+        <string>&amp;Finish</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="verticalSpacer">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="input_park_pushButton">
+       <property name="text">
+        <string>&amp;Park</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="input_cancel_pushButton">
+       <property name="text">
+        <string>&amp;Cancel</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
  </widget>
+ <tabstops>
+  <tabstop>input_hirer_pushButton</tabstop>
+  <tabstop>input_duration_pushButton</tabstop>
+  <tabstop>input_item_lineEdit</tabstop>
+  <tabstop>input_addItem_pushButton</tabstop>
+  <tabstop>input_rentalgroup_pushButton</tabstop>
+  <tabstop>input_finish_pushButton</tabstop>
+  <tabstop>input_cancel_pushButton</tabstop>
+  <tabstop>output_contract_textEdit</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
