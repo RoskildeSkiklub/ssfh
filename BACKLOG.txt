@@ -55,6 +55,6 @@ Open issues:
 - Log all item transactions
 - Help
 - Manuals
-- Namechange from RskRental to SnowStuffForHire
+- Namechange from RskRental to SnowStuffForHire (Done)
 
 

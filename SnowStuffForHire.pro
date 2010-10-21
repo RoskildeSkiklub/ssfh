@@ -2,7 +2,7 @@
 # Project created by QtCreator 2010-05-08T22:29:54
 # -------------------------------------------------
 QT += sql
-TARGET = RskRental
+TARGET = SnowStuffForHire
 TEMPLATE = app
 SOURCES += main.cpp \
     mainwindow.cpp \
@@ -40,4 +40,4 @@ FORMS += mainwindow.ui \
     stockdialog.ui \
     hirerdialog.ui \
     addnewitemdialog.ui
-TRANSLATIONS = RskRental_da_DK.ts
+TRANSLATIONS = SnowStuffForHire_da_DK.ts

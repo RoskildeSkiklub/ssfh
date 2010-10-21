@@ -61,7 +61,7 @@ int main(int argc, char **argv) {
     int res;
 
     // Set up log
-    Log::Log::init( "/tmp/rsk.log");
+    Log::Log::init( "/tmp/ssfh.log");
     {
         Log::Logger log( "main" );
 
@@ -76,8 +76,8 @@ int main(int argc, char **argv) {
         app.installTranslator(&qtTranslator);
 
         QTranslator myappTranslator;
-        log.stream() << "Loading QTranslator from " << "RskRental_" << QLocale::system().name();
-        if ( ! myappTranslator.load("RskRental_" + QLocale::system().name()) ) {
+        log.stream() << "Loading QTranslator from " << "SnowStuffForHire_" << QLocale::system().name();
+        if ( ! myappTranslator.load("SnowStuffForHire_" + QLocale::system().name()) ) {
             log.stream( Log::warn ) << "Failed to load application translation files for locale";
         }
         app.installTranslator(&myappTranslator);
@@ -92,7 +92,7 @@ int main(int argc, char **argv) {
         // TODO: This wont do in production...
         QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
         db.setHostName("localhost");
-        db.setDatabaseName("/home/madsdyd/Kode/RSK-mockup/RskRental/schema/test.db");
+        db.setDatabaseName("/home/madsdyd/Kode/RSK-mockup/SnowStuffForHire/schema/test.db");
         db.setUserName("");
         db.setPassword("");
         // fix up.

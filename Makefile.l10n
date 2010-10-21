@@ -1,10 +1,10 @@
-PRO_FILE=RskRental.pro
+PRO_FILE=SnowStuffForHire.pro
 
 # Source the pro file - should work, unless it gets very complicated
 include $(PRO_FILE)
 
 # Construct a list of languages
-LANGS=$(shell echo $(TRANSLATIONS) | sed -e 's/RskRental_//' -e 's/\.ts//' )
+LANGS=$(shell echo $(TRANSLATIONS) | sed -e 's/SnowStuffForHire_//' -e 's/\.ts//' )
 
 info:
 	@echo The following targets are available
@@ -14,14 +14,14 @@ info:
 	@echo "  all:     danish, then release"
 	@echo "Languages found in project file: $(LANGS)"
 
-RskRental_%.ts: $(SOURCES) $(HEADERS) $(FORMS)
+SnowStuffForHire_%.ts: $(SOURCES) $(HEADERS) $(FORMS)
 	lupdate $(PRO_FILE) -ts $@
 
-RskRental_%.qm: RskRental_%.ts
+SnowStuffForHire_%.qm: SnowStuffForHire_%.ts
 	lrelease $@
 
 # This could probably be smarter. Works for now.
-danish : RskRental_da_DK.ts
-	linguist-qt4 RskRental_da_DK.ts
+danish : SnowStuffForHire_da_DK.ts
+	linguist-qt4 SnowStuffForHire_da_DK.ts
 
 all:	danish
