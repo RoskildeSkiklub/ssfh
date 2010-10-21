@@ -76,7 +76,7 @@ int main(int argc, char **argv) {
     QString databasefile = args.at(1);
     QString logfile = args.at(2);
 
-    std::cout << "Starting SnowStuffForHire" << std::endl
+    std::cout << QDateTime::currentDateTime().toString( Qt::ISODate ).toLocal8Bit().constData() << " : Starting SnowStuffForHire" << std::endl
             << "Database: '" << databasefile.toLocal8Bit().constData() << "'" << std::endl
             << "Log: '" << logfile.toLocal8Bit().constData() << "'" << std::endl;
 
