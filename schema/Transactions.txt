@@ -1,0 +1,52 @@
+This file contains some considerations about transactions on the
+database.
+
+Now, one would probably expect that this system would use transactions
+to a large extent. However, I have tried to design it to use as few
+transactions as possibly. All transactions should be very local -
+especially such that we can do stuff in between transactions (such as
+registering af new ski, etc).
+
+Lets have a look at the updates...
+
+Hiring out:
+
+This is about contracts, really.
+
+In order to create a contract, we first need a hirer.
+
+A hirer can be created or sought out. When this has been done, the
+contract can be created in the database. It will be created in the
+state 'booking'. When adding items, they will also be added in the
+booked state (if they are in).
+
+----------
+A contract has the following states:
+
+booking: This is the start state, and also the state for stuff
+happening in the future.
+
+parked: This is a contract that has been interrupted during
+creation, and has been 'parked' for later completion?
+
+active: Meaning that the hirer actually have the stuff, nad the stuff
+is out there somewhere
+
+closed: The hirer has returned *all* stuff, and we are 'like' totally
+done with it, dude.
+----------
+
+Items are added in the booked state.
+
+=> If the contract is approved, a transaction is actually used to mark
+all items as in the "out" state, all contractitems as "out", and the contract as active.
+
+If an item is added, that is unregistered, this item can be created on
+the spot. Likewise, if the item is actually not marked as in, this can
+be done on the spot. 
+
+A contract can be parked. This simply means that the state of the
+contract is changed to "parked". 
+
+=> Whenever an item is returned, this is marked for both the item and
+the contract

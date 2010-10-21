@@ -1,0 +1,62 @@
+This is a rough description of the RSK rental system, what it is, what
+it is meant to be, what it is meant to do.
+
+* Introduction
+
+The RSK rental system is a small system for managing ski rentals for
+Roskilde Skiklub.
+
+The system consists of several parts or modules:
+
+. Inventory 
+  Tracks the items that are available for rent, incl. history, etc.
+  This includes adding and removing items, reports about them, etc.
+
+. Rent out
+  Allow renting out stuff.
+  As part of this, one can create a renter, that is, register a person
+  that can enter into a rental contract.
+  This also calculates a price, prints a contract and a reciept, etc.
+
+. Return
+  Allows returning stuff.
+  Prints a reciept.
+
+. Swap
+  Allows to swap some stuff for something else. Prints a contract and
+  a receipt.
+
+. Reports
+  Display reports about the system, such as missing items, rate of
+  rental, etc.
+
+. Configure
+  Allows configuration and check of the system.
+  The main configuration here is the price of the rentals
+
+. Startup
+  Performs startup instructions and tests
+  (Checks/sets the date, display information about the connection of stuff).
+
+. Log
+  Logs things happening in the system, for debug and documentation
+  purposes
+
+* Status
+
+Nothing has been made so far, besides a simply database schema.
+
+* Implementation plan
+
+I tried to do some use cases and stuff, then thought: stuff it, I am
+just going to code this. And learn from it.
+
+My plan is to create the main modules in this order, approximately:
+
+. Inventory
+. Rent out
+. Return
+. Swap
+. Reports
+
+Now, a lot of stuff can be said about design. I am not going to.

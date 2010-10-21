@@ -1,0 +1,60 @@
+The danish 'sundhedskort', follows iso 7811-2.
+
+Here is some information about the layout, from
+
+http://groups.google.com/group/dk.teknik.elektronik/browse_thread/thread/6c57e3f0c7441fa6/74eef71e1885ba6e?#74eef71e1885ba6e
+
+Jow, da, du kan godt udlæse navn og adresse fra sygesikringskortet med
+en 
+ 2-spor læser. 
+ 
+Spor1: 
+ tegn 
+ Sikredes navn (efternavn/fornavn/                               34 
+ Sikredes adresse
+ 34 
+ Sikredes bopælskommune                                            3 
+ Sikredes postnummer
+ 4 
+ 
+Spor2: 
+ Korttype 
+ 1 
+ Nationalitetskode 
+ 3 
+ Anvendelsesområde
+ 1 
+ Kortudsteder 
+ 3 
+ Personnummer 
+ 10 
+ Sikringsgruppe 
+ 1 
+ Lægens ydernummer
+ 6 
+ Regionsnummer
+ 3 
+ Kommunenummer
+ 3 
+ Gyldig fra 
+ 6 
+ 
+Data fra de to spor udsendes som 2 strenge efterfulgt af <ENTER> 
+ Så du skal blot hente strengene og skrive et strengdelingsprogram som
+ fisker 
+ de relevante oplysninger ud. 
+
+And some information about the encoding:
+
+CPR ligger i ascii på spor 2 og er lige til at læse. Navn og adressen 
+ ligger i spor 1, men der er dog lidt sjov med tegnsættet, da æøå
+ ligger 
+ lige efter z. 
+ 
+Se også http://www.ascii.ca/iso646.no.htm
+
+This page:
+http://www.regioner.dk/Sundhed/Fonde+vejledninger+og+databaser/Vejledninger/~/media/E39C4BAD5A6E4C18B6ADF1C55D8EF27F.ashx
+is not as related as one would hope...
+
+

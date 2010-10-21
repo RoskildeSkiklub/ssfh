@@ -1,0 +1,39 @@
+6/9 2010:
+
+- Short term goal: Be able to complete a rental.
+: Add the hirer to the database (or find him again).
+: Provide feedback on GUI
+: Be able to complete the hiring process
+: Provide hooks for display - hardware is available.
+: Provide hooks for printing - order hardware
+
+Document the above - how to integrate/provide help framework? QtHelp module. assistent, or embedded.
+
+
+
+
+
+
+
+
+
+
+
+
+
+Kast en log linie (done)
+Fiks så vi ikke kan udlåne to gange (done)
+Commit/rollback - annuler knap på udlejningsdialog
+Udregn pris
+Registrer lejer
+
+
+Trying to get some structure on this.
+
+The goal is somewhat clear:
+
+GUI
+Item tracking
+Rental
+Delivering in
+Price
