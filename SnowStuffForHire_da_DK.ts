@@ -6,77 +6,91 @@
     <message>
         <location filename="addnewitemdialog.ui" line="14"/>
         <source>Add new items</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Artikler er det gennemgående ord for &quot;items&quot;</translatorcomment>
+        <translation>Tilføj nye artikler</translation>
     </message>
     <message>
         <location filename="addnewitemdialog.ui" line="20"/>
-        <source>Type</source>
-        <translation type="unfinished"></translation>
+        <source>&amp;Type</source>
+        <oldsource>Type</oldsource>
+        <translation>&amp;Type</translation>
     </message>
     <message>
         <location filename="addnewitemdialog.ui" line="37"/>
-        <source>Size</source>
-        <translation type="unfinished"></translation>
+        <source>&amp;Size</source>
+        <oldsource>Size</oldsource>
+        <translation>&amp;Størrelse</translation>
     </message>
     <message>
         <location filename="addnewitemdialog.ui" line="50"/>
-        <source>Mark</source>
-        <translation type="unfinished"></translation>
+        <source>&amp;Mark</source>
+        <oldsource>Mark</oldsource>
+        <translation>&amp;Mærke</translation>
     </message>
     <message>
         <location filename="addnewitemdialog.ui" line="67"/>
-        <source>Model</source>
-        <translation type="unfinished"></translation>
+        <source>M&amp;odel</source>
+        <oldsource>Model</oldsource>
+        <translation>M&amp;odel</translation>
     </message>
     <message>
         <location filename="addnewitemdialog.ui" line="84"/>
-        <source>Rentalgroup</source>
-        <translation type="unfinished"></translation>
+        <source>&amp;Rentalgroup</source>
+        <oldsource>Rentalgroup</oldsource>
+        <translation>&amp;Gruppe</translation>
     </message>
     <message>
         <location filename="addnewitemdialog.ui" line="101"/>
-        <source>Year</source>
-        <translation type="unfinished"></translation>
+        <source>&amp;Year</source>
+        <oldsource>Year</oldsource>
+        <translation>&amp;År</translation>
     </message>
     <message>
         <location filename="addnewitemdialog.ui" line="114"/>
-        <source>Condition</source>
-        <translation type="unfinished"></translation>
+        <source>&amp;Condition</source>
+        <oldsource>Condition</oldsource>
+        <translation>St&amp;and</translation>
     </message>
     <message>
         <location filename="addnewitemdialog.ui" line="131"/>
-        <source>Price</source>
-        <translation type="unfinished"></translation>
+        <source>&amp;Price</source>
+        <oldsource>Price</oldsource>
+        <translation>&amp;Pris</translation>
     </message>
     <message>
         <location filename="addnewitemdialog.ui" line="144"/>
-        <source>Note</source>
-        <translation type="unfinished">Note</translation>
+        <source>&amp;Note</source>
+        <oldsource>Note</oldsource>
+        <translation>&amp;Note</translation>
     </message>
     <message>
         <location filename="addnewitemdialog.ui" line="164"/>
-        <source>Id</source>
-        <translation type="unfinished">Id</translation>
+        <source>&amp;Id</source>
+        <oldsource>Id</oldsource>
+        <translation>&amp;Id</translation>
     </message>
     <message>
         <location filename="addnewitemdialog.ui" line="195"/>
-        <source>Add</source>
-        <translation type="unfinished">Tilføj</translation>
+        <source>&amp;Add</source>
+        <oldsource>Add</oldsource>
+        <translation>Ti&amp;lføj</translation>
     </message>
     <message>
         <location filename="addnewitemdialog.ui" line="205"/>
-        <source>Undo</source>
-        <translation type="unfinished"></translation>
+        <source>&amp;Undo</source>
+        <oldsource>Undo</oldsource>
+        <translation>&amp;Fortryd</translation>
     </message>
     <message>
         <location filename="addnewitemdialog.ui" line="212"/>
-        <source>Done</source>
-        <translation type="unfinished"></translation>
+        <source>&amp;Done</source>
+        <oldsource>Done</oldsource>
+        <translation>Afsl&amp;ut</translation>
     </message>
     <message>
         <location filename="addnewitemdialog.ui" line="221"/>
         <source>Log of additions</source>
-        <translation type="unfinished"></translation>
+        <translation>List over tilføjelser</translation>
     </message>
     <message>
         <location filename="addnewitemdialog.ui" line="231"/>
@@ -90,18 +104,30 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <oldsource>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:7pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;table border=&quot;0&quot; style=&quot;-qt-table-type: root; margin-top:4px; margin-bottom:4px; margin-left:4px; margin-right:4px;&quot;&gt;
+&lt;tr&gt;
+&lt;td style=&quot;border: none;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="addnewitemdialog.cpp" line="150"/>
         <source>&lt;b&gt;Added item: &lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Tilføjede artikel: &lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="addnewitemdialog.cpp" line="185"/>
         <source>Deleted by undo in Add New Item dialog.</source>
-        <translation type="unfinished"></translation>
+        <translation>Slettet af fortryd i Tilføj ny artikel dialog</translation>
     </message>
 </context>
 <context>
@@ -144,80 +170,128 @@ p, li { white-space: pre-wrap; }
         <translation>Udlejer dialog</translation>
     </message>
     <message>
-        <location filename="hirerdialog.ui" line="36"/>
+        <location filename="hirerdialog.ui" line="53"/>
+        <source>&amp;Lastname</source>
+        <translation>&amp;Efternavn</translation>
+    </message>
+    <message>
+        <location filename="hirerdialog.ui" line="70"/>
+        <source>&amp;Address</source>
+        <translation>&amp;Adresse</translation>
+    </message>
+    <message>
+        <location filename="hirerdialog.ui" line="87"/>
+        <source>&amp;Zip</source>
+        <translation>&amp;Postnr.</translation>
+    </message>
+    <message>
+        <location filename="hirerdialog.ui" line="104"/>
+        <source>&amp;City</source>
+        <translation>&amp;By</translation>
+    </message>
+    <message>
+        <location filename="hirerdialog.ui" line="121"/>
+        <source>C&amp;ountry</source>
+        <translation>&amp;Land</translation>
+    </message>
+    <message>
+        <location filename="hirerdialog.ui" line="138"/>
+        <source>&amp;Member Id</source>
+        <translation>&amp;Medlemsnr.</translation>
+    </message>
+    <message>
+        <location filename="hirerdialog.ui" line="155"/>
+        <source>&amp;SSN</source>
+        <translation>&amp;CPR nr.</translation>
+    </message>
+    <message>
+        <location filename="hirerdialog.ui" line="185"/>
+        <source>&amp;Note</source>
+        <translation>Not&amp;e</translation>
+    </message>
+    <message>
+        <location filename="hirerdialog.ui" line="207"/>
+        <source>&amp;Lookup</source>
+        <translation>&amp;Søg</translation>
+    </message>
+    <message>
+        <location filename="hirerdialog.ui" line="214"/>
+        <source>Au&amp;to lookup</source>
+        <translation>Au&amp;to søg</translation>
+    </message>
+    <message>
+        <location filename="hirerdialog.ui" line="237"/>
+        <source>C&amp;lear</source>
+        <translation>&amp;Rens</translation>
+    </message>
+    <message>
+        <location filename="hirerdialog.ui" line="244"/>
+        <source>A&amp;dd</source>
+        <translation>&amp;Tilføj</translation>
+    </message>
+    <message>
+        <location filename="hirerdialog.ui" line="251"/>
+        <source>&amp;Update</source>
+        <translation>&amp;Opdater</translation>
+    </message>
+    <message>
+        <location filename="hirerdialog.ui" line="271"/>
+        <source>U&amp;se</source>
+        <translation>&amp;Anvend</translation>
+    </message>
+    <message>
         <location filename="hirerdialog.cpp" line="110"/>
         <source>Name</source>
         <translation>Navn</translation>
     </message>
     <message>
-        <location filename="hirerdialog.ui" line="50"/>
         <source>Lastname</source>
-        <translation>Efternavn</translation>
+        <translation type="obsolete">Efternavn</translation>
     </message>
     <message>
-        <location filename="hirerdialog.ui" line="64"/>
         <location filename="hirerdialog.cpp" line="113"/>
         <source>Address</source>
         <translation>Adresse</translation>
     </message>
     <message>
-        <location filename="hirerdialog.ui" line="78"/>
         <location filename="hirerdialog.cpp" line="114"/>
         <source>Zip</source>
         <translation>Postnr</translation>
     </message>
     <message>
-        <location filename="hirerdialog.ui" line="92"/>
         <location filename="hirerdialog.cpp" line="115"/>
         <source>City</source>
         <translation>By</translation>
     </message>
     <message>
-        <location filename="hirerdialog.ui" line="106"/>
         <location filename="hirerdialog.cpp" line="116"/>
         <source>Country</source>
         <translation>Land</translation>
     </message>
     <message>
-        <location filename="hirerdialog.ui" line="120"/>
         <source>Member Id</source>
-        <translation>Medlemsnummer</translation>
+        <translation type="obsolete">Medlemsnummer</translation>
     </message>
     <message>
-        <location filename="hirerdialog.ui" line="134"/>
         <location filename="hirerdialog.cpp" line="112"/>
         <source>SSN</source>
         <translation>Cpr</translation>
     </message>
     <message>
-        <location filename="hirerdialog.ui" line="180"/>
         <source>Lookup</source>
-        <translation>Søg</translation>
+        <translation type="obsolete">Søg</translation>
     </message>
     <message>
-        <location filename="hirerdialog.ui" line="187"/>
-        <source>Auto lookup</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="hirerdialog.ui" line="217"/>
         <source>Add</source>
-        <translation>Tilføj</translation>
+        <translation type="obsolete">Tilføj</translation>
     </message>
     <message>
-        <location filename="hirerdialog.ui" line="210"/>
         <source>Clear</source>
-        <translation>Nulstil</translation>
+        <translation type="obsolete">Nulstil</translation>
     </message>
     <message>
-        <location filename="hirerdialog.ui" line="224"/>
-        <source>Update</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="hirerdialog.ui" line="244"/>
         <source>Use</source>
-        <translation>Anvend</translation>
+        <translation type="obsolete">Anvend</translation>
     </message>
     <message>
         <location filename="hirerdialog.cpp" line="108"/>
@@ -235,7 +309,6 @@ p, li { white-space: pre-wrap; }
         <translation>Efternavn</translation>
     </message>
     <message>
-        <location filename="hirerdialog.ui" line="161"/>
         <location filename="hirerdialog.cpp" line="117"/>
         <source>Note</source>
         <translation>Note</translation>
