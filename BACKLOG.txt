@@ -56,5 +56,8 @@ Open issues:
 - Help
 - Manuals
 - Namechange from RskRental to SnowStuffForHire (Done)
+- Remove all PROTECT_BLOCK calls.
+- Indent properly
+- "Blank" in hirer dialog.
 
 
