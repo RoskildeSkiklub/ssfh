@@ -124,7 +124,7 @@ Item Item::locate_book_in_db( const QString & id ) {
 
 QString Item::toHtml() const {
     QString res = QString( "<li><em>%1: %2/%3</em><br/>&nbsp;&nbsp;%4</li>" )
-                  .arg( m_id ).arg( tr( m_type.toAscii().constData() ) ).arg( tr( m_rentalgroup.toAscii().constData() ) );
+                  .arg( m_id ).arg( m_type ).arg( m_rentalgroup );
     QString in = "";
     QString pre = "";
     if ( m_mark != "" ) {
