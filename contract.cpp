@@ -55,6 +55,7 @@ void Contract::add_item( const QString &item_id ) {
     // TODO: Signal contract changed...
 }
 
+//TODO Translate...
 QString Contract::toHtml() const {
     QString res = "<h1>Hirer information</h1>";
     if ( ! m_hirer.isValid() ) {
@@ -62,6 +63,9 @@ QString Contract::toHtml() const {
         return res;
     }
     res += m_hirer.toHtml();
+
+    // Duration
+    res += "<h1>Duration of contract</h1><p>TODO: Implement</p>";
 
     // Items.
     res += "<h1>Items in contract</h1>";
