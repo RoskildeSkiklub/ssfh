@@ -12,8 +12,8 @@
 #include "item.h"
 
 class Contract {
-public:
     Hirer m_hirer;
+public:
     QList<Item> m_items;
 
     qlonglong m_id;
@@ -26,6 +26,14 @@ public:
 
     // Methods...
     void add_item( const QString & item_id );
+
+    Hirer & getHirer();
+    /** \brief Sets the hirer
+      * \param hirer The hirer to set
+      * \returns true if set, false if hirer is already valid.
+      *
+      * Throws, if the hirer passed in the argument is invalid. */
+    bool setHirer( const Hirer & hirer );
 
     // Return a html representation of the items
     QString items_to_html() const;

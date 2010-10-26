@@ -10,6 +10,27 @@ Contract::Contract() : m_id( -1 ) {
     Logger log( "Contract::Contract()" );
 }
 
+bool Contract::setHirer(const Hirer &hirer) {
+    Logger log("void Contract::setHirer(const Hirer &hirer)");
+    if ( ! hirer.isValid() ) {
+        throw Exception( Errors::InternalError )
+                << ( log.stream( error ) << "Hirer passed to Contract::setHirer was invalid." );
+    }
+    if ( m_hirer.isValid() ) {
+        log.stream( error ) << "Hirer with id '" << m_hirer.m_id << "' already set for contract with id '" << m_id << "'";
+        return false;
+    }
+
+    log.stream() << " Setting hirer with id '" << hirer.m_id << "' for contract with id '" << m_id << "'";
+    m_hirer = hirer;
+    return true;
+}
+
+Hirer & Contract::getHirer() {
+    Logger log("Hirer & Contract::getHirer() const");
+    return m_hirer;
+}
+
 void Contract::add_item( const QString &item_id ) {
     Logger log( "void Contract::add_item( const QString &item_id )" );
     log.stream() << "Trying to add item '" << item_id << "'' to contract";
