@@ -37,7 +37,7 @@ public:
     bool isValid() const { return m_valid; };
 
     /** \brief Format as HTML for use in dialogs */
-    QString toHtml() const { return "Not yet implemented"; };
+    QString toHtml() const;
 
 private:
     /** \brief Holds the valid state */

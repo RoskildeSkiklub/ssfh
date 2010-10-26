@@ -29,6 +29,17 @@ Hirer::Hirer( qlonglong id ) : m_valid( false ){
     *this = tmp;
 }
 
+QString Hirer::toHtml() const {
+    QString res = QString( "<li>%6<em>%1 %2</em><br/>%3<br/>%4  %5</li>" )
+                  .arg( m_firstName ).arg( m_lastName ).arg( m_streetAddress ).arg( m_zip ).arg( m_city );
+    if ( !m_memberId.isEmpty() ) {
+        res = res.arg( tr( "MemberId: " ) + m_memberId + "<br/>" );
+    } else {
+        res = res.arg("");
+    }
+    return res;
+}
+
 
 Hirer::Hirer( const QSqlQuery & query ) : m_valid( false ) {
     Logger log( "Hirer::Hirer( const QSqlQuery & query )" );
