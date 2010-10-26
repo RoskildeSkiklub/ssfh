@@ -21,6 +21,8 @@ DONE =============================================================
 
 TODO =============================================================
 
+TASK: Tilføj hirer to rentdialog - implement support for that. Both scan and manually.
+
 30) Complete a rental operation
   30.1) Rent out an item
     30.1.1) Create/find hirer
@@ -50,6 +52,7 @@ TODO =============================================================
 70) Report functionality.
 
 Open issues:
+- Version information / config information in database.
 - Font sizes
 - Translation
 - Log all item transactions

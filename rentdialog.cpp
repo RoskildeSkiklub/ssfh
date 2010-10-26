@@ -4,6 +4,8 @@
 #include <QDebug>
 #include <QMessageBox>
 #include <QSqlDatabase>
+#include <QSet>
+#include <QAbstractState>
 
 // App
 #include "globals.h"
@@ -60,12 +62,15 @@ RentDialog::RentDialog(QWidget *parent) :
 
     // Initialize the state machine
     QState * blank          = new QState();
+    blank->setObjectName( "blank" );
     QState * has_hirer      = new QState();
+    has_hirer->setObjectName( "has_hirer" );
     QState * has_item       = new QState();
+    has_item->setObjectName( "has_item" );
 
-    state_machine.addState( blank );
-    state_machine.addState( has_hirer );
-    state_machine.addState( has_item );
+    m_state_machine.addState( blank );
+    m_state_machine.addState( has_hirer );
+    m_state_machine.addState( has_item );
 
     // Debug state changes - FIXME: Remove
     /*blank->assignProperty( ui->label_7, "text", "blank");
@@ -108,11 +113,11 @@ RentDialog::RentDialog(QWidget *parent) :
     // blank->addTransition( this, SIGNAL( item_added()) ), has_item );
 
     // Set initial state and start
-    state_machine.setInitialState( blank );
-    state_machine.start();
+    m_state_machine.setInitialState( blank );
+    m_state_machine.start();
 
     // Make sure the UI is set correctly to start with
-    ui->output_contract_textEdit->setText( contract.toHtml() );
+    update();
 }
 
 RentDialog::~RentDialog()
@@ -120,61 +125,82 @@ RentDialog::~RentDialog()
     delete ui;
 }
 
-void RentDialog::on_addButton_clicked() {
-    Logger log( "void RentDialog::on_addButton_clicked()" );
-    add_item( ui->input_item_lineEdit->text() );
+void RentDialog::update() {
+    Logger log( "void RentDialog::update()" );
+    ui->output_contract_textEdit->setText( m_contract.toHtml() );
 }
 
-///////////////////////////////////////////
-// SET HIRER
-void RentDialog::set_hirer (const DKSundhedskort &dsk) {
-    Logger log( "void RentDialog::set_hirer (const DKSundhedskort &dsk)" );
-    if ( try_set_hirer( dsk ) ) {
-            ui->output_contract_textEdit->setText( contract.toHtml() );
+bool RentDialog::is_in_state( const QString & state ) {
+    Logger log( "bool RentDialog::is_in_state( const QString & state )" );
+    log.stream() << "Checking state '" << state << "'";
+    QSet<QAbstractState *> states = m_state_machine.configuration();
+    QAbstractState * statep;
+    foreach( statep, states ) {
+        if ( statep->objectName() == state ) {
+            log.stream() << "Found it, returning true";
+            return true;
+        }
+    }
+    log.stream() << "Could not find it, returning false";
+    return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// HIRER SETTING AND OTHER RELATED METHODS
+void RentDialog::set_hirer ( const Hirer & hirer ) {
+    Logger log( "void RentDialog::set_hirer (const Hirer &dsk)" );
+    // Check state
+    if ( ! is_in_state( "blank" ) ) {
+        log.stream( error ) << "State is not blank - a hirer has already been set for this contract";
+        QMessageBox::critical( this, tr( "Hirer already set" ), tr( "A hirer has already been set for this contract.") );
+        return;
+    }
+    if ( m_contract.setHirer( hirer ) ) {
+        log.stream() << "Hirer set, emitting hirer_set signal";
+        emit hirer_set();
+        update();
+    } else {
+        log.stream() << "Contract did not wish to set the hirer - is this a problem?";
+        // TODO: May actually want an exception from Contract::setHirer... argh.
+        QMessageBox::warning( this, tr( "Could not set hirer"), tr( "Could not set hirer for contract" ) );
     }
 }
 
 
-/* This method must try to set the hirer. This includes
-   a) Check if a hirer is already set.
-     a1) If set, refuse to set a new hirer - user must cancel dialog.
 
-   b) Try and locate the hirer in the database.
-   c) If not found, try to create it
-   c) when found, set the hirer. */
-bool RentDialog::try_set_hirer(const DKSundhedskort &dsk) {
-    Logger log( "bool RentDialog::try_set_hirer(const DKSundhedskort &dsk)" );
-    // TODO: Probably not set, if already set, stuff like that.
-    // PROTECT_BLOCK( )
-    // QMessageBox::information( this, "You scanned a hirer", dsk.name );
-    return true;
-}
 
-///////////////////////////////////////////
-// ADD ITEM
+////////////////////////////////////////////////////////////////////////////////
+// ITEM RELATED STUFF
 
 // Can be used as target for barcode scanner signals.
 void RentDialog::add_item( const QString & item_id ) {
     Logger log( "void RentDialog::add_item( const QString & item_id )" );
     if ( try_add_item( item_id ) ) {
         ui->input_item_lineEdit->setText("");
-        ui->output_contract_textEdit->setText( contract.toHtml() );
+        ui->output_contract_textEdit->setText( m_contract.toHtml() );
     }
 }
 
 bool RentDialog::try_add_item(const QString &item_id) {
     Logger log( "bool RentDialog::try_add_item(const QString &item_id)" );
     // This may have to be changed, if/when we want to react smarter to errors such as duplicating entries.
-    PROTECT_BLOCK(
-            contract.add_item( item_id );
+    // PROTECT_BLOCK(
+            m_contract.add_item( item_id );
             return true;
-    );
+            // );
     return false;
 }
 
 
-void RentDialog::changeEvent(QEvent *e)
-{
+////////////////////////////////////////////////////////////////////////////////
+// SLOTS
+
+void RentDialog::on_addButton_clicked() {
+    Logger log( "void RentDialog::on_addButton_clicked()" );
+    add_item( ui->input_item_lineEdit->text() );
+}
+
+void RentDialog::changeEvent(QEvent *e) {
     QDialog::changeEvent(e);
     switch (e->type()) {
     case QEvent::LanguageChange:
@@ -186,16 +212,20 @@ void RentDialog::changeEvent(QEvent *e)
 }
 
 
+void RentDialog::set_hirer (const DKSundhedskort &dsk) {
+    Logger log( "void RentDialog::set_hirer (const DKSundhedskort &dsk)" );
+    // TODO: Create a hirer from a suitable hirer constructor....
+    // TODO: Call set_hirer with the new hirer
+}
+
 void RentDialog::on_input_hirer_pushButton_clicked() {
     Logger log( "void RentDialog::on_input_hirer_pushButton_clicked()" );
     log.stream() << "Displaying HirerDialog";
     HirerDialog hirerDialog;
     if ( QDialog::Accepted == hirerDialog.exec() ) {
         log.stream() << "Getting hirer from hirerDialog";
-        log.stream() << "Hirer is " << hirerDialog.getHirer().m_firstName;
-        QMessageBox::information( this, "Got Hirer", QString( "Got this hirer: %1").arg( hirerDialog.getHirer().m_firstName ) );
-        // TODO FIX ME UP
-        contract.m_hirer = hirerDialog.getHirer();
+        log.stream() << "Hirer is " << hirerDialog.getHirer().toHtml();
+        set_hirer( hirerDialog.getHirer() );
     } else {
         log.stream() << "Did not get any hirer from hirerDialog";
     }
