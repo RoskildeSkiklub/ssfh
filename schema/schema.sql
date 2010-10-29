@@ -1,6 +1,17 @@
 -- schema for ski rental program
 
 -- ----------------------------------------------------------------------
+-- CONFIGURATION INFORMATION
+-- This is also filled by the creation script, with version information about the database
+drop table if exists configuration;
+create table configuration(
+  key text primary key, -- key, really, but key is probably reserved
+  value text
+);
+-- DB VERSION: REMEMBER TO UPDATE, WHEN CHANGING ANYTHING
+insert into configuration values( 'db_version', '42' );
+
+-- ----------------------------------------------------------------------
 -- RENTAL GROUPS
 
 -- All items belongs to a rental group, but can be changed at the time

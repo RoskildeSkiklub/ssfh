@@ -11,6 +11,7 @@
 #include <QEvent>
 #include <QStringList>
 #include <QSqlQuery>
+#include <QVariant>
 
 // app
 #include "globals.h"
@@ -19,6 +20,9 @@
 #include "log.h"
 #include "exception.h"
 #include "utility.h"
+
+/** \brief The database version expected */
+const QString db_version = "42";
 
 /** \brief Toplevel error handling, handled through QApplication override */
 class RshApplication : public QApplication {
@@ -119,7 +123,7 @@ int main(int argc, char **argv) {
         QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
         if ( ! db.isValid() ) {
             log.stream( Log::fatal ) << "Unable to load QSQLITE database driver";
-            QMessageBox::critical( NULL, "Unable to load QSQLITE database driver", QString( "Unable to load QSQLITE database driver. Aborting." ) );
+            QMessageBox::critical( NULL, QObject::tr( "Unable to load QSQLITE database driver" ), QObject::tr( "Unable to load QSQLITE database driver. Aborting." )  );
             return -1;
         }
         db.setHostName("localhost");
@@ -128,18 +132,27 @@ int main(int argc, char **argv) {
         db.setPassword("");
         if ( ! db.open() ) {
             log.stream( Log::fatal ) << "Unable to open database '" << databasefile << "'";
-            QMessageBox::critical( NULL, "Unable to open database", QString( "Unable to open database specified as '%0'. Aborting." ).arg( databasefile ) );
+            QMessageBox::critical( NULL, QObject::tr( "Unable to open database" ), QString( QObject::tr( "Unable to open database specified as '%0'. Aborting." ) ).arg( databasefile ) );
             return -1;
         }
-        log.stream() << "Database successfully opened, performing test select";
+        log.stream() << "Database successfully opened, checking version of database";
         try {
             QSqlQuery query;
-            query_check_prepare( query, "select * from itemtypes" );
+            query_check_prepare( query, "select value from configuration where key='db_version'" );
             query_check_exec( query );
+            query_check_first( query );
+            QString version = query.value(0).toString();
+            if ( db_version != version ) {
+                QMessageBox::critical( NULL, QObject::tr("Incompatible database version"),
+                                       QObject::tr( "Database version mismatch. Expected version '%0' on database '%1', got version '%2'. Aborting")
+                                       .arg( db_version ).arg( databasefile ).arg( version ) );
+                return -1;
+            }
         }
         catch( ... ) {
             log.stream( Log::fatal ) << "Unable to perform initial select on database '" << databasefile << "'";
-            QMessageBox::critical( NULL, "Unable to perform initial select on database", QString( "Unable to perform initial select on database '%0'. Aborting." ).arg( databasefile ) );
+            QMessageBox::critical( NULL, QObject::tr( "Unable to perform initial select on database" ),
+                                   QObject::tr( "Unable to perform initial select on database '%0'. Aborting." ).arg( databasefile ) );
             return -1;
         }
 
