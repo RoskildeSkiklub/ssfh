@@ -125,7 +125,7 @@ create index ix_contracts_hirer on contracts( hirer );
 
 
 -- Individual items on a contract We need this relation mostly in
--- order to support bookings.  Strictly speaking, RSK does not need
+-- order to support bookings and prices.  Strictly speaking, RSK does not need
 -- bookings. However, I like the flexibility of this. Although it is a
 -- bit more cumbersome.
 drop table if exists contractitems;
@@ -134,6 +134,7 @@ create table contractitems(
   contract_id integer references contracts( id ) not null,
   item_id text references items( id ) not null,
   state check( state in ( 'booked', 'out', 'returned' ) ),
+--  price integer, -- The calculated price of the item on the contract
   note text
 );
 -- We need indexes to allow looking up based on contract or item_id,
@@ -157,3 +158,12 @@ create table itemevents(
 -- Need to be able to look up on item_id
 create index ix_itemevents_item_id on itemevents( item_id );
 
+-- ----------------------------------------------------------------------
+-- ZIP TO CITY MAPPING
+-- This is needed in DK, when scanning the Sundhedskort
+drop table if exists zipcity;
+create table zipcity(
+  zip text primary key,
+  city text
+);
+  
