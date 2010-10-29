@@ -214,8 +214,8 @@ void RentDialog::changeEvent(QEvent *e) {
 
 void RentDialog::set_hirer (const DKSundhedskort &dsk) {
     Logger log( "void RentDialog::set_hirer (const DKSundhedskort &dsk)" );
-    // TODO: Create a hirer from a suitable hirer constructor....
-    // TODO: Call set_hirer with the new hirer
+    Hirer hirer( dsk.name, dsk.surname, dsk.address, dsk.zip, dsk.city, dsk.country, dsk.ssn );
+    set_hirer( hirer );
 }
 
 void RentDialog::on_input_hirer_pushButton_clicked() {
@@ -229,5 +229,4 @@ void RentDialog::on_input_hirer_pushButton_clicked() {
     } else {
         log.stream() << "Did not get any hirer from hirerDialog";
     }
-    // TODO: Read values back, etc.
 }
