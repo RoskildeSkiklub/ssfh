@@ -3,11 +3,13 @@
 // Qt
 #include <QString>
 #include <QStringList>
+#include <QSqlQuery>
+#include <QVariant>
 
 // App
 #include "log.h"
 #include "exception.h"
-
+#include "utility.h"
 using namespace Log;
 
 // (surname&name)(address)...(zip)...(ssn)
@@ -33,13 +35,26 @@ DKSundhedskort::DKSundhedskort( const QRegExp & regexp ) {
     zip     = regexp.cap( 3 ).trimmed();
     ssn     = regexp.cap( 4 ).trimmed();
 
-    // TODO: Lookup city.
+    // Lookup city, ignore lookup errors
+    city = "";
+    try {
+        QSqlQuery query;
+        query_check_prepare( query, "select city from zipcity where zip = :zip" );
+        query.bindValue( ":zip", zip );
+        query_check_exec( query );
+        query_check_first( query );
+        city = query.value( 0 ).toString();
+    }
+    catch( ... ) {
+        log.stream( warn ) << "Ignoring lookup error on zip '" << zip << "'";
+    };
+
     log.stream() << "name: '" << name
             << "' surname: '" << surname
             << "', address: '" << address
             << "', zip: '" << zip
+            << "', city: '" << city
             << "', ssn: '" << ssn << "'";
-    // log.stream() << "Emitting MagswipeScan( " << ids << " )";
 }
 
 QString DKSundhedskort::fixUpDanishLetters( const QString & input ) const {

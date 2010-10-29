@@ -12,6 +12,8 @@ public:
       * \param regexp Regexp matching the static regexp */
     DKSundhedskort( const QRegExp & regexp );
 
+    /** \brief Return a regexp suitable for matching a mag card swipe
+      * \returns A regexp suitable for matching a mag card swipe */
     static QRegExp getRegExp() {
         return regexp;
     }
