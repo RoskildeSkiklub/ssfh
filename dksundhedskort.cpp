@@ -49,11 +49,15 @@ DKSundhedskort::DKSundhedskort( const QRegExp & regexp ) {
         log.stream( warn ) << "Ignoring lookup error on zip '" << zip << "'";
     };
 
+    // Country is always Danmark....
+    country = "Danmark";
+
     log.stream() << "name: '" << name
             << "' surname: '" << surname
             << "', address: '" << address
             << "', zip: '" << zip
             << "', city: '" << city
+            << "', country: '" << country
             << "', ssn: '" << ssn << "'";
 }
 

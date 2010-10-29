@@ -23,6 +23,8 @@ public:
     QString address;
     QString zip;
     QString city;
+    // Always Danmark:
+    QString country;
     QString ssn;
 
 private:
