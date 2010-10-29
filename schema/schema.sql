@@ -9,7 +9,7 @@ create table configuration(
   value text
 );
 -- DB VERSION: REMEMBER TO UPDATE, WHEN CHANGING ANYTHING
-insert into configuration values( 'db_version', '42' );
+insert into configuration values( 'db_version', '43' );
 
 -- ----------------------------------------------------------------------
 -- RENTAL GROUPS
@@ -103,18 +103,22 @@ create table items(
 
 
 -- Describe people that can hire
+-- Note, the many null rules is required, because the hirer dialogs select
+-- statement does not work well, if there are many nulls. 
+-- Because we have complete control of the creation of hirers, nulls are not allowed.
+-- emptry strings are used to indicate no value.
 drop table if exists hirers;
 create table hirers(
   id integer primary key asc,
-  memberId text, -- local member number, if applicable
-  ssn text, --cpr in dk.
-  firstName text,
-  lastName text,
-  streetAddress text,
-  zip text,
-  city text,
-  country text,
-  note text
+  memberId text not null, -- local member number, if applicable
+  ssn text not null, --cpr in dk.
+  firstName text not null,
+  lastName text not null,
+  streetAddress text not null,
+  zip text not null,
+  city text not null,
+  country text not null,
+  note text not null
 );
 
 
