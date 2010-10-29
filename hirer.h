@@ -24,12 +24,32 @@ public:
     QString m_note;
 
 
-    /** \brief Create a hirer instance present in the database
+    /** \brief Create a hirer instance from information in the database
      * \param id The id of the hirer in the database
      * \return A Hirer instance with the values loaded from the database
      *
      * Note, the methods throw, if the hirer is not present in the database! */
     Hirer( qlonglong id );
+
+    /** \brief Lookup or create a new hirer instance, based on values
+      * \param firstName The firstName of the hirer
+      * \param lastName The lastName of the hirer
+      * \param streetAddress The streetAddress of the hirer
+      * \param zip The zipcode of the hirer
+      * \param city The city of the hirer
+      * \param country The country of the hirer
+      * \param ssn The SSN of the hirer
+      *
+      * A lookup in the database is performed. If a hirer is found, with *exact* matches
+      * on all values, the *first* of these hirers is used.
+      * If the first lookup fails, another lookup is performed, where SSN is set to the empty string.
+      * Again, if exact matches are found, the first is used.
+      * Ideally there should be only one match. A warning is logged if there are more matches.
+      * If no hirer is found, a hirer is created, based on these values. */
+    Hirer( const QString & firstName, const QString & lastName,
+           const QString & streetAddress, const QString & zip,
+           const QString & city, const QString & country, const QString & ssn );
+
     Hirer();
 
     /** \brief Check if this hirer is valid, that is, contains valid data
