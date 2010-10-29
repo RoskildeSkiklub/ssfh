@@ -61,8 +61,10 @@ public slots:
     void set_hirer( const DKSundhedskort & dsk );
 
 private slots:
+    void on_input_item_lineEdit_textChanged(QString );
+
     /** \brief Calls add_item */
-    void on_addButton_clicked();
+    void on_input_addItem_pushButton_clicked();
 
     /** \brief Shows the hirer dialog, then calls set_hirer */
     void on_input_hirer_pushButton_clicked();

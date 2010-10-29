@@ -90,7 +90,7 @@ RentDialog::RentDialog(QWidget *parent) :
     blank->addTransition( this, SIGNAL( hirer_set() ), has_hirer );
 
     // HAS_HIRER
-    has_hirer->assignProperty( ui->input_addItem_pushButton, "enabled", true );
+    has_hirer->assignProperty( ui->input_addItem_pushButton, "enabled", !ui->input_item_lineEdit->text().isEmpty() );
     has_hirer->assignProperty( ui->input_duration_pushButton, "enabled", true );
     has_hirer->assignProperty( ui->input_finish_pushButton, "enabled", false );
     has_hirer->assignProperty( ui->input_hirer_pushButton, "enabled", false );
@@ -102,7 +102,7 @@ RentDialog::RentDialog(QWidget *parent) :
     // TODO: TO BLANK
 
     // has_item
-    has_item->assignProperty( ui->input_addItem_pushButton, "enabled", true );
+    has_item->assignProperty( ui->input_addItem_pushButton, "enabled", !ui->input_item_lineEdit->text().isEmpty() );
     has_item->assignProperty( ui->input_duration_pushButton, "enabled", false );
     has_item->assignProperty( ui->input_finish_pushButton, "enabled", true );
     has_item->assignProperty( ui->input_hirer_pushButton, "enabled", false );
@@ -177,28 +177,21 @@ void RentDialog::add_item( const QString & item_id ) {
     Logger log( "void RentDialog::add_item( const QString & item_id )" );
     if ( try_add_item( item_id ) ) {
         ui->input_item_lineEdit->setText("");
-        ui->output_contract_textEdit->setText( m_contract.toHtml() );
+        emit item_added();
+        update();
     }
 }
 
 bool RentDialog::try_add_item(const QString &item_id) {
     Logger log( "bool RentDialog::try_add_item(const QString &item_id)" );
     // This may have to be changed, if/when we want to react smarter to errors such as duplicating entries.
-    // PROTECT_BLOCK(
-            m_contract.add_item( item_id );
-            return true;
-            // );
-    return false;
+    m_contract.add_item( item_id );
+    return true;
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////
 // SLOTS
-
-void RentDialog::on_addButton_clicked() {
-    Logger log( "void RentDialog::on_addButton_clicked()" );
-    add_item( ui->input_item_lineEdit->text() );
-}
 
 void RentDialog::changeEvent(QEvent *e) {
     QDialog::changeEvent(e);
@@ -229,4 +222,15 @@ void RentDialog::on_input_hirer_pushButton_clicked() {
     } else {
         log.stream() << "Did not get any hirer from hirerDialog";
     }
+}
+
+void RentDialog::on_input_addItem_pushButton_clicked() {
+    Logger log( "void RentDialog::on_input_addItem_pushButton_clicked()" );
+    add_item( ui->input_item_lineEdit->text() );
+}
+
+void RentDialog::on_input_item_lineEdit_textChanged(QString newText) {
+    ui->input_addItem_pushButton->setEnabled( ( ! newText.isEmpty() )
+                                              && ( is_in_state( "has_hirer")
+                                                   || is_in_state( "has_item" ) ) );
 }
