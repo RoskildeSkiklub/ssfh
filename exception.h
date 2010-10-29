@@ -16,8 +16,9 @@ namespace Errors {
         DBError = 1000,
         DBResultError = 1001,
         DBQueryInActive = 1500,
-        ItemUnavailable = 2000,
-        ItemAlreadyPartOfContract = 3000,
+        ItemAlreadyPartOfContract = 2000,
+        ItemDoesNotExist = 2001,
+        ItemUnavailable = 2002,
         MagswipeNoMatch = 4000,
     };
 };
@@ -43,6 +44,12 @@ public:
         m_description = logstream.getBuffer();
         return *this;
     }
+
+    /** \brief Get the statuscode
+      * \return The statuscode of the exception */
+    long getStatusCode() const {
+        return m_statusCode;
+    };
 
 };
 

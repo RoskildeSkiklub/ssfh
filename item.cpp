@@ -88,7 +88,17 @@ Item Item::locate_book_in_db( const QString & id ) {
 
     // Execute and move to first.
     query_check_exec( query );
-    query_check_first( query );
+    try {
+        query_check_first( query );
+    }
+    catch (const Exception & e) {
+        if ( e.getStatusCode() == Errors::DBResultError ) {
+            throw Exception( Errors::ItemDoesNotExist )
+            << ( log.stream( error )
+                 << "The item with id '" << id << "' does not exist" );
+        }
+        throw;
+    }
 
     // Load values
     Item res;
