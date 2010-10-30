@@ -21,6 +21,17 @@ static const char * db_strings[] = {
     ,QT_TRANSLATE_NOOP("Item", "maintenance" )
     ,QT_TRANSLATE_NOOP("Item", "out" )
 
+    // state
+    ,QT_TRANSLATE_NOOP("Contract", "active" )
+    ,QT_TRANSLATE_NOOP("Contract", "booking" )
+    ,QT_TRANSLATE_NOOP("Contract", "closed" )
+    ,QT_TRANSLATE_NOOP("Contract", "parked" )
+
+    // state
+    ,QT_TRANSLATE_NOOP("ContractItem", "booked" )
+    ,QT_TRANSLATE_NOOP("ContractItem", "out" )
+    ,QT_TRANSLATE_NOOP("ContractItem", "returned" )
+
     // event
     ,QT_TRANSLATE_NOOP("Item", "booked" )
     ,QT_TRANSLATE_NOOP("Item", "created" )
@@ -42,6 +53,15 @@ const QString DB::Item::State::in = "in";
 const QString DB::Item::State::lost = "lost";
 const QString DB::Item::State::maintenance = "maintenance";
 const QString DB::Item::State::out = "out";
+
+const QString DB::Contract::State::active = "active";
+const QString DB::Contract::State::booking = "booking";
+const QString DB::Contract::State::closed = "closed";
+const QString DB::Contract::State::parked = "parked";
+
+const QString DB::ContractItem::State::booked = "booked";
+const QString DB::ContractItem::State::out = "out";
+const QString DB::ContractItem::State::returned = "returned";
 
 const QString DB::Item::Event::booked = "booked";
 const QString DB::Item::Event::created = "created";

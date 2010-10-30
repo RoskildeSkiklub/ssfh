@@ -9,6 +9,25 @@
 
 /** \brief Define constants in the database as constants in the program. */
 struct DB {
+    struct Contract {
+        struct State {
+            static const QString active;
+            static const QString booking;
+            static const QString closed;
+            static const QString parked;
+        };
+
+
+    };
+    struct ContractItem {
+        struct State {
+            static const QString booked;
+            static const QString out;
+            static const QString returned;
+        };
+
+
+    };
     struct Item {
         struct State {
             static const QString booked;
