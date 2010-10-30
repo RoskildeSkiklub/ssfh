@@ -97,7 +97,7 @@ create table items(
   rentalgroup text references rentalgroups( id ) not null, -- Generic DEFAULT rental group. This can be changed on a pr. rental basis.
   -- Do not remove the next line, the build system uses it
   -- TRANSLATE:Item
-  state text check( state in ('in', 'booked', 'out', 'maintenance', 'lost', 'discarded' ) ),
+  state text check( state in ( 'in', 'booked', 'out', 'maintenance', 'lost', 'discarded' ) ),
   note text
 );
 
@@ -133,7 +133,9 @@ create table contracts(
   discount integer, -- Any discount, in same unit as price
   price integer, -- The total price of the contract, the sum of the contract lines - discount
   payed boolean, -- Payed in full
-  state check( state in ( 'booking', 'parked', 'active', 'closed' ) ),
+  -- Do not remove the next line, the build system uses it
+  -- TRANSLATE:Contract
+  state text check( state in ( 'booking', 'parked', 'active', 'closed' ) ),
   note text
 );
 -- Index to look up contract from hirer
@@ -149,7 +151,9 @@ create table contractitems(
   id integer primary key asc,
   contract_id integer references contracts( id ) not null,
   item_id text references items( id ) not null,
-  state check( state in ( 'booked', 'out', 'returned' ) ),
+  -- Do not remove the next line, the build system uses it
+  -- TRANSLATE:ContractItem
+  state text check( state in ( 'booked', 'out', 'returned' ) ),
   rentalgroup text references rentalgroups( id ) not null,  
   price integer, -- The calculated price of the item on the contract
   note text
