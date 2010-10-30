@@ -185,7 +185,31 @@ void RentDialog::add_item( const QString & item_id ) {
 bool RentDialog::try_add_item(const QString &item_id) {
     Logger log( "bool RentDialog::try_add_item(const QString &item_id)" );
     // This may have to be changed, if/when we want to react smarter to errors such as duplicating entries.
-    m_contract.add_item( item_id );
+    try {
+        m_contract.add_item( item_id );
+    }
+    catch( const Exception & e ) {
+        log.stream( info ) << "Got exception from Contract::add_item : '" << e.toString() << "'";
+        switch ( e.getStatusCode() ) {
+        case Errors::ItemAlreadyPartOfContract: {
+            //TODO: ask the user if remove...
+            return false; // Perhaps something else, need to check if no more items, stuff like that.
+        }
+        case Errors::ItemDoesNotExist: {
+            QMessageBox::warning( this, tr( "Item not registered in database" ),
+                                  tr( "Item with id '%0' was not found in database. Unable to add to contract.").arg(item_id) );
+            // TODO: Should we be able to add the new item here?
+            return false;
+        }
+        case Errors::ItemUnavailable: {
+            QMessageBox::warning( this, tr( "The item is unavailable"),
+                                  tr( "The item with id '%0' is already registered on another contract. Unable to add to contract.").arg(item_id) );
+            // TODO: REALLY should be able to mark returned, and add to this contract. Real life trumps electronic.
+            return false;
+        }
+        default: throw;
+        }
+    }
     return true;
 }
 
