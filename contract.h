@@ -14,12 +14,14 @@
 class Contract {
     Hirer m_hirer;
 public:
+    // Probably need to be contract lines...
     QList<Item> m_items;
 
     qlonglong m_id;
     bool m_active;
-    QDateTime startTime;
-    QDateTime endTime;
+    QDateTime m_startTime;
+    QDateTime m_endTime;
+    long m_discount;
     long getPrice();
     bool m_payed;
     QString m_note;

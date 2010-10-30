@@ -22,7 +22,7 @@
 #include "utility.h"
 
 /** \brief The database version expected */
-const QString db_version = "43";
+const QString db_version = "44";
 
 /** \brief Toplevel error handling, handled through QApplication override */
 class RshApplication : public QApplication {
