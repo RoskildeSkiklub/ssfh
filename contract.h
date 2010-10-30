@@ -24,7 +24,15 @@ public:
     bool m_payed;
     QString m_note;
 
-    // Methods...
+    /** \brief Add an item to the contract.
+      * \param item_id Id of the item to add
+      *
+      * This method adds an item. A number of controls are performed
+      * 1) if the item is already on the contract, it can not be added
+      * 2) if the item does not exist, some error happens
+      * 3) if the item is not available (not in), an error happens.
+      *
+      * Errors are returned as Exceptions with a specific statuscode. */
     void add_item( const QString & item_id );
 
     Hirer & getHirer();
