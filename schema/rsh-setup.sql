@@ -6,8 +6,8 @@
 -- ----------------------------------------------------------------------
 -- RENTAL GROUPS
 -- These are the three rentalgroups we work with, and their alternatives.
-insert into rentalgroups values( 'børneski', 'voksen' );
-insert into rentalgroups values( 'voksenski', 'barn' );
+insert into rentalgroups values( 'børneski', 'voksenski' );
+insert into rentalgroups values( 'voksenski', 'børneski' );
 insert into rentalgroups values( 'tilbehør', null );
 
 -- ----------------------------------------------------------------------
