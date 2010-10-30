@@ -24,9 +24,9 @@ insert or replace into items values ( '023942430735', 'ski', '174', 'Rossignol C
 -- Create a contract
 -- Something done earlier by Mads
 -- This reflects the end situation, *not* the events underway...
-insert or replace into contracts values( 0, 0, '2009-02-02 12:00:00', '2009-02-02 12:00:01', '2009-02-02 15:00:01', 200, 'true', 'closed', 'testnote' );
-insert or replace into contractitems values( 0, 0, '42', 'returned', 'lejer mine egne ski' );
-insert or replace into contractitems values( 1, 0, '44', 'returned', 'lejer Baltazars ski' );
+insert or replace into contracts values( 0, 0, '2009-02-02 12:00:00', '2009-02-02 12:00:01', '2009-02-02 15:00:01', 50, 200, 'true', 'closed', 'testnote' );
+insert or replace into contractitems values( 0, 0, '42', 'returned', 'voksenski', 100, 'lejer mine egne ski' );
+insert or replace into contractitems values( 1, 0, '44', 'returned', 'børneski', 75, 'lejer Baltazars ski' );
 
 insert or replace into itemevents values( 0, '42', '2009-02-02 12:00:00', 'handed out', '' );
 insert or replace into itemevents values( 1, '44', '2009-02-02 12:00:25', 'handed out', '' );
@@ -39,15 +39,15 @@ insert or replace into itemevents values( 6, '42', '2009-05-30 12:55:00', 'retur
 insert or replace into itemevents values( 7, '44', '2009-05-30 14:23:00', 'returned', '' );
 
 
-insert or replace into contracts values( 1, 0, '2009-06-26 11:55:01', '2010-06-26 12:00:01', '2010-06-27 15:00:01', 300, 'true', 'active', 'testnote' );
-insert or replace into contractitems values( 2, 1, '42', 'out', 'lejer mine egne ski' );
-insert or replace into contractitems values( 3, 1, '43', 'out', 'lejer Connies ski' );
-insert or replace into contractitems values( 4, 1, '44', 'out', 'lejer Baltazars ski' );
-insert or replace into contractitems values( 5, 1, '45', 'out', 'lejer Matildes ski' ); 
-insert or replace into contractitems values( 6, 1, '142', 'out', 'lejer mine egne støvler' );
-insert or replace into contractitems values( 7, 1, '143', 'out', 'lejer Connies støvler' );
-insert or replace into contractitems values( 8, 1, '144', 'out', 'lejer Baltazars støvler ' );
-insert or replace into contractitems values( 9, 1, '145', 'out', 'lejer Matildes støvler' );
+insert or replace into contracts values( 1, 0, '2009-06-26 11:55:01', '2010-06-26 12:00:01', '2010-06-27 15:00:01', 0, 300, 'true', 'active', 'testnote' );
+insert or replace into contractitems values( 2, 1, '42', 'out', 'voksenski', 100, 'lejer mine egne ski' );
+insert or replace into contractitems values( 3, 1, '43', 'out', 'voksenski', 100, 'lejer Connies ski' );
+insert or replace into contractitems values( 4, 1, '44', 'out', 'voksenski', 100, 'lejer Baltazars ski' );
+insert or replace into contractitems values( 5, 1, '45', 'out', 'voksenski', 100, 'lejer Matildes ski' ); 
+insert or replace into contractitems values( 6, 1, '142', 'out', 'tilbehør', 0, 'lejer mine egne støvler' );
+insert or replace into contractitems values( 7, 1, '143', 'out', 'tilbehør', 0, 'lejer Connies støvler' );
+insert or replace into contractitems values( 8, 1, '144', 'out', 'tilbehør', 0, 'lejer Baltazars støvler ' );
+insert or replace into contractitems values( 9, 1, '145', 'out', 'tilbehør', 0, 'lejer Matildes støvler' );
 
 insert or replace into itemevents values( 8, '42', '2010-06-26 12:01:15', 'handed out', '' );
 insert or replace into itemevents values( 9, '43', '2010-06-26 12:01:20', 'handed out', '' );

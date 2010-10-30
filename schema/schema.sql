@@ -9,7 +9,7 @@ create table configuration(
   value text
 );
 -- DB VERSION: REMEMBER TO UPDATE, WHEN CHANGING ANYTHING
-insert into configuration values( 'db_version', '43' );
+insert into configuration values( 'db_version', '44' );
 
 -- ----------------------------------------------------------------------
 -- RENTAL GROUPS
@@ -130,7 +130,8 @@ create table contracts(
   creationTime datetime, -- The date the contract was created
   startTime datetime, -- The start of the rental period
   endTime datetime, -- The end of the rental period
-  price integer, 
+  discount integer, -- Any discount, in same unit as price
+  price integer, -- The total price of the contract, the sum of the contract lines - discount
   payed boolean, -- Payed in full
   state check( state in ( 'booking', 'parked', 'active', 'closed' ) ),
   note text
@@ -149,7 +150,8 @@ create table contractitems(
   contract_id integer references contracts( id ) not null,
   item_id text references items( id ) not null,
   state check( state in ( 'booked', 'out', 'returned' ) ),
---  price integer, -- The calculated price of the item on the contract
+  rentalgroup text references rentalgroups( id ) not null,  
+  price integer, -- The calculated price of the item on the contract
   note text
 );
 -- We need indexes to allow looking up based on contract or item_id,
