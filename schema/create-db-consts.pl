@@ -14,9 +14,8 @@ my $consts = "";
 my $next_group = "";
 my $prefix = " ";
 
-#This is cheating - I know that all goes into Item, so YAGNI on general solution
-# I hate perl datastructures. Gotta learn Python someday.
-my $ITEM_STUFF = "";
+# Store struct stuff here until ready to dump it.
+my %item_stuff;
 
 while( <> ) {
     if ( $state eq $scanning ) {
@@ -24,18 +23,21 @@ while( <> ) {
 #            print STDERR "Found $_";
 #            print STDERR "Goes into $1\n";
             $next_group = $1;
+            if ( ! defined $item_stuff{ $next_group } ) {
+                $item_stuff{ $next_group } = "";
+            }
             $state = $output;
         }
         next;
     }
     if ( $state eq $output ) {
-        if ( m/^\s*([^\s]+)\s+text\s+check\s*\(\s*[^\s]+\s+in\s*\(([^\)]+\')\s*\)\s*\)\s*\,\s*$/ ) {
+        if ( m/^\s*([^\s]+)\s+text\s+check\s*\(\s*[^\s]+\s+in\s*\(\s*([^\)]+\')\s*\)\s*\)\s*\,\s*$/ ) {
 #            print STDERR "Found $_";
 #            print STDERR "colum $1\n";
 #            print STDERR "Goes into $2\n";
             $db_strings .= "    // $1\n";
             my $column = ucfirst $1;
-            $ITEM_STUFF .= "        struct $column {\n";
+            $item_stuff{ $next_group } .= "        struct $column {\n";
 
             my $clean_keys = $2;
             $clean_keys =~s/\'//g;
@@ -49,11 +51,12 @@ while( <> ) {
                 # QT_TRANSLATE_NOOP("Item","in"),
                 $db_strings .= "    $prefix"."QT_TRANSLATE_NOOP(\"$next_group\", \"$_\" )\n";
                 $prefix = ",";
-                $ITEM_STUFF .= "            static const QString $_;\n";
+                #$ITEM_STUFF .= "            static const QString $_;\n";
+                $item_stuff{ $next_group} .= "            static const QString $_;\n";
                 $consts .= "const QString DB::$next_group"."::$column"."::$_ = \"$_\";\n";
             }
             $db_strings .= "\n";
-            $ITEM_STUFF .= "        };\n\n";
+            $item_stuff{ $next_group } .= "        };\n\n";
             $consts .= "\n";
         } else {
             die "In output state, but no match for $_";
@@ -79,12 +82,12 @@ print HH <<EOF;
 
 /** \\brief Define constants in the database as constants in the program. */
 struct DB {
-    struct Item {
-$ITEM_STUFF
-    };
-};
-
 EOF
+foreach my $key (sort keys %item_stuff ) {
+    print HH "    struct $key {\n$item_stuff{ $key }\n    };\n";
+} 
+print HH "};\n\n";
+
 print CC <<EOF;
 /** \\file
   * \\brief DB Constants
