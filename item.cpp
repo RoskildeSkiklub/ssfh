@@ -77,7 +77,7 @@ void Item::db_insert() {
     query_check_exec( query );
 }
 
-Item Item::locate_book_in_db( const QString & id ) {
+Item Item::locate_and_book_in_db( const QString & id ) {
     Logger log( "Item locate_book_in_db( const QString & id )" );
     // Locate the data about the items in the database
     QSqlQuery query;
@@ -127,9 +127,21 @@ Item Item::locate_book_in_db( const QString & id ) {
     query.bindValue( ":id", id );
     query_check_exec( query );
     log.stream( info ) << "Booked item '" << id << "'";
+    // TODO: LOG A LINE IN THE ITEMEVENTS LOG
+
     // Done, returning
     return res;
 
+}
+
+QString Item::getId() const {
+    Logger log("QString Item::getId()");
+    return m_id;
+}
+
+QString Item::getRentalGroup() const {
+    Logger log("QString Item::getRentalGroup()");
+    return m_rentalgroup;
 }
 
 QString Item::toHtml() const {
