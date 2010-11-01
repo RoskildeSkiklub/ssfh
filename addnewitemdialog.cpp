@@ -163,23 +163,23 @@ void AddNewItemDialog::doUndo() {
     }
     Item item( items_added.top() );
     // Check that id is not ''
-    if ( item.m_id.isEmpty() ) {
+    if ( item.getId().isEmpty() ) {
         throw Exception( Errors::InternalError )
                 << ( log.stream( error ) << "Item that must be removed following undo, has empty id" );
     }
     QSqlQuery query;
 
     query_check_prepare( query, "delete from items where id = :id" );
-    query.bindValue( ":id", item.m_id );
+    query.bindValue( ":id", item.getId() );
     query_check_exec( query );
-    log.stream() <<  "Removed item with id " << item.m_id << " from database.";
+    log.stream() <<  "Removed item with id " << item.getId() << " from database.";
     // Remove from internal stack, update.
     items_added.pop();
     // Note in the item log
     log.stream() << "Adding log line to itemevents";
     query_check_prepare( query, "insert into itemevents ( item_id, time, event, note ) "
                          "values ( :item_id, :time, :event, :note )" );
-    query.bindValue( ":item_id", item.m_id );
+    query.bindValue( ":item_id", item.getId() );
     query.bindValue( ":time", QDateTime::currentDateTime() );
     query.bindValue( ":event", DB::Item::Event::deleted );
     query.bindValue( ":note", tr( "Deleted by undo in Add New Item dialog." ) );
