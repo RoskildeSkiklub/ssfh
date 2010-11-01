@@ -127,7 +127,7 @@ RentDialog::~RentDialog()
 
 void RentDialog::update() {
     Logger log( "void RentDialog::update()" );
-    ui->output_contract_textEdit->setText( m_contract.toHtml() );
+    ui->output_contract_textBrowser->setText( m_contract.toHtml() );
 }
 
 bool RentDialog::is_in_state( const QString & state ) {

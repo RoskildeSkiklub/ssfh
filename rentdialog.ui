@@ -14,13 +14,6 @@
    <string>Rent out items</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
-    <widget class="QTextEdit" name="output_contract_textEdit">
-     <property name="readOnly">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
    <item row="0" column="1">
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
@@ -118,6 +111,9 @@
      </item>
     </layout>
    </item>
+   <item row="0" column="0">
+    <widget class="QTextBrowser" name="output_contract_textBrowser"/>
+   </item>
   </layout>
  </widget>
  <tabstops>
@@ -128,7 +124,6 @@
   <tabstop>input_rentalgroup_pushButton</tabstop>
   <tabstop>input_finish_pushButton</tabstop>
   <tabstop>input_cancel_pushButton</tabstop>
-  <tabstop>output_contract_textEdit</tabstop>
  </tabstops>
  <resources/>
  <connections/>
