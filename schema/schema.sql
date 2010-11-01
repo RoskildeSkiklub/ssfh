@@ -9,7 +9,7 @@ create table configuration(
   value text
 );
 -- DB VERSION: REMEMBER TO UPDATE, WHEN CHANGING ANYTHING
-insert into configuration values( 'db_version', '44' );
+insert into configuration values( 'db_version', '46' );
 
 -- ----------------------------------------------------------------------
 -- RENTAL GROUPS
@@ -132,7 +132,7 @@ create table contracts(
   endTime datetime, -- The end of the rental period
   discount integer, -- Any discount, in same unit as price
   price integer, -- The total price of the contract, the sum of the contract lines - discount
-  payed boolean, -- Payed in full
+  payed integer, -- The amount payed (so far) by the hirer
   -- Do not remove the next line, the build system uses it
   -- TRANSLATE:Contract
   state text check( state in ( 'booking', 'parked', 'active', 'closed' ) ),
@@ -163,6 +163,8 @@ create table contractitems(
 create index ix_contractitems_contract_id on contractitems( contract_id );
 create index ix_contractitems_item_id on contractitems( item_id );
 create index ix_contractitems_state on contractitems( state );
+-- And, an unique index on the contract_id, item_id combo
+create unique index ix_contractitems_contract_id_item_id on contractitems( contract_id, item_id );
 
 -- History of an item. Sort of a log
 drop table if exists itemevents;
