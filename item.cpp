@@ -144,8 +144,9 @@ QString Item::getRentalGroup() const {
     return m_rentalgroup;
 }
 
-QString Item::toHtml() const {
-    QString res = QString( "<li><em>%1: %2/%3</em><br/>&nbsp;&nbsp;%4</li>" )
+QString Item::toRentalHtml() const {
+    Logger log( "QString Item::toRentalHtml() const" );
+    QString res = QString( "<em>%1: %2/%3</em><br/>&nbsp;&nbsp;%4" )
                   .arg( m_id ).arg( m_type ).arg( m_rentalgroup );
     QString in = "";
     QString pre = "";
@@ -164,6 +165,11 @@ QString Item::toHtml() const {
     if ( m_size != "" ) {
         in += pre + m_size;
         pre = "/";
-           }
+    }
     return res.arg( in );
+}
+
+QString Item::toHtml() const {
+    Logger log( "QString Item::toHtml() const" );
+    return QString( "<li>%0</li>" ).arg( toRentalHtml() );
 }

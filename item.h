@@ -24,7 +24,12 @@ public:
       * Will except on duplicate */
     void db_insert();
 
-    /** \brief Return HTML representation of item */
+    /** \brief Return HTML suitable for the rental dialog
+      * \return HTML suitable for the rental dialog */
+    QString toRentalHtml() const;
+
+    /** \brief Return HTML representation of item
+      * \return HTML representation of item */
     QString toHtml() const;
 
     /** \brief Default constructor */
