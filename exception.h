@@ -13,12 +13,14 @@ namespace Errors {
     enum {
         UnableToOpenFile = 1,
         InternalError = 100,
+        NotImplemented = 101,
         DBError = 1000,
         DBResultError = 1001,
         DBQueryInActive = 1500,
         ItemAlreadyPartOfContract = 2000,
         ItemDoesNotExist = 2001,
         ItemUnavailable = 2002,
+        ContractNotInBookingState = 3000,
         MagswipeNoMatch = 4000,
     };
 };
