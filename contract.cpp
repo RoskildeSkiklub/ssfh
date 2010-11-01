@@ -88,8 +88,9 @@ void Contract::addItem( const QString &item_id ) {
     // TODO: Handle exceptions. Or transaction handle it.
     qlonglong itemPrice = calculateItemPrice( item );
 
-    ContractItem ci( m_id, item_id, item.getRentalGroup(), itemPrice, "" );
-    // TODO: Create contract item line
+    // Create a contract item, which is what is used as "lines" in the contract/display
+    ContractItem ci( m_id, item, item.getRentalGroup(), itemPrice, "" );
+    m_contractItems.append( ci );
 
     log.stream() << "Added item: " << item.toHtml();
     // TODO: Signal contract changed...
@@ -120,7 +121,7 @@ QString Contract::toHtml() const {
 
     // Items.
     res += "<h1>Items in contract</h1>";
-    if ( m_items.isEmpty() ) {
+    if ( m_contractItems.isEmpty() ) {
         res += "<p><em>Please add items by scanning barcodes on the items.</em></p>";
         return res;
     }
@@ -167,10 +168,12 @@ void Contract::db_insert() {
 }
 
 QString Contract::items_to_html() const {
-    Item i;
-    QString res;
-    foreach (i, m_items) {
-        res += i.toHtml();
+    ContractItem ci;
+    QString res = "<table width=\"100%\">\n";
+
+    foreach (ci, m_contractItems) {
+        res += ci.toRentalHtml();
     }
+    res += "</table>\n";
     return res;
 }
