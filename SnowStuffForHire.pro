@@ -19,7 +19,8 @@ SOURCES += main.cpp \
     globals.cpp \
     dksundhedskort.cpp \
     addnewitemdialog.cpp \
-    db_consts.cpp
+    db_consts.cpp \
+    contractitem.cpp
 HEADERS += mainwindow.h \
     rentdialog.h \
     stockdialog.h \
@@ -34,7 +35,8 @@ HEADERS += mainwindow.h \
     globals.h \
     dksundhedskort.h \
     addnewitemdialog.h \
-    db_consts.h
+    db_consts.h \
+    contractitem.h
 FORMS += mainwindow.ui \
     rentdialog.ui \
     stockdialog.ui \

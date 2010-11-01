@@ -186,7 +186,7 @@ bool RentDialog::try_add_item(const QString &item_id) {
     Logger log( "bool RentDialog::try_add_item(const QString &item_id)" );
     // This may have to be changed, if/when we want to react smarter to errors such as duplicating entries.
     try {
-        m_contract.add_item( item_id );
+        m_contract.addItem( item_id );
     }
     catch( const Exception & e ) {
         log.stream( info ) << "Got exception from Contract::add_item : '" << e.toString() << "'";

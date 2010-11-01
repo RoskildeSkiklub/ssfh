@@ -96,6 +96,13 @@
       </spacer>
      </item>
      <item>
+      <widget class="QPushButton" name="input_addNote_pushButton">
+       <property name="text">
+        <string>Add &amp;note</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="input_park_pushButton">
        <property name="text">
         <string>&amp;Park</string>
