@@ -39,6 +39,7 @@
   *
   * The contract can have it state changed, by using the appropiate state change functions */
 class Contract {
+    Q_DECLARE_TR_FUNCTIONS(Contract)
 public:
     /** \brief Default constructor.
       *
@@ -110,30 +111,30 @@ public:
 
     /** \brief Get the current discount
       * \returns The current discount */
-    qlonglong getDiscount();
+    qlonglong getDiscount() const;
 
     /** \brief Get the price of all items
       * \returns The price of all items added to the contract
       *
       * This is the sum of the price of all items */
-    qlonglong getItemsPrice();
+    qlonglong getItemsPrice() const;
 
     /** \brief Get the total price of the contract
       * \returns The total price of the contract
       *
       * This is getItemsPrice() - getDiscount() */
-    qlonglong getTotalPrice();
+    qlonglong getTotalPrice() const;
 
     /** \brief Get the current payable sum.
       * \returns The current payable sum
       *
       * This is getItemsPrice - getDiscount() - getPayed(), that is,
       * the current amount 'missing' for the user to fullfill the contract price */
-    qlonglong getPayableAmount();
+    qlonglong getPayableAmount() const;
 
     /** \brief Get the amount already payed by the hirer
       * \returns the amount allready payed by the hirer */
-    qlonglong getPayed();
+    qlonglong getPayed() const;
 
     /** \brief Add a payment to the contract
       * \param amount The amount to add to payed
@@ -204,9 +205,7 @@ private:
     /** \brief The hirer for the contract, set by setHirer */
     Hirer m_hirer;
 
-    /** TODO:  \brief Items on the contract. Probably needs to be contractItems or something */
-    QList<Item> m_items;
-
+    /** \brief The items added to the contract. */
     QList<ContractItem> m_contractItems;
 
     /** \brief Checks the contract is in booking state, throws otherwise

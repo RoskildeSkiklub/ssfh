@@ -127,7 +127,7 @@ Hirer::Hirer( const QString & firstName, const QString & lastName,
 }
 
 QString Hirer::toHtml() const {
-    QString res = QString( "<li>%6<em>%1 %2</em><br/>%3<br/>%4  %5</li>" )
+    QString res = QString( "%6<em>%1 %2</em><br/>%3<br/>%4  %5" )
                   .arg( m_firstName ).arg( m_lastName ).arg( m_streetAddress ).arg( m_zip ).arg( m_city );
     if ( !m_memberId.isEmpty() ) {
         res = res.arg( tr( "MemberId: " ) + m_memberId + "<br/>" );

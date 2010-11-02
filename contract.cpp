@@ -16,7 +16,15 @@ using namespace Log;
 ////////////////////////////////////////////////////////////////////////////////
 // Constructor
 
-Contract::Contract() : m_id( -1 ), m_state( "booking" ) {
+Contract::Contract()
+    : m_id( -1 ),
+    // TODO: Config + global config
+    m_startTime( QDateTime::currentDateTime().addSecs( 600 ) ),
+    m_endTime( m_startTime.addSecs( 3 * 3600 ) ),
+    m_discount( 0 ),
+    m_price( 0 ),
+    m_payed( 0 ),
+    m_state( "booking" ) {
     Logger log( "Contract::Contract()" );
 }
 
@@ -65,9 +73,9 @@ void Contract::addItem( const QString &item_id ) {
     checkInBookingState( "addItem" );
 
     // If item is already in our list, don't bother.
-    Item i;
-    foreach (i, m_items) {
-        if ( i.getId() == item_id ) {
+    ContractItem cii;
+    foreach (cii, m_contractItems) {
+        if ( cii.getItem().getId() == item_id ) {
             throw Exception( Errors::ItemAlreadyPartOfContract )
                     << ( log.stream( error ) << "Item " << item_id << " is already registered on the contract." );
         }
@@ -82,8 +90,6 @@ void Contract::addItem( const QString &item_id ) {
     // Try and load an item.
     // TODO: Database transaction - I guess so...
     Item item = Item::locate_and_book_in_db( item_id );
-    // Got the item, add it.
-    m_items.append( item );
 
     // TODO: Handle exceptions. Or transaction handle it.
     qlonglong itemPrice = calculateItemPrice( item );
@@ -102,31 +108,80 @@ qlonglong Contract::calculateItemPrice(const Item &item) {
     return 42;
 }
 
+qlonglong Contract::getItemsPrice() const {
+    Logger log("qlonglong Contract::getItemsPrice() const");
+    ContractItem cii;
+    qlonglong sum = 0;
+    foreach (cii, m_contractItems) {
+        sum += cii.getPrice();
+    }
+    return sum;
+}
+
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // CONTRACT
 
+qlonglong Contract::getDiscount() const {
+    Logger log("qlonglong Contract::getDiscount() const");
+    return m_discount;
+}
+
+qlonglong Contract::getPayed() const {
+    Logger log("qlonglong Contract::getPayed() const");
+    return m_payed;
+}
+
+qlonglong Contract::getPayableAmount() const {
+    Logger log("qlonglong Contract::getPayableAmount() const");
+    return getItemsPrice() - getDiscount() - getPayed();
+}
+
 
 //TODO Translate...
 QString Contract::toHtml() const {
-    QString res = "<h1>Hirer information</h1>";
+    QString HEAD = "<head><style type=\"text/css\">"
+                   ".total {font-weight:bold;font-size:x-large;}"
+                   "</style>"
+                   "</head>";
+
+    QString res = HEAD + "<body><h3>" + tr( "Hirer information" ) + "</h3>";
     if ( ! m_hirer.isValid() ) {
-        res += "<p><em>Please add a hirer by swiping an id card.</em></p>";
+        res += "<p><em>" + tr( "Please add a hirer by swiping an id card." ) + "</em></p>";
         return res;
     }
-    res += m_hirer.toHtml();
+    res += QString( "<p>%0</p>" ).arg( m_hirer.toHtml() );
 
     // Duration
-    res += "<h1>Duration of contract</h1><p>TODO: Implement</p>";
+    res += "<h3>" + tr( "Duration of contract" ) + "</h3><p>TODO: Implement</p>";
 
     // Items.
-    res += "<h1>Items in contract</h1>";
+    res += "<h3>" + tr( "Items in contract" ) + "</h3>";
     if ( m_contractItems.isEmpty() ) {
-        res += "<p><em>Please add items by scanning barcodes on the items.</em></p>";
+        res += "<p><em>" + tr( "Please add items by scanning barcodes on the items." ) + "</em></p>";
         return res;
     }
     res += items_to_html();
-    return res;
+
+    // Total price
+    res += "<h3>" + tr( "Totals" ) + "</h3>";
+    res += "<table width=\"100%\">";
+    res += QString( "<tr><td>%0</td><td align=\"right\">%1</td></tr>" )
+           .arg( tr( "Total" ) ).arg( getItemsPrice() );
+    if ( 0 != getDiscount() ) {
+        res += QString( "<tr><td>%0</td><td align=\"right\">%1</td></tr>" )
+               .arg( tr( "Discount" ) ).arg( getDiscount() );
+    }
+    if ( 0 != getPayed() ) {
+        res += QString( "<tr><td>%0</td><td align=\"right\">%1</td></tr>" )
+               .arg( tr( "Payed" ) ).arg( getPayed() );
+    }
+    res += QString( "<tr><td>%0</td><td align=\"right\" class=\"total\">%1</td></tr>" )
+           .arg( tr( "Payable amount" ) ).arg( getPayableAmount() );
+    res += "</table>";
+
+    return res + "</body>";
 
 
 };
