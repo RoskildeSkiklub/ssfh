@@ -65,6 +65,9 @@ signals:
     void contract_found(); // Emitted when a contract is set on the dialog
     void item_returned(); // Emitted when an item is returned
     void contract_closed(); // Emitted when a contract has been fully closed
+
+private slots:
+    void on_pushButton_clicked();
 };
 
 #endif // RETURNDIALOG_H
