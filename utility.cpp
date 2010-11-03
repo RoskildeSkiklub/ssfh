@@ -98,7 +98,7 @@ void database_rollback(const QString &where) {
 }
 
 
-void TODO(const QString & where, const QString &msg) {
+void todo(const QString & where, const QString &msg) {
     Logger log( "void TODO(const QString &msg)" );
     log.stream( warn ) << "Msg is '" << msg << "'";
     QMessageBox::critical( NULL, "TODO MESSAGE",

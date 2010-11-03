@@ -46,6 +46,9 @@ void database_rollback( const QString & where );
 /** \brief Show a todo dialog and log a message.
   * \param where Where the message is
   * \param msg The message of the todo */
-void TODO( const QString & where, const QString & msg );
+void todo( const QString & where, const QString & msg );
+
+/** \brief Macro to insert a todo call with function name */
+#define TODO( m ) todo( __PRETTY_FUNCTION__, m );
 
 #endif // UTILITY_H
