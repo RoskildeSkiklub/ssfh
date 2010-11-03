@@ -3,6 +3,9 @@
 
 class QSqlQuery;
 class QString;
+class QStateMachine;
+
+#include <QStringList>
 
 /** \brief Prepare a query, check that the result is OK
   * \param query The query to prepare
@@ -50,5 +53,13 @@ void todo( const QString & where, const QString & msg );
 
 /** \brief Macro to insert a todo call with function name */
 #define TODO( m ) todo( __PRETTY_FUNCTION__, m );
+
+/** \brief Get list of names of current states
+  * \param stateMachine The statemachine instance to get the list from
+  * \return QStringList with the names in
+  *
+  * This method extracts the object names from all states on the "configuration"
+  * of the state machine and returns them in a list. It also logs them. */
+QStringList get_current_states( const QStateMachine & stateMachine );
 
 #endif // UTILITY_H

@@ -8,6 +8,9 @@
 #include <QVariant>
 #include <QString>
 #include <QMessageBox>
+#include <QStateMachine>
+#include <QSet>
+#include <QAbstractState>
 
 // Application
 #include "utility.h"
@@ -104,4 +107,16 @@ void todo(const QString & where, const QString &msg) {
     QMessageBox::critical( NULL, "TODO MESSAGE",
                            QString( "<p>Got a TODO message</p><p><b>%0</b></p><p>From</p><p>%1</p>" )
                            .arg( msg ).arg( where ) );
+}
+
+QStringList get_current_states( const QStateMachine & stateMachine ) {
+    Logger log("QStringList get_current_states( const QStateMachine & state_machine )");
+    QSet<QAbstractState *> states = stateMachine.configuration();
+    QAbstractState * statep;
+    QStringList res;
+    foreach( statep, states ) {
+        log.stream() << "Adding state '" << statep->objectName() << "'";
+        res << statep->objectName();
+    }
+    return res;
 }
