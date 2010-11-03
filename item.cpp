@@ -77,8 +77,9 @@ void Item::db_insert() {
     query_check_exec( query );
 }
 
-Item Item::locate_and_book_in_db( const QString & id ) {
-    Logger log( "Item locate_book_in_db( const QString & id )" );
+Item Item::db_load(const QString &id) {
+    Logger log("Item Item::db_load(const QString &id)");
+    log.stream() << "Loading item with id '" << id << "'";
     // Locate the data about the items in the database
     QSqlQuery query;
     query_check_prepare( query, "select type, size, mark, model, year, condition, price, rentalgroup, state, note "
@@ -95,6 +96,7 @@ Item Item::locate_and_book_in_db( const QString & id ) {
         if ( e.getStatusCode() == Errors::DBResultError ) {
             throw Exception( Errors::ItemDoesNotExist )
             << ( log.stream( error )
+                 //! \todo Translate???
                  << "The item with id '" << id << "' does not exist" );
         }
         throw;
@@ -113,7 +115,13 @@ Item Item::locate_and_book_in_db( const QString & id ) {
     res.m_rentalgroup = query.value( 7 ).toString();
     res.m_state       = query.value( 8 ).toString();
     res.m_note        = query.value( 9 ).toString();
-    log.stream() << "Loaded item values from database.";
+    log.stream() << "Item loaded from database: " << res.toString();
+    return res;
+}
+
+Item Item::locate_and_book_in_db( const QString & id ) {
+    Logger log( "Item locate_book_in_db( const QString & id )" );
+    Item res( db_load( id ) );
     // Check if available
     if ( res.m_state != DB::Item::State::in ) {
         throw Exception( Errors::ItemUnavailable )
@@ -123,6 +131,7 @@ Item Item::locate_and_book_in_db( const QString & id ) {
     }
 
     // Mark as booked
+    QSqlQuery query;
     query_check_prepare( query, "update items set state=:state where id = :id" );
     query.bindValue( ":state", DB::Item::State::booked );
     query.bindValue( ":id", id );
@@ -144,6 +153,11 @@ QString Item::getId() const {
 QString Item::getRentalGroup() const {
     Logger log("QString Item::getRentalGroup()");
     return m_rentalgroup;
+}
+
+QString Item::getState() const {
+    Logger log("QString Item::getState() const");
+    return m_state;
 }
 
 QString Item::toRentalHtml() const {
@@ -174,6 +188,16 @@ QString Item::toRentalHtml() const {
 QString Item::toHtml() const {
     Logger log( "QString Item::toHtml() const" );
     return QString( "<li>%0</li>" ).arg( toRentalHtml() );
+}
+
+QString Item::toString() const {
+    Logger log("QString Item::toString()");
+    return QString( "id: '%0', type: '%1', size: '%2', mark: '%3', "
+                    "model: '%4'', year: '%5', condition: '%6', price: '%7', rentalgroup: '%8', "
+                    "state: '%9', note: '%10'" )
+            .arg( m_id ).arg( m_type ).arg( m_size ).arg( m_mark ).arg( m_model )
+            .arg( m_year ).arg( m_condition ).arg( m_price ).arg( m_rentalgroup )
+            .arg( m_state ).arg( m_note );
 }
 
 void Item::setToOutInDatabase() {
