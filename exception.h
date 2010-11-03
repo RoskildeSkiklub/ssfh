@@ -19,13 +19,16 @@ namespace Errors {
         DBCommitError = 1002,
         DBRollbackError = 1003,
         DBResultError = 1004,
+        DBConsistencyError = 1005,
         DBQueryInActive = 1500,
         ItemAlreadyPartOfContract = 2000,
         ItemDoesNotExist = 2001,
         ItemUnavailable = 2002,
         ItemNotInBookedState = 2003,
         ContractNotInBookingState = 3000,
-        MagswipeNoMatch = 4000,
+        ContractDoesNotExist = 3001,
+        ContractItemDoesNotExist = 4001,
+        MagswipeNoMatch = 10000,
     };
 };
 
