@@ -43,6 +43,12 @@ public:
       * \return The rental group of the item */
     QString getRentalGroup() const;
 
+    /** \brief Update the state of this item in the database to "out"
+      *
+      * This updates the state in the database, and also updates the in-memory state
+      * The state may not already be out */
+    void setToOutInDatabase();
+
 private:
     QString m_id;
     QString m_type;

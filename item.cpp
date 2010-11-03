@@ -115,7 +115,7 @@ Item Item::locate_and_book_in_db( const QString & id ) {
     res.m_note        = query.value( 9 ).toString();
     log.stream() << "Loaded item values from database.";
     // Check if available
-    if ( res.m_state != "in" ) {
+    if ( res.m_state != DB::Item::State::in ) {
         throw Exception( Errors::ItemUnavailable )
                 << ( log.stream( warn )
                      << tr( "The item is not currently availably, it has state :")
@@ -123,9 +123,11 @@ Item Item::locate_and_book_in_db( const QString & id ) {
     }
 
     // Mark as booked
-    query_check_prepare( query, "update items set state = 'booked' where id = :id" );
+    query_check_prepare( query, "update items set state=:state where id = :id" );
+    query.bindValue( ":state", DB::Item::State::booked );
     query.bindValue( ":id", id );
     query_check_exec( query );
+    res.m_state = DB::Item::State::booked;
     log.stream( info ) << "Booked item '" << id << "'";
     // TODO: LOG A LINE IN THE ITEMEVENTS LOG
 
@@ -172,4 +174,20 @@ QString Item::toRentalHtml() const {
 QString Item::toHtml() const {
     Logger log( "QString Item::toHtml() const" );
     return QString( "<li>%0</li>" ).arg( toRentalHtml() );
+}
+
+void Item::setToOutInDatabase() {
+    Logger log("void Item::setToOutInDatabase()");
+    if ( m_state != DB::Item::State::booked ) {
+        throw Exception( Errors::ItemNotInBookedState )
+                << ( log.stream(error)
+                     << "Item with id: '" << m_id << "' not in '"
+                     << DB::Item::State::booked << "' state, but in state '"
+                     << m_state << "'");;
+    }
+    QSqlQuery query;
+    query_check_prepare( query, "update items set state=:state where id=:id" );
+    query.bindValue( ":id", m_id );
+    query.bindValue( ":state", DB::Item::State::out );
+    query_check_exec( query );
 }
