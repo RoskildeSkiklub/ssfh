@@ -70,6 +70,9 @@ private:
       * The query must be active and the orders of the colums must match the assumptions in the code. */
     Hirer( const QSqlQuery & query );
 
+    /** \brief String representation for log files */
+    QString toString() const;
+
 
 
 };

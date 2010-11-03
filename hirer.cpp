@@ -27,6 +27,7 @@ Hirer::Hirer( qlonglong id ) : m_valid( false ){
     Hirer tmp( query );
     // Probably a violation of some rule or other
     *this = tmp;
+    log.stream() << "Hirer loaded and created from database: " << toString();
 }
 
 Hirer::Hirer( const QString & firstName, const QString & lastName,
@@ -137,6 +138,16 @@ QString Hirer::toHtml() const {
     return res;
 }
 
+
+QString Hirer::toString() const {
+    Logger log("QString Hirer::toString()");
+    return QString( "id: '%0', memberId: '%1', ssn: '%2', firstName: '%3', "
+                    "lastName: '%4'', streetAddress: '%5', zip: '%6', city: '%7', country: '%8', "
+                    "note: '%9'" )
+            .arg( m_id ).arg( m_memberId ).arg( m_ssn ).arg( m_firstName ).arg( m_lastName )
+            .arg( m_streetAddress ).arg( m_zip ).arg( m_city ).arg( m_country )
+            .arg( m_note );
+}
 
 Hirer::Hirer( const QSqlQuery & query ) : m_valid( false ) {
     Logger log( "Hirer::Hirer( const QSqlQuery & query )" );
