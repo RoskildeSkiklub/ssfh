@@ -3,6 +3,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "rentdialog.h"
+#include "returndialog.h"
 #include "addnewitemdialog.h"
 
 // App
@@ -43,7 +44,6 @@ void MainWindow::on_rentButton_clicked() {
     Logger log( "void MainWindow::on_rentButton_clicked()" );
     log.stream() << "Displaying rentDialog";
     RentDialog rentDialog;
-    // TODO: Protect here?
     rentDialog.exec();
 }
 
@@ -51,9 +51,13 @@ void MainWindow::on_inventoryButton_clicked()
 {
     Logger log( "MainWindow::on_inventoryButton_clicked()" );
     log.stream() << "Displaying addItem dialog";
-    PROTECT_BLOCK(
-        AddNewItemDialog addNewItemDialog;
-        // TODO: Protect here?
-        addNewItemDialog.exec();
-        );
+    AddNewItemDialog addNewItemDialog;
+    addNewItemDialog.exec();
+}
+
+void MainWindow::on_returnButton_clicked() {
+    Logger log( "void MainWindow::on_returnButton_clicked()" );
+    log.stream() << "Displaying returnDialog";
+    ReturnDialog returnDialog;
+    returnDialog.exec();
 }

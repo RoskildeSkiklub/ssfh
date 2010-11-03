@@ -97,7 +97,7 @@ private:
 
 signals:
     void hirer_set(); // emitted when a hirer has successfully been set on the contract
-    void duration_changed(); // emitted when a contracts has succesfully has its duration changed.
+    void duration_changed(); // emitted when a contract has succesfully has its duration changed.
     void item_added(); // emitted when an item has succesfully been set on the contract
 };
 

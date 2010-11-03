@@ -20,7 +20,8 @@ SOURCES += main.cpp \
     dksundhedskort.cpp \
     addnewitemdialog.cpp \
     db_consts.cpp \
-    contractitem.cpp
+    contractitem.cpp \
+    returndialog.cpp
 HEADERS += mainwindow.h \
     rentdialog.h \
     stockdialog.h \
@@ -36,10 +37,12 @@ HEADERS += mainwindow.h \
     dksundhedskort.h \
     addnewitemdialog.h \
     db_consts.h \
-    contractitem.h
+    contractitem.h \
+    returndialog.h
 FORMS += mainwindow.ui \
     rentdialog.ui \
     stockdialog.ui \
     hirerdialog.ui \
-    addnewitemdialog.ui
+    addnewitemdialog.ui \
+    returndialog.ui
 TRANSLATIONS = SnowStuffForHire_da_DK.ts

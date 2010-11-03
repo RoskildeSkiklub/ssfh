@@ -20,6 +20,7 @@ private:
     Ui::MainWindow *ui;
 
 private slots:
+    void on_returnButton_clicked();
     void on_inventoryButton_clicked();
     void on_rentButton_clicked();
 };
