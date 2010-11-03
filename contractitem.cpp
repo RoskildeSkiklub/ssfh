@@ -8,6 +8,7 @@
 #include "log.h"
 #include "db_consts.h"
 #include "utility.h"
+#include "exception.h"
 
 using namespace Log;
 ContractItem::ContractItem() : m_id( -1 ) {
@@ -67,3 +68,54 @@ void ContractItem::db_insert() {
     m_id = query.value( 0 ).toLongLong();
     log.stream( info ) << "Created ContractItem with id '" << m_id << "'";
 }
+
+ContractItem ContractItem::db_load(qlonglong id) {
+    Logger log("void ContractItem::db_load(qlonglong id)");
+    QSqlQuery query;
+    query_check_prepare( query,
+                         "select contract_id, item_id, state, rentalgroup, price, note "
+                         "from contractitems "
+                         "where id=:id" );
+    query.bindValue( ":id", id );
+    query_check_exec( query );
+    try {
+        query_check_first( query );
+    }
+    catch (const Exception & e) {
+        if ( e.getStatusCode() == Errors::DBResultError ) {
+            throw Exception( Errors::ContractItemDoesNotExist )
+            << ( log.stream( error )
+                 //! \todo Translate???
+                 << "The contractitem with id '" << id << "' does not exist" );
+        }
+        throw;
+    }
+    // Get the Item
+    Item item( Item::db_load( query.value( 1 ).toString() ) );
+    log.stream() << "Got Item, setting up contractItem";
+    ContractItem res;
+    res.m_id          = id;
+    res.m_contract_id = query.value( 0 ).toLongLong();
+    res.m_item        = item; // Column 1
+    res.m_state       = query.value( 2 ).toString();
+    res.m_rentalgroup = query.value( 3 ).toString();
+    res.m_price       = query.value( 4 ).toLongLong();
+    res.m_note        = query.value( 5 ).toString();
+    log.stream() << "ContractItem loaded from database: " << res.toString();
+    return res;
+
+}
+
+QString ContractItem::toString() const {
+    Logger log("QString ContractItem::toString() const");
+    return QString( "id: '%0', contract_id: '%1', item_id: '%2', state: '%3', "
+                    "rentalgroup: '%4', price: '%5', note: '%6'" )
+            .arg( m_id ).arg( m_contract_id ).arg( m_item.getId() )
+            .arg( m_state ).arg( m_rentalgroup ).arg( m_price ).arg( m_note );
+}
+
+
+
+
+
+

@@ -52,6 +52,12 @@ public:
       * Reads back the new id */
     void db_insert();
 
+    /** \brief Load a ContractItem from the database.
+      * \param id The id of the ContractItem
+      * \returns A new ContractItem, representing the data in the database
+      *
+      * This method loads the ContractItem from the database, and also the associated item! */
+    static ContractItem db_load( qlonglong id );
 
 private:
     /** \brief Database field: Id of the contract item in the database */
@@ -74,6 +80,10 @@ private:
     /** \brief Database field: A note */
     QString m_note;
 
+    /** \brief String representation for log files
+      *
+      * Only the base part, not items */
+    QString toString() const;
 
 };
 
