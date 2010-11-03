@@ -20,7 +20,7 @@
 using namespace Log;
 
 void query_check_prepare( QSqlQuery & query, const QString & queryString ) {
-    Logger log( "void query_check_prepare( const QSqlQuery & query )" );
+    Logger log( "void query_check_prepare( const QSqlQuery & query, const QString & queryString )" );
     if ( ! query.prepare( queryString ) ) {
         throw Exception( Errors::DBError )
             << ( log.stream( error ) << "Error preparing query '"
