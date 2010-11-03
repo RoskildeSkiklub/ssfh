@@ -7,6 +7,7 @@
 #include <QMap>
 #include <QVariant>
 #include <QString>
+#include <QMessageBox>
 
 // Application
 #include "utility.h"
@@ -63,3 +64,44 @@ void query_check_first( QSqlQuery & query ) {
     log.stream() << "Moved to first record of query '" << query.executedQuery() << "'";
 }
 
+void database_transaction(const QString &where) {
+    Logger log("void database_transaction(const QString &where)");
+    if ( !QSqlDatabase::database().transaction() ) {
+        throw Exception( Errors::DBTransactionError )
+                << ( log.stream( error )
+                     << "Error while trying to start transaction: '"
+                     << QSqlDatabase::database().lastError().text()
+                     << "'. Called from '" << where << "'" );
+    }
+}
+
+void database_commit(const QString &where) {
+    Logger log("void database_commit(const QString &where)");
+    if ( !QSqlDatabase::database().commit() ) {
+        throw Exception( Errors::DBCommitError )
+                << ( log.stream( error )
+                     << "Error while trying to start commit: '"
+                     << QSqlDatabase::database().lastError().text()
+                     << "'. Called from '" << where << "'" );
+    }
+}
+
+void database_rollback(const QString &where) {
+    Logger log("void database_rollback(const QString &where)");
+    if ( !QSqlDatabase::database().rollback() ) {
+        throw Exception( Errors::DBRollbackError )
+                << ( log.stream( error )
+                     << "Error while trying to start rollback: '"
+                     << QSqlDatabase::database().lastError().text()
+                     << "'. Called from '" << where << "'" );
+    }
+}
+
+
+void TODO(const QString & where, const QString &msg) {
+    Logger log( "void TODO(const QString &msg)" );
+    log.stream( warn ) << "Msg is '" << msg << "'";
+    QMessageBox::critical( NULL, "TODO MESSAGE",
+                           QString( "<p>Got a TODO message</p><p><b>%0</b></p><p>From</p><p>%1</p>" )
+                           .arg( msg ).arg( where ) );
+}
