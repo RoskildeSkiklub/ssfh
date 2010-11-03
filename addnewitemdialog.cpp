@@ -113,7 +113,8 @@ void AddNewItemDialog::doAddItem(QString id) {
     Logger log( "void AddNewItemDialog::doAddItem(QString id)" );
     PROTECT_BLOCK(
     log.stream() << "Item id is " << id;
-    log.stream() << "Item id in %" << id.toLocal8Bit().toPercentEncoding();
+    log.stream() << "Item id in % encoding: '"
+            << id.toLocal8Bit().toPercentEncoding() << "'";
     bool ok;
     long price = ui->input_price_lineEdit->text().toLong(&ok);
     if ( ! ok ) {
