@@ -65,7 +65,7 @@ namespace Log {
             m_textStream.setString( &m_buf );
         }
         LoggerStream( const LoggerStream & src )
-            : m_level( src.m_level ), m_buf( src.m_buf ), m_textStream( &m_buf ) {};
+            : m_level( src.m_level ), m_buf( src.m_buf ), m_textStream( &m_buf ) {}
 
         template<class T> LoggerStream & operator <<( T val ) {
             // Log::getTextStream() << val;

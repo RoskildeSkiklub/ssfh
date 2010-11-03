@@ -1,9 +1,12 @@
 #include "log.h"
 
+// Qt
 #include <QDateTime>
 
 // app
 #include "exception.h"
+
+using namespace std;
 
 // Simple NON-THREADED logger class
 
@@ -25,9 +28,10 @@ namespace Log {
     }
 
     void Log::begin( Level level ) {
-        getTextStream() << QDateTime::currentDateTime().toString( Qt::ISODate )
-                    << " : " << levelToString( level )
-                    << " : " << QString( indent, ' ' ) << QString( indent, ' ' );
+        QDateTime now( QDateTime::currentDateTime() );
+        getTextStream() << now.toString( Qt::ISODate ) << now.time().toString( ".zzz" )
+                << " : " << levelToString( level )
+                << " : " << QString( indent, ' ' ) << QString( indent, ' ' );
     }
 
     void Log::init( const QString & filename ) {
