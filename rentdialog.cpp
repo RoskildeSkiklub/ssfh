@@ -77,12 +77,6 @@ RentDialog::RentDialog(QWidget *parent) :
     m_state_machine.addState( has_hirer );
     m_state_machine.addState( has_item );
 
-    // Debug state changes - FIXME: Remove
-    /*blank->assignProperty( ui->label_7, "text", "blank");
-    no_hirer->assignProperty( ui->label_7, "text", "no_hirer");
-    hirer_selected->assignProperty( ui->label_7, "text", "hirer_selected");
-    hirer_changed->assignProperty( ui->label_7, "text", "hirer_changed"); */
-
     // BLANK
     blank->assignProperty( ui->input_addItem_pushButton, "enabled", false );
     blank->assignProperty( ui->input_duration_pushButton, "enabled", false );
@@ -120,6 +114,7 @@ RentDialog::RentDialog(QWidget *parent) :
     // Set initial state and start
     m_state_machine.setInitialState( blank );
     m_state_machine.start();
+    QCoreApplication::processEvents();
 
     // Make sure the UI is set correctly to start with
     update();
@@ -138,16 +133,13 @@ void RentDialog::update() {
 bool RentDialog::is_in_state( const QString & state ) {
     Logger log( "bool RentDialog::is_in_state( const QString & state )" );
     log.stream() << "Checking state '" << state << "'";
-    QSet<QAbstractState *> states = m_state_machine.configuration();
-    QAbstractState * statep;
-    foreach( statep, states ) {
-        if ( statep->objectName() == state ) {
-            log.stream() << "Found it, returning true";
-            return true;
-        }
+    if ( get_current_states( m_state_machine ).contains( state ) ) {
+        log.stream() << "Found state, returning true";
+        return true;
+    } else {
+        log.stream() << "Could not find state, returning false";
+        return false;
     }
-    log.stream() << "Could not find it, returning false";
-    return false;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
