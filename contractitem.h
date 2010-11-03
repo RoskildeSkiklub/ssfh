@@ -41,6 +41,18 @@ public:
       * \return The price of this item on this crontact */
     qlonglong getPrice() { return m_price; }
 
+    /** \brief Update the state
+      * \param state The new state
+      *
+      * Changes the internal representation of state */
+    void setState( const QString & state );
+
+    /** \brief Insert the contract item, as-is, into the database.
+      *
+      * Reads back the new id */
+    void db_insert();
+
+
 private:
     /** \brief Database field: Id of the contract item in the database */
     qlonglong m_id;

@@ -153,7 +153,10 @@ public:
       *
       * This state change should be performed, when the user have payed the
       * contract. The state must be booking, and if there are outstanding payments,
-      * an exception is thrown. */
+      * an exception is thrown.
+      *
+      * The contract, and all contract items are written to the database.
+      * The status of all items are also written, updated to be "out"*/
     void activate();
 
     /** \brief Close the contract
@@ -223,6 +226,13 @@ private:
       * and then inserts a copy of the object into the database. It then reads back
       * the id from the database, and updates the id. */
     void db_insert();
+
+    /** \brief Updates the contract in the database
+      *
+      * Updates all columns in the database, except id and creation time,
+      * with current values in memory
+      * Throws in case of errors */
+    void db_update();
 
     // Return a html representation of the items
     QString items_to_html() const;

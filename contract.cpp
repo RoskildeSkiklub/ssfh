@@ -110,8 +110,8 @@ qlonglong Contract::calculateItemPrice(const Item &item) {
 
 qlonglong Contract::getItemsPrice() const {
     Logger log("qlonglong Contract::getItemsPrice() const");
-    ContractItem cii;
     qlonglong sum = 0;
+    ContractItem cii;
     foreach (cii, m_contractItems) {
         sum += cii.getPrice();
     }
@@ -138,8 +138,39 @@ qlonglong Contract::getPayableAmount() const {
     return getItemsPrice() - getDiscount() - getPayed();
 }
 
+qlonglong Contract::getTotalPrice() const {
+    Logger log("qlonglong Contract::getTotalPrice() const");
+    return getItemsPrice() - getDiscount();
+}
 
-//TODO Translate...
+void Contract::activate() {
+    Logger log("void Contract::activate()");
+    checkInBookingState( "activate" );
+
+    // TODO: Check payment.
+
+    // We use a transaction for this.... right?
+    database_transaction( "void Contract::activate()" );
+    try {
+        // First contract items and items
+        ContractItem cii;
+        foreach (cii, m_contractItems) {
+            cii.getItem().setToOutInDatabase();
+            cii.setState( DB::ContractItem::State::out );
+            cii.db_insert();
+        }
+        // Then the contract - it just needs updating.
+        m_state = DB::Contract::State::active;
+        db_update();
+        database_commit("void Contract::activate()");
+    }
+    catch( ... ) {
+        database_rollback( "void Contract::activate()" );
+        throw;
+    }
+
+}
+
 QString Contract::toHtml() const {
     QString HEAD = "<head><style type=\"text/css\">"
                    ".total {font-weight:bold;font-size:x-large;}"
@@ -220,6 +251,32 @@ void Contract::db_insert() {
     query_check_first( query );
     m_id = query.value( 0 ).toLongLong();
     log.stream( info ) << "Created contract with id '" << m_id << "'";
+}
+
+void Contract::db_update() {
+    Logger log("void Contract::db_update()");
+    // Update price prior to database update.
+    // This are always calculated when creating, but not when returning
+    m_price = getTotalPrice();
+    QSqlQuery query;
+    query_check_prepare( query,
+                         "update contracts "
+                         "set hirer=:hirer, startTime=:startTime, "
+                         "endTime=:endTime, discount=:discount, "
+                         "price=:price, payed=:payed, "
+                         "state=:state, note=:note "
+                         "where id=:id" );
+    query.bindValue( ":hirer", m_hirer.m_id );
+    query.bindValue( ":startTime", m_startTime );
+    query.bindValue( ":endTime", m_endTime );
+    query.bindValue( ":discount", m_discount );
+    query.bindValue( ":price", m_price );
+    query.bindValue( ":payed", m_payed );
+    query.bindValue( ":state", m_state );
+    query.bindValue( ":note", m_note );
+    query.bindValue( ":id", m_id );
+    query_check_exec( query );
+    log.stream( info ) << "Updated contract with id '" << m_id << "'";
 }
 
 QString Contract::items_to_html() const {

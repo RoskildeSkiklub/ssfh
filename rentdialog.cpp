@@ -1,6 +1,10 @@
 #include "rentdialog.h"
 #include "ui_rentdialog.h"
 
+// C++
+#include <typeinfo>
+
+// Qt
 #include <QDebug>
 #include <QMessageBox>
 #include <QSqlDatabase>
@@ -13,6 +17,7 @@
 #include "exception.h"
 #include "hirerdialog.h"
 #include "dksundhedskort.h"
+#include "utility.h"
 
 using namespace Log;
 
@@ -257,4 +262,13 @@ void RentDialog::on_input_item_lineEdit_textChanged(QString newText) {
     ui->input_addItem_pushButton->setEnabled( ( ! newText.isEmpty() )
                                               && ( is_in_state( "has_hirer")
                                                    || is_in_state( "has_item" ) ) );
+}
+
+void RentDialog::on_input_finish_pushButton_clicked() {
+    Logger log("void RentDialog::on_input_finish_pushButton_clicked()");
+    m_contract.activate();
+    QMessageBox::information( this, tr( "Contract created" ),
+                              tr( "Contract created, printing receipt." ) );
+    TODO( typeid( this ).name(), "Hide/reset contract dialog or something" );
+
 }
