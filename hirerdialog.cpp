@@ -186,6 +186,7 @@ HirerDialog::HirerDialog(QWidget *parent) :
     // Set initial state and start
     state_machine.setInitialState( blank );
     state_machine.start();
+    QCoreApplication::processEvents();
 
     // Connect the use button - which is only available when a hirer is selected - to the accept slot
     connect( ui->pushButton_use, SIGNAL( clicked()), this, SLOT( accept()) );
