@@ -54,8 +54,8 @@ RentDialog::RentDialog(QWidget *parent) :
 {
     Logger log( "RentDialog::RentDialog(QWidget *parent)");
     ui->setupUi(this);
-    log.stream() << "Starting transaction";
     // TODO: Control on this... Can't remember what I wanted to do with this, really.....
+    // log.stream() << "Starting transaction";
 /*    if ( ! QSqlDatabase::database().transaction() ) {
         log.stream( error ) << "Unable to start transaction";
     } */
@@ -269,6 +269,6 @@ void RentDialog::on_input_finish_pushButton_clicked() {
     m_contract.activate();
     QMessageBox::information( this, tr( "Contract created" ),
                               tr( "Contract created, printing receipt." ) );
-    TODO( typeid( this ).name(), "Hide/reset contract dialog or something" );
+    TODO( "Hide/reset contract dialog or something" );
 
 }
