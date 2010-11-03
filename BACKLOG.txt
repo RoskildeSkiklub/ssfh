@@ -52,8 +52,8 @@ TASK: Return stuff.
 70) Report functionality.
 
 Open issues:
-- Version information / config information in database.
-- Font sizes
+- Version information / config information in database. ( Created, but needs interface)
+- Font sizes (Handle through system settings)
 - Translation
 - Log all item transactions
 - Help
@@ -63,5 +63,6 @@ Open issues:
 - Indent properly
 - "Blank" in hirer dialog.
 - "Tilføj" does not work in hirer dialog...
+- Only run one instance at a time
 
 
