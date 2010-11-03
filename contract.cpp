@@ -19,6 +19,7 @@ using namespace Log;
 Contract::Contract()
     : m_id( -1 ),
     // TODO: Config + global config
+    m_creationTime( QDateTime::currentDateTime() ),
     m_startTime( QDateTime::currentDateTime().addSecs( 600 ) ),
     m_endTime( m_startTime.addSecs( 3 * 3600 ) ),
     m_discount( 0 ),
@@ -123,6 +124,16 @@ qlonglong Contract::getItemsPrice() const {
 ////////////////////////////////////////////////////////////////////////////////
 // CONTRACT
 
+qlonglong Contract::getId() const {
+    Logger log("qlonglong Contract::getId() const");
+    return m_id;
+}
+
+QString Contract::getState() const {
+    Logger log("QString Contract::getState() const");
+    return m_state;
+}
+
 qlonglong Contract::getDiscount() const {
     Logger log("qlonglong Contract::getDiscount() const");
     return m_discount;
@@ -169,6 +180,73 @@ void Contract::activate() {
         throw;
     }
 
+}
+
+Contract Contract::db_load(qlonglong id) {
+    Logger log("Contract Contract::db_load(qlonglong id)");
+    log.stream() << "Loading contract with id '" << id << "'";
+    //! \todo The error handling in this method should be much better.
+    QSqlQuery query;
+    log.stream() << "Loading contract data";
+    query_check_prepare( query,
+                         "select hirer, creationTime, startTime, endTime, "
+                         "discount, price, payed, state, note "
+                         "from contracts "
+                         "where id=:id" );
+    query.bindValue( ":id", id );
+    query_check_exec( query );
+    try {
+        query_check_first( query );
+    }
+    catch (const Exception & e) {
+        if ( e.getStatusCode() == Errors::DBResultError ) {
+            throw Exception( Errors::ContractDoesNotExist )
+            << ( log.stream( error )
+                 //! \todo Translate???
+                 << "The contract with id '" << id << "' does not exist" );
+        }
+        throw;
+    }
+    // Load values
+    // First, Load the hirer
+    log.stream() << "Loading hirer";
+    Hirer hirer( query.value( 0 ).toLongLong( ) );
+    log.stream() << "Creating contract";
+    // Create and populate the contract
+    Contract contract;
+    contract.m_id = id;
+    contract.m_hirer = hirer;
+    contract.m_creationTime = query.value( 1 ).toDateTime();
+    contract.m_startTime    = query.value( 2 ).toDateTime();
+    contract.m_endTime      = query.value( 3 ).toDateTime();
+    contract.m_discount     = query.value( 4 ).toLongLong();
+    contract.m_price        = query.value( 5 ).toLongLong();
+    contract.m_payed        = query.value( 6 ).toLongLong();
+    contract.m_state        = query.value( 7 ).toString();
+    contract.m_note         = query.value( 8 ).toString();
+    // Now, get the contractItems
+    log.stream() << "Loading ContractItems";
+    query_check_prepare( query,
+                         "select id from contractitems where contract_id=:contract_id");
+    query.bindValue( ":contract_id", id );
+    query_check_exec( query );
+    while( query.next() ) {
+        contract.m_contractItems.append( ContractItem::db_load( query.value( 0 ).toLongLong() ) );
+    }
+    // Done!
+    log.stream() << "Contract loaded from database: " << contract.toString();
+    return contract;
+}
+
+QString Contract::toString() const {
+    Logger log("QString Contract::toString()");
+    return QString( "id: '%0', hirer_id: '%1', creationTime: '%2', startTime: '%3', "
+                    "endTime: '%4'', discount: '%5', price: '%6', payed: '%7', state: '%8', "
+                    "note: '%9'" )
+            .arg( m_id ).arg( m_hirer.m_id ).arg( m_creationTime.toString( Qt::ISODate) )
+            .arg( m_startTime.toString( Qt::ISODate ) )
+            .arg( m_endTime.toString( Qt::ISODate ) ).arg( m_discount ).arg( m_price ).arg( m_payed )
+            .arg( m_state ).arg( m_note );
 }
 
 QString Contract::toHtml() const {
@@ -242,7 +320,7 @@ void Contract::db_insert() {
                          "insert into contracts ( hirer, creationTime, state ) "
                          "values( :hirer, :creationTime, :state )" );
     query.bindValue( ":hirer", m_hirer.m_id );
-    query.bindValue( ":creationTime", QDateTime::currentDateTime() );
+    query.bindValue( ":creationTime", m_creationTime );
     query.bindValue( ":state", m_state );
     query_check_exec( query );
     // Read back the last value

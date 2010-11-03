@@ -102,6 +102,14 @@ public:
       * of the item is changed to the new rentalgroup. All prices are recalculated */
     void changeItemRentalGroup( const QString & item_id, const QString & rentalGroup );
 
+    /** \brief Get the id of the contract
+      * \return The id of the contract */
+    qlonglong getId() const;
+
+    /** \brief Get the state of the contract
+      * \return The state of the contract */
+    QString getState() const;
+
     /** \brief Set the discount
       * \param discount
       *
@@ -172,6 +180,12 @@ public:
       * Only works on contracts in 'booking' state... */
     void cancel();
 
+    /** \brief Load a contract, inclusive contractItems from the database
+      * \param id The id of the contract
+      *
+      * This method loads the contract and all contractitems from the database. */
+    static Contract db_load( qlonglong id );
+
     /** \brief Return a HTML representation of the contract
       * \return HTML representation of the contract.
       *
@@ -181,6 +195,9 @@ public:
 private:
     /** \brief Database field: The id of the contract. Initially -1 */
     qlonglong m_id;
+
+    /** \brief Database field: The creation time of the contract */
+    QDateTime m_creationTime;
 
     /** \brief Database field: The start time of the rental period */
     QDateTime m_startTime;
@@ -202,7 +219,7 @@ private:
       * One of 'booking', 'parked', 'active', 'closed' */
     QString m_state;
 
-    /** \brief Any notes on the contract */
+    /** \brief Database field: Any notes on the contract */
     QString m_note;
 
     /** \brief The hirer for the contract, set by setHirer */
@@ -236,6 +253,11 @@ private:
 
     // Return a html representation of the items
     QString items_to_html() const;
+
+    /** \brief String representation for log files
+      *
+      * Only the base part, not hirer and contract item */
+    QString toString() const;
 
 };
 
