@@ -232,7 +232,12 @@ void Contract::activate() {
         }
         // Then the contract - it just needs updating.
         m_state = DB::Contract::State::active;
-        db_update();
+        try {
+            db_update();
+        } catch ( ... ) {
+            m_state = DB::Contract::State::booking;
+            throw;
+        }
         database_commit("void Contract::activate()");
     }
     catch( ... ) {
@@ -241,6 +246,24 @@ void Contract::activate() {
     }
 
 }
+
+void Contract::close() {
+    Logger log("void Contract::close()");
+    checkInActiveState("Contract::close()");
+    if ( hasReturnableItems() ) {
+        throw Exception( Errors::ContractStillHasReturnableItems )
+                << ( log.stream( error )
+                     << "Unable to close contract, because there are still returnable items." );
+    }
+    m_state = DB::Contract::State::closed;
+    try {
+        db_update();
+    } catch ( ... ) {
+        m_state = DB::Contract::State::active;
+        throw;
+    }
+}
+
 
 Contract Contract::db_load(qlonglong id) {
     Logger log("Contract Contract::db_load(qlonglong id)");

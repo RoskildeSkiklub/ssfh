@@ -19,10 +19,16 @@ protected:
 private:
     Ui::MainWindow *ui;
 
+    void showRentDialog() const;
+    void showReturnDialog() const;
+    void showAddItemsDialog() const;
+
 private slots:
-    void on_returnButton_clicked();
-    void on_inventoryButton_clicked();
-    void on_rentButton_clicked();
+    void on_action_AddItems_triggered();
+    void on_action_ReturnItems_triggered();
+    void on_action_RentItems_triggered();
+    void on_input_return_pushButton_clicked();
+    void on_input_rent_pushButton_clicked();
 };
 
 #endif // MAINWINDOW_H

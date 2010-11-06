@@ -44,12 +44,6 @@ private:
     /** \brief Our state machine. This is mostly used to control the availability of buttons, etc. */
     QStateMachine m_state_machine;
 
-    /** \brief Return an item on the contract
-      * \param item_id The id of the item to return
-      *
-      * This method calls try_return_item and handles the returned value */
-    void return_item( const QString & item_id );
-
     /** \brief Update the display */
     void update();
 
@@ -60,6 +54,12 @@ private:
       * \note This requires that all states are named */
     bool is_in_state( const QString & state );
 
+public slots:
+    /** \brief Return an item on the contract
+      * \param item_id The id of the item to return
+      *
+      * This method calls try_return_item and handles the returned value */
+    void return_item( const QString & item_id );
 
 signals:
     void contract_found(); // Emitted when a contract is set on the dialog
@@ -67,7 +67,7 @@ signals:
     void contract_closed(); // Emitted when a contract has been fully closed
 
 private slots:
-    void on_pushButton_clicked();
+    void on_input_returnItem_pushButton_clicked();
 };
 
 #endif // RETURNDIALOG_H

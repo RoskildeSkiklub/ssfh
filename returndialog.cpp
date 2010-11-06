@@ -42,8 +42,8 @@ ReturnDialog::ReturnDialog(QWidget *parent) :
     ui->setupUi(this);
 
     // Get the signals from the scan input events.
-    connect( Globals::interceptor, SIGNAL(barcodeScan(QString)), this, SLOT(add_item(QString)));
-    connect( Globals::interceptor, SIGNAL( magSwipe(DKSundhedskort)), this, SLOT( set_hirer(DKSundhedskort) ) );
+    connect( Globals::interceptor, SIGNAL(barcodeScan(QString)), this, SLOT(return_item(QString)));
+    // connect( Globals::interceptor, SIGNAL( magSwipe(DKSundhedskort)), this, SLOT( set_hirer(DKSundhedskort) ) );
 
     // Initialize the state machine
     QState * blank          = new QState();
@@ -66,6 +66,7 @@ ReturnDialog::ReturnDialog(QWidget *parent) :
     QCoreApplication::processEvents();
 
     // Make sure the UI is set correctly to start with
+    showMaximized();
     update();
 
 }
@@ -163,7 +164,9 @@ void ReturnDialog::return_item(const QString &item_id) {
     m_contract.returnItem( item_id );
     update();
     if ( ! m_contract.hasReturnableItems() ) {
-        TODO( "All items returned, print receipt, close window" );
+        m_contract.close();
+        QMessageBox::information( this, tr("Contract closed"),
+                                  tr( "All items returned. Printing receipt, and closing contract.") );
         close();
     }
 }
@@ -177,7 +180,8 @@ ReturnDialog::~ReturnDialog()
     delete ui;
 }
 
-void ReturnDialog::on_pushButton_clicked() {
-    Logger log("void ReturnDialog::on_pushButton_clicked()");
+
+void ReturnDialog::on_input_returnItem_pushButton_clicked() {
+    Logger log("void ReturnDialog::on_input_returnItem_pushButton_clicked()");
     return_item( ui->input_item_lineEdit->text() );
 }

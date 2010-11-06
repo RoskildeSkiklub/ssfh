@@ -32,6 +32,7 @@ namespace Errors {
         ContractDoesNotExist = 3000,
         ContractNotInBookingState = 3001,
         ContractNotInActiveState = 3002,
+        ContractStillHasReturnableItems = 3003,
 
         ContractItemDoesNotExist = 4001,
 

@@ -160,7 +160,7 @@ int main(int argc, char **argv) {
         log.stream() << "Creating mainwindow";
         MainWindow w;
         log.stream() << "Showing mainwindow";
-        w.show();
+        w.showMaximized();
         log.stream() << "Executing application";
         res = app.exec();
         log.stream() << "Application done, shutting down";

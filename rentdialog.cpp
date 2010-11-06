@@ -117,6 +117,7 @@ RentDialog::RentDialog(QWidget *parent) :
     QCoreApplication::processEvents();
 
     // Make sure the UI is set correctly to start with
+    showMaximized();
     update();
 }
 

@@ -40,24 +40,50 @@ void MainWindow::changeEvent(QEvent *e)
     }
 }
 
-void MainWindow::on_rentButton_clicked() {
-    Logger log( "void MainWindow::on_rentButton_clicked()" );
+void MainWindow::showRentDialog() const {
+    Logger log( "void MainWindow::showRentalDialog() const" );
     log.stream() << "Displaying rentDialog";
     RentDialog rentDialog;
     rentDialog.exec();
 }
 
-void MainWindow::on_inventoryButton_clicked()
-{
-    Logger log( "MainWindow::on_inventoryButton_clicked()" );
+void MainWindow::showReturnDialog() const {
+    Logger log( "void MainWindow::showReturnDialog() const" );
+    log.stream() << "Displaying returnDialog";
+    ReturnDialog returnDialog;
+    returnDialog.exec();
+}
+
+void MainWindow::showAddItemsDialog() const {
+    Logger log("void MainWindow::showAddItemsDialog() const");
     log.stream() << "Displaying addItem dialog";
     AddNewItemDialog addNewItemDialog;
     addNewItemDialog.exec();
 }
 
-void MainWindow::on_returnButton_clicked() {
-    Logger log( "void MainWindow::on_returnButton_clicked()" );
-    log.stream() << "Displaying returnDialog";
-    ReturnDialog returnDialog;
-    returnDialog.exec();
+/////
+
+void MainWindow::on_action_RentItems_triggered() {
+    Logger log("void MainWindow::on_action_RentItems_triggered()");
+    showRentDialog();
+}
+
+void MainWindow::on_action_ReturnItems_triggered() {
+    Logger log("void MainWindow::on_action_ReturnItems_triggered()");
+    showReturnDialog();
+}
+
+void MainWindow::on_action_AddItems_triggered() {
+    Logger log("void MainWindow::on_action_AddItems_triggered()");
+    showAddItemsDialog();
+}
+
+void MainWindow::on_input_rent_pushButton_clicked() {
+    Logger log("void MainWindow::on_input_rent_pushButton_clicked()");
+    showRentDialog();
+}
+
+void MainWindow::on_input_return_pushButton_clicked() {
+    Logger log("void MainWindow::on_input_return_pushButton_clicked()");
+    showReturnDialog();
 }
