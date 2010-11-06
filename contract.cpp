@@ -66,8 +66,6 @@ void Contract::setDuration(const QDateTime &start, const QDateTime &end) {
 ////////////////////////////////////////////////////////////////////////////////
 // ITEM
 
-
-
 void Contract::addItem( const QString &item_id ) {
     Logger log( "void Contract::add_item( const QString &item_id )" );
     log.stream() << "Trying to add item '" << item_id << "'' to contract";
@@ -101,6 +99,44 @@ void Contract::addItem( const QString &item_id ) {
 
     log.stream() << "Added item: " << item.toHtml();
     // TODO: Signal contract changed...
+}
+
+void Contract::returnItem(const QString &item_id) {
+    Logger log("void Contract::returnItem(const QString &item_id)");
+    checkInActiveState( "returnItem" );
+    log.stream() << "Trying to return item with id '"
+            << item_id << "', on contract with id '"
+            << m_id << "'";
+    // Check the item belongs to this contract
+    ContractItem cii;
+    bool foundit = false;
+    foreach (cii, m_contractItems) {
+        if ( cii.getItem().getId() == item_id ) {
+            foundit = true;
+            break;
+        }
+    }
+    if ( ! foundit ) {
+        throw Exception( Errors::ItemNotPartOfContract )
+                << ( log.stream( error ) << "Item " << item_id
+                     << " is not registered on the contract." );
+
+    }
+    // Contract active, item part of it. Return it, or ignore if not out
+    if ( cii.getState() != DB::ContractItem::State::out ) {
+        log.stream( warn ) << "Expected state of ContractItem to be '"
+                << DB::ContractItem::State::out << "', but it was '"
+                << cii.getState() << "'";
+    }
+
+    if ( cii.getItem().getState() != DB::Item::State::out ) {
+        log.stream( warn ) << "Expected state of Item to be '"
+                << DB::Item::State::out << "', but it was '"
+                << cii.getItem().getState() << "'";
+
+    }
+    TODO( "Actually return the item" );
+
 }
 
 qlonglong Contract::calculateItemPrice(const Item &item) {
@@ -302,6 +338,16 @@ void Contract::checkInBookingState( const QString & method ) {
                 << ( log.stream( error )
                      << QString( "Contract::%0 was called, but contract was not in expected state '%1', but in state '%2'" )
                      .arg( method ).arg( DB::Contract::State::booking ).arg( m_state ) );
+    }
+}
+
+void Contract::checkInActiveState( const QString & method ) {
+    Logger log( "void Contract::checkInActiveState()" );
+    if ( m_state != DB::Contract::State::active ) {
+        throw Exception( Errors::ContractNotInActiveState )
+                << ( log.stream( error )
+                     << QString( "Contract::%0 was called, but contract was not in expected state '%1', but in state '%2'" )
+                     .arg( method ).arg( DB::Contract::State::active ).arg( m_state ) );
     }
 }
 

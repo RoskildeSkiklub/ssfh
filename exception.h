@@ -14,6 +14,7 @@ namespace Errors {
         UnableToOpenFile = 1,
         InternalError = 100,
         NotImplemented = 101,
+
         DBError = 1000,
         DBTransactionError = 1001,
         DBCommitError = 1002,
@@ -21,13 +22,19 @@ namespace Errors {
         DBResultError = 1004,
         DBConsistencyError = 1005,
         DBQueryInActive = 1500,
-        ItemAlreadyPartOfContract = 2000,
-        ItemDoesNotExist = 2001,
-        ItemUnavailable = 2002,
-        ItemNotInBookedState = 2003,
-        ContractNotInBookingState = 3000,
-        ContractDoesNotExist = 3001,
+
+        ItemDoesNotExist = 2000,
+        ItemUnavailable = 2001,
+        ItemNotInBookedState = 2002,
+        ItemNotPartOfContract = 2003,
+        ItemAlreadyPartOfContract = 2004,
+
+        ContractDoesNotExist = 3000,
+        ContractNotInBookingState = 3001,
+        ContractNotInActiveState = 3002,
+
         ContractItemDoesNotExist = 4001,
+
         MagswipeNoMatch = 10000,
     };
 };

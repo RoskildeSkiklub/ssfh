@@ -87,6 +87,15 @@ public:
       * TODO: This may, or may not, be needed. */
     void addItem( const QString & item_id );
 
+    /** \brief Return an item
+      * \param item_id The id of the item to be returned
+      *
+      * This methods return an item.
+      * It is an error, if the state of the contract is not active
+      * It is checked that the item is actually part of this contract.
+      * If the item is not actually out, it is silently ignored, but a warning is logged */
+    void returnItem( const QString & item_id );
+
     /** \brief Remove an item from the contract
       * \param item_id Id of the item to remove
       *
@@ -231,6 +240,10 @@ private:
     /** \brief Checks the contract is in booking state, throws otherwise
       * \param method The name of the method calling this method, used for error reporting */
     void checkInBookingState( const QString & method );
+
+    /** \brief Checks the contract is in active state, throws otherwise
+      * \param method The name of the method calling this method, used for error reporting */
+    void checkInActiveState( const QString & method );
 
     /** \brief Calculates the price of a single item on this contract
       * \param item The item to calculate for

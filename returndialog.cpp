@@ -157,10 +157,11 @@ void ReturnDialog::return_item(const QString &item_id) {
         update();
     } else {
         log.stream() << "Already have contract with id '" << m_contract.getId();
-        TODO( "Handle already having a contract" );
+        // Do nothing, really. A contract is present.
     }
-    // If we do not have a contract - open the relevant contract, check status
     // Update the item, and the contractitem
+    m_contract.returnItem( item_id );
+    update();
 }
 
 

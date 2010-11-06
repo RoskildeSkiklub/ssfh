@@ -41,6 +41,12 @@ public:
       * \return The price of this item on this crontact */
     qlonglong getPrice() { return m_price; }
 
+    /** \brief Get the state
+      * \return The state of the contractitem
+      *
+      * The states can be one of 'booked', 'out' or 'returned' */
+    QString getState() const { return m_state; }
+
     /** \brief Update the state
       * \param state The new state
       *
