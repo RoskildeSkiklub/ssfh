@@ -69,6 +69,18 @@ void ContractItem::db_insert() {
     log.stream( info ) << "Created ContractItem with id '" << m_id << "'";
 }
 
+void ContractItem::db_update_state( const QString & new_state ) {
+    Logger log("void ContractItem::db_update_state( const QString & new_state )");
+    QSqlQuery query;
+    query_check_prepare( query, "update contractitems "
+                         "set state = :state "
+                         "where id = :id" );
+    query.bindValue( ":state", new_state );
+    query.bindValue( ":id", m_id );
+    query_check_exec( query );
+    setState( new_state );
+}
+
 ContractItem ContractItem::db_load(qlonglong id) {
     Logger log("void ContractItem::db_load(qlonglong id)");
     QSqlQuery query;

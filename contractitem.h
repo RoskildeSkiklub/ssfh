@@ -39,7 +39,7 @@ public:
 
     /** \brief Get the price of this item on this contract
       * \return The price of this item on this crontact */
-    qlonglong getPrice() { return m_price; }
+    qlonglong getPrice() const { return m_price; }
 
     /** \brief Get the state
       * \return The state of the contractitem
@@ -64,6 +64,12 @@ public:
       *
       * This method loads the ContractItem from the database, and also the associated item! */
     static ContractItem db_load( qlonglong id );
+
+    /** \brief Updates the contract item in the database
+      * \param new_state The new state of the contract item
+      *
+      * This method writes the new state to the database, and updates the in-memory representation. */
+    void db_update_state( const QString & new_state );
 
 private:
     /** \brief Database field: Id of the contract item in the database */
