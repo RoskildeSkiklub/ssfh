@@ -127,7 +127,7 @@ RentDialog::~RentDialog()
 
 void RentDialog::update() {
     Logger log( "void RentDialog::update()" );
-    ui->output_contract_textBrowser->setText( m_contract.toHtml() );
+    ui->output_contract_textBrowser->setText( m_contract.toRentalHtml() );
 }
 
 bool RentDialog::is_in_state( const QString & state ) {
@@ -261,6 +261,6 @@ void RentDialog::on_input_finish_pushButton_clicked() {
     m_contract.activate();
     QMessageBox::information( this, tr( "Contract created" ),
                               tr( "Contract created, printing receipt." ) );
-    TODO( "Hide/reset contract dialog or something" );
+    close();
 
 }

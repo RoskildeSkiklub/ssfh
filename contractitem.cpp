@@ -47,6 +47,15 @@ QString ContractItem::toRentalHtml() const {
             .arg( m_price );
 }
 
+QString ContractItem::toReturnHtml() const {
+    Logger log("QString ContractItem::toReturnHtml() const");
+    // Note, does also use toRentalHtml...
+    return QString( "<tr><td>%0</td><td><em>%1</em></td><td align=\"right\">%2</td></tr>\n" )
+            .arg( m_item.toRentalHtml() )
+            .arg( tr( m_state.toLocal8Bit().constData() ) )
+            .arg( m_price );
+}
+
 void ContractItem::db_insert() {
     Logger log("void ContractItem::db_insert()");
     QSqlQuery query;

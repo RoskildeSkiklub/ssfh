@@ -111,6 +111,12 @@ public:
       * of the item is changed to the new rentalgroup. All prices are recalculated */
     void changeItemRentalGroup( const QString & item_id, const QString & rentalGroup );
 
+    /** \brief Returns true if there are still items in the out state, false otherwise
+      * \return True if there are items in the outstanding state, false otherwise
+      *
+      * TODO: Handle items that are lost, stuff like that */
+    bool hasReturnableItems() const;
+
     /** \brief Get the id of the contract
       * \return The id of the contract */
     qlonglong getId() const;
@@ -195,11 +201,15 @@ public:
       * This method loads the contract and all contractitems from the database. */
     static Contract db_load( qlonglong id );
 
-    /** \brief Return a HTML representation of the contract
+    /** \brief Return a HTML representation of the contract for the rental window
       * \return HTML representation of the contract.
       *
       * The HTML includes hints on what to do, which I should probably drop again */
-    QString toHtml() const;
+    QString toRentalHtml() const;
+
+    /** \brief Return a HTML representation of the contract for the rental window
+      * \return HTML representation of the contract. */
+    QString toReturnHtml() const;
 
 private:
     /** \brief Database field: The id of the contract. Initially -1 */
@@ -264,8 +274,8 @@ private:
       * Throws in case of errors */
     void db_update();
 
-    // Return a html representation of the items
-    QString items_to_html() const;
+    // Returns a common representation
+    QString toCommonHtml( bool isRental ) const;
 
     /** \brief String representation for log files
       *

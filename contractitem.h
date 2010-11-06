@@ -7,8 +7,9 @@
 // App
 #include "item.h"
 
-class ContractItem
-{
+class ContractItem {
+     Q_DECLARE_TR_FUNCTIONS(Item);
+
 public:
 
     /** \brief Default constructor.
@@ -33,6 +34,10 @@ public:
       * \returns HTML suitable for show in the rental dialog */
     QString toRentalHtml() const;
 
+    /** \brief Return some HTML suitable to show in the return dialog
+      * \returns HTML suitable for show in the return dialog */
+    QString toReturnHtml() const;
+
     /** \brief Get the id of the contract item
       * \return The id of the contract item */
     qlonglong getId() const { return m_id; }
@@ -41,6 +46,10 @@ public:
     /** \brief Get a reference to the item
       * \return A reference to the item */
     Item & getItem() { return m_item; }
+
+    /** \brief Get a reference to the item
+      * \return A reference to the item */
+    const Item & getItem() const { return m_item; }
 
     /** \brief Get the price of this item on this contract
       * \return The price of this item on this crontact */

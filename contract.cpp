@@ -149,6 +149,20 @@ void Contract::returnItem(const QString &item_id) {
 
 }
 
+bool Contract::hasReturnableItems() const {
+    Logger log("bool Contract::hasReturnableItems() const");
+    QList<ContractItem>::const_iterator cii;
+    for ( cii = m_contractItems.begin(); cii != m_contractItems.end(); ++cii ) {
+        if ( cii->getItem().getState() == DB::Item::State::out ) {
+            log.stream() << "Item with id '" << cii->getItem().getId()
+                    << "' is returnable. Returning true.";
+            return true;
+        }
+    }
+    log.stream() << "No items found, returning false.";
+    return false;
+}
+
 qlonglong Contract::calculateItemPrice(const Item &item) {
     Logger log("qlonglong Contract::calculateItemPrice(const Item &item)");
     log.stream( warn ) << "TODO: NOT IMPLEMENTED";
@@ -295,7 +309,18 @@ QString Contract::toString() const {
             .arg( m_state ).arg( m_note );
 }
 
-QString Contract::toHtml() const {
+QString Contract::toRentalHtml( ) const {
+    Logger log("QString Contract::toRentalHtml() const");
+    return toCommonHtml( true );
+}
+
+QString Contract::toReturnHtml( ) const {
+    Logger log("QString Contract::toReturnHtml() const");
+    return toCommonHtml( false );
+}
+
+QString Contract::toCommonHtml( bool isRental ) const {
+    Logger log("QString Contract::toCommonHtml( bool isRental ) const");
     QString HEAD = "<head><style type=\"text/css\">"
                    ".total {font-weight:bold;font-size:x-large;}"
                    "</style>"
@@ -309,15 +334,29 @@ QString Contract::toHtml() const {
     res += QString( "<p>%0</p>" ).arg( m_hirer.toHtml() );
 
     // Duration
-    res += "<h3>" + tr( "Duration of contract" ) + "</h3><p>TODO: Implement</p>";
+    res += "<h3>" + tr( "Duration of contract" ) + "</h3>"
+           + "<p>" + tr( "Hand out: " ) + m_startTime.toString( Qt::ISODate ) + "<br>"
+           + tr("Return no later than: " ) + m_endTime.toString( Qt::ISODate ) + "</p>";
 
     // Items.
     res += "<h3>" + tr( "Items in contract" ) + "</h3>";
-    if ( m_contractItems.isEmpty() ) {
+    if ( m_contractItems.isEmpty() && isRental ) {
         res += "<p><em>" + tr( "Please add items by scanning barcodes on the items." ) + "</em></p>";
         return res;
     }
-    res += items_to_html();
+    res += "<table width=\"100%\">\n";
+    if ( isRental ) {
+        QList<ContractItem>::const_iterator i;
+        for ( i = m_contractItems.begin(); i != m_contractItems.end(); ++i ) {
+            res += i->toRentalHtml();
+        }
+    } else {
+        QList<ContractItem>::const_iterator i;
+        for ( i = m_contractItems.begin(); i != m_contractItems.end(); ++i ) {
+            res += i->toReturnHtml();
+        }
+    }
+    res += "</table>\n";
 
     // Total price
     res += "<h3>" + tr( "Totals" ) + "</h3>";
@@ -411,14 +450,4 @@ void Contract::db_update() {
     query.bindValue( ":id", m_id );
     query_check_exec( query );
     log.stream( info ) << "Updated contract with id '" << m_id << "'";
-}
-
-QString Contract::items_to_html() const {
-    QString res = "<table width=\"100%\">\n";
-    QList<ContractItem>::const_iterator i;
-    for ( i = m_contractItems.begin(); i != m_contractItems.end(); ++i ) {
-        res += i->toRentalHtml();
-    }
-    res += "</table>\n";
-    return res;
 }

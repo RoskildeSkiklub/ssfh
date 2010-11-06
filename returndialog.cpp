@@ -75,7 +75,7 @@ void ReturnDialog::update() {
     if ( is_in_state( "blank" ) ) {
         ui->output_contract_textBrowser->setText( tr("<p>Select a contract or scan an item</p>") );
     } else {
-        ui->output_contract_textBrowser->setText( m_contract.toHtml() );
+        ui->output_contract_textBrowser->setText( m_contract.toReturnHtml() );
     }
 }
 
@@ -162,6 +162,10 @@ void ReturnDialog::return_item(const QString &item_id) {
     // Update the item, and the contractitem
     m_contract.returnItem( item_id );
     update();
+    if ( ! m_contract.hasReturnableItems() ) {
+        TODO( "All items returned, print receipt, close window" );
+        close();
+    }
 }
 
 
