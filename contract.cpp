@@ -139,8 +139,13 @@ void Contract::returnItem(const QString &item_id) {
     }
     // The approach is to update the Item first, then the ContractItem.
     // If anything fails, we reload the item.
-
-    TODO( "Actually return the item" );
+    log.stream() << "Returning item with id '"
+            << cii->getItem().getId() << "'";
+    cii->getItem().db_setToIn();
+    log.stream() << "Updating contractItem with id '"
+            << cii->getId() << "'";
+    cii->db_update_state( DB::ContractItem::State::returned );
+    // update();
 
 }
 
@@ -205,11 +210,9 @@ void Contract::activate() {
     database_transaction( "void Contract::activate()" );
     try {
         // First contract items and items
-        ContractItem cii;
-        TODO( "Do not use foreach for updates.");
         QList<ContractItem>::iterator cii;
-        for( i = m_contractItems.begin(); i != m_contractItems.end(); ++i ) {
-            cii->getItem().setToOutInDatabase();
+        for( cii = m_contractItems.begin(); cii != m_contractItems.end(); ++cii ) {
+            cii->getItem().db_setToOut();
             cii->setState( DB::ContractItem::State::out );
             cii->db_insert();
         }

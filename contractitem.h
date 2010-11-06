@@ -33,6 +33,11 @@ public:
       * \returns HTML suitable for show in the rental dialog */
     QString toRentalHtml() const;
 
+    /** \brief Get the id of the contract item
+      * \return The id of the contract item */
+    qlonglong getId() const { return m_id; }
+
+
     /** \brief Get a reference to the item
       * \return A reference to the item */
     Item & getItem() { return m_item; }

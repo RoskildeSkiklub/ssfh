@@ -200,8 +200,8 @@ QString Item::toString() const {
             .arg( m_state ).arg( m_note );
 }
 
-void Item::setToOutInDatabase() {
-    Logger log("void Item::setToOutInDatabase()");
+void Item::db_setToOut() {
+    Logger log("void Item::db_setToIn()");
     if ( m_state != DB::Item::State::booked ) {
         throw Exception( Errors::ItemNotInBookedState )
                 << ( log.stream(error)
@@ -214,4 +214,17 @@ void Item::setToOutInDatabase() {
     query.bindValue( ":id", m_id );
     query.bindValue( ":state", DB::Item::State::out );
     query_check_exec( query );
+    // TODO: Log in event log
+    m_state = DB::Item::State::out;
+}
+
+void Item::db_setToIn() {
+    Logger log("void Item::db_setToOut()");
+    QSqlQuery query;
+    query_check_prepare( query, "update items set state=:state where id=:id" );
+    query.bindValue( ":id", m_id );
+    query.bindValue( ":state", DB::Item::State::in );
+    query_check_exec( query );
+    // TODO: Log in event log
+    m_state = DB::Item::State::in;
 }

@@ -57,8 +57,12 @@ public:
       *
       * This updates the state in the database, and also updates the in-memory state
       * The state may not already be out */
-    void setToOutInDatabase();
+    void db_setToOut();
 
+    /** \brief Update the state of this item in the database to "in"
+      *
+      * This updates the state in the database, and also updates the in-memory state */
+    void db_setToIn();
 private:
     QString m_id;
     QString m_type;
