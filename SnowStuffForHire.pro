@@ -46,3 +46,21 @@ FORMS += mainwindow.ui \
     addnewitemdialog.ui \
     returndialog.ui
 TRANSLATIONS = SnowStuffForHire_da_DK.ts
+
+# Extra files to include in dist
+DISTFILES = doc/NotesOnSundhedsKort.txt \
+    doc/Notes.txt \
+    doc/postnr.website \
+    doc/postnr.xls \
+    schema/Makefile \
+    schema/create-db-consts.pl \
+    schema/postnr-to-csv.pl \
+    schema/schema.sql \
+    schema/rsh-setup.sql \
+    schema/test-data.sql \
+    schema/Transactions.txt \
+    Makefile.l10n \
+    SnowStuffForHire
+
+# The version
+VERSION = -0.1.0
