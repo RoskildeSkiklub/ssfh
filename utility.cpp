@@ -114,7 +114,7 @@ QStringList get_current_states( const QStateMachine & stateMachine ) {
     QSet<QAbstractState *> states = stateMachine.configuration();
     QAbstractState * statep;
     QStringList res;
-    foreach( statep, states ) {
+    foreach( statep, states ) { // foreach OK here.
         log.stream() << "Adding state '" << statep->objectName() << "'";
         res << statep->objectName();
     }

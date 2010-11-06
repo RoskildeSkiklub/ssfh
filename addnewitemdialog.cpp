@@ -145,10 +145,10 @@ void AddNewItemDialog::doAddItem(QString id) {
 
 void AddNewItemDialog::updateLogWindow() {
     Logger log( "void AddNewItemDialog::updateLogWindow()" );
-    Item item;
     QString tmp;
-    foreach ( item, items_added ) {
-        tmp = tr( "<b>Added item: </b>" ) + item.toHtml() + tmp;
+    QStack<Item>::const_iterator i;
+    for( i = items_added.begin(); i != items_added.end(); ++i ) {
+        tmp = tr( "<b>Added item: </b>" ) + i->toHtml() + tmp;
     }
     ui->output_log_textEdit->setText( tmp );
     // This is a little malplaced in here, but...

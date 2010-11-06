@@ -73,10 +73,12 @@ void Contract::addItem( const QString &item_id ) {
 
     // If item is already in our list, don't bother.
     ContractItem cii;
-    foreach (cii, m_contractItems) {
-        if ( cii.getItem().getId() == item_id ) {
+    QList<ContractItem>::iterator i;
+    for( i = m_contractItems.begin(); i != m_contractItems.end(); ++i) {
+        if ( i->getItem().getId() == item_id ) {
             throw Exception( Errors::ItemAlreadyPartOfContract )
-                    << ( log.stream( error ) << "Item " << item_id << " is already registered on the contract." );
+                    << ( log.stream( error ) << "Item '" << item_id
+                         << "'' is already registered on the contract." );
         }
     }
 
@@ -108,33 +110,36 @@ void Contract::returnItem(const QString &item_id) {
             << item_id << "', on contract with id '"
             << m_id << "'";
     // Check the item belongs to this contract
-    ContractItem cii;
+    QList<ContractItem>::iterator cii;
     bool foundit = false;
-    foreach (cii, m_contractItems) {
-        if ( cii.getItem().getId() == item_id ) {
+    for ( cii = m_contractItems.begin(); cii != m_contractItems.end(); ++cii ) {
+        if ( cii->getItem().getId() == item_id ) {
             foundit = true;
             break;
         }
     }
     if ( ! foundit ) {
         throw Exception( Errors::ItemNotPartOfContract )
-                << ( log.stream( error ) << "Item " << item_id
-                     << " is not registered on the contract." );
+                << ( log.stream( error ) << "Item '" << item_id
+                     << "'' is not registered on the contract." );
 
     }
     // Contract active, item part of it. Return it, or ignore if not out
-    if ( cii.getState() != DB::ContractItem::State::out ) {
+    if ( cii->getState() != DB::ContractItem::State::out ) {
         log.stream( warn ) << "Expected state of ContractItem to be '"
                 << DB::ContractItem::State::out << "', but it was '"
-                << cii.getState() << "'";
+                << cii->getState() << "'";
     }
 
-    if ( cii.getItem().getState() != DB::Item::State::out ) {
+    if ( cii->getItem().getState() != DB::Item::State::out ) {
         log.stream( warn ) << "Expected state of Item to be '"
                 << DB::Item::State::out << "', but it was '"
-                << cii.getItem().getState() << "'";
+                << cii->getItem().getState() << "'";
 
     }
+    // The approach is to update the Item first, then the ContractItem.
+    // If anything fails, we reload the item.
+
     TODO( "Actually return the item" );
 
 }
@@ -148,9 +153,9 @@ qlonglong Contract::calculateItemPrice(const Item &item) {
 qlonglong Contract::getItemsPrice() const {
     Logger log("qlonglong Contract::getItemsPrice() const");
     qlonglong sum = 0;
-    ContractItem cii;
-    foreach (cii, m_contractItems) {
-        sum += cii.getPrice();
+    QList<ContractItem>::const_iterator i;
+    for( i = m_contractItems.begin(); i != m_contractItems.end(); ++i) {
+        sum += i->getPrice();
     }
     return sum;
 }
@@ -201,10 +206,12 @@ void Contract::activate() {
     try {
         // First contract items and items
         ContractItem cii;
-        foreach (cii, m_contractItems) {
-            cii.getItem().setToOutInDatabase();
-            cii.setState( DB::ContractItem::State::out );
-            cii.db_insert();
+        TODO( "Do not use foreach for updates.");
+        QList<ContractItem>::iterator cii;
+        for( i = m_contractItems.begin(); i != m_contractItems.end(); ++i ) {
+            cii->getItem().setToOutInDatabase();
+            cii->setState( DB::ContractItem::State::out );
+            cii->db_insert();
         }
         // Then the contract - it just needs updating.
         m_state = DB::Contract::State::active;
@@ -404,11 +411,10 @@ void Contract::db_update() {
 }
 
 QString Contract::items_to_html() const {
-    ContractItem ci;
     QString res = "<table width=\"100%\">\n";
-
-    foreach (ci, m_contractItems) {
-        res += ci.toRentalHtml();
+    QList<ContractItem>::const_iterator i;
+    for ( i = m_contractItems.begin(); i != m_contractItems.end(); ++i ) {
+        res += i->toRentalHtml();
     }
     res += "</table>\n";
     return res;
