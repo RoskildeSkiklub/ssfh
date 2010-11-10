@@ -22,7 +22,8 @@ SOURCES += main.cpp \
     db_consts.cpp \
     contractitem.cpp \
     returndialog.cpp \
-    viewhireditemsdialog.cpp
+    viewhireditemsdialog.cpp \
+    posprinter.cpp
 HEADERS += mainwindow.h \
     rentdialog.h \
     stockdialog.h \
@@ -40,7 +41,8 @@ HEADERS += mainwindow.h \
     db_consts.h \
     contractitem.h \
     returndialog.h \
-    viewhireditemsdialog.h
+    viewhireditemsdialog.h \
+    posprinter.h
 FORMS += mainwindow.ui \
     rentdialog.ui \
     stockdialog.ui \

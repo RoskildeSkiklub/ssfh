@@ -260,6 +260,7 @@ void RentDialog::on_input_item_lineEdit_textChanged(QString newText) {
 void RentDialog::on_input_finish_pushButton_clicked() {
     Logger log("void RentDialog::on_input_finish_pushButton_clicked()");
     m_contract.activate();
+    Globals::posPrinter->emitReceipt( "Hej, her er en receipt" );
     QMessageBox::information( this, tr( "Contract created" ),
                               tr( "Contract created, printing receipt." ) );
     close();

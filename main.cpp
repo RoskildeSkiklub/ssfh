@@ -118,6 +118,10 @@ int main(int argc, char **argv) {
         Globals::interceptor = &interceptor;
         app.installEventFilter( &interceptor );
 
+        // TODO: Fix this to match usb device - something
+        PosPrinter posPrinter ( "/dev/usb/lp0" );
+        Globals::posPrinter = &posPrinter;
+
         // Database stuff
         log.stream() << "Setting up database";
         QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
