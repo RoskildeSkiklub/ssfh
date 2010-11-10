@@ -40,6 +40,9 @@ ViewHiredItemsDialog::ViewHiredItemsDialog(QWidget *parent) :
 
     ui->item_tableView->setModel( model );
 
+    ui->item_tableView->resizeColumnsToContents();
+    // ui->item_tableView->setSortingEnabled( true );
+
 
 }
 
