@@ -5,6 +5,7 @@
 #include "rentdialog.h"
 #include "returndialog.h"
 #include "addnewitemdialog.h"
+#include "viewhireditemsdialog.h"
 
 // App
 #include "log.h"
@@ -61,6 +62,15 @@ void MainWindow::showAddItemsDialog() const {
     addNewItemDialog.exec();
 }
 
+void MainWindow::showHiredItemsDialog() const {
+    Logger log("void MainWindow::showHiredItemsDialog() const");
+    log.stream() << "Displaying HiredItems dialog";
+    ViewHiredItemsDialog vhdi;
+    vhdi.exec();
+}
+
+
+
 /////
 
 void MainWindow::on_action_RentItems_triggered() {
@@ -86,4 +96,10 @@ void MainWindow::on_input_rent_pushButton_clicked() {
 void MainWindow::on_input_return_pushButton_clicked() {
     Logger log("void MainWindow::on_input_return_pushButton_clicked()");
     showReturnDialog();
+}
+
+void MainWindow::on_action_HiredItems_triggered()
+{
+    Logger log("void MainWindow::on_action_HiredItems_triggered()");
+    showHiredItemsDialog();
 }

@@ -66,6 +66,7 @@
      <string>&amp;Stock</string>
     </property>
     <addaction name="action_AddItems"/>
+    <addaction name="action_HiredItems"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_Stock"/>
@@ -94,6 +95,14 @@
   <action name="action_AddItems">
    <property name="text">
     <string>&amp;Add items</string>
+   </property>
+  </action>
+  <action name="action_HiredItems">
+   <property name="text">
+    <string>&amp;Hired Items</string>
+   </property>
+   <property name="toolTip">
+    <string>Show all hired items</string>
    </property>
   </action>
  </widget>

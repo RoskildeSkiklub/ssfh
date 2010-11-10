@@ -22,8 +22,10 @@ private:
     void showRentDialog() const;
     void showReturnDialog() const;
     void showAddItemsDialog() const;
+    void showHiredItemsDialog() const;
 
 private slots:
+    void on_action_HiredItems_triggered();
     void on_action_AddItems_triggered();
     void on_action_ReturnItems_triggered();
     void on_action_RentItems_triggered();

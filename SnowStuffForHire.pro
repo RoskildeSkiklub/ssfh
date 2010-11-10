@@ -21,7 +21,8 @@ SOURCES += main.cpp \
     addnewitemdialog.cpp \
     db_consts.cpp \
     contractitem.cpp \
-    returndialog.cpp
+    returndialog.cpp \
+    viewhireditemsdialog.cpp
 HEADERS += mainwindow.h \
     rentdialog.h \
     stockdialog.h \
@@ -38,13 +39,15 @@ HEADERS += mainwindow.h \
     addnewitemdialog.h \
     db_consts.h \
     contractitem.h \
-    returndialog.h
+    returndialog.h \
+    viewhireditemsdialog.h
 FORMS += mainwindow.ui \
     rentdialog.ui \
     stockdialog.ui \
     hirerdialog.ui \
     addnewitemdialog.ui \
-    returndialog.ui
+    returndialog.ui \
+    viewhireditemsdialog.ui
 TRANSLATIONS = SnowStuffForHire_da_DK.ts
 
 # Extra files to include in dist
@@ -63,4 +66,4 @@ DISTFILES = doc/NotesOnSundhedsKort.txt \
     SnowStuffForHire
 
 # The version
-VERSION = -0.1.0
+VERSION = -0.3.0
