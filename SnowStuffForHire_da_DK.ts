@@ -555,7 +555,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="mainwindow.ui" line="40"/>
-        <location filename="mainwindow.ui" line="75"/>
+        <location filename="mainwindow.ui" line="76"/>
         <source>&amp;Rent</source>
         <translation>&amp;Lej</translation>
     </message>
@@ -570,24 +570,34 @@ p, li { white-space: pre-wrap; }
         <translation>&amp;Lager</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="83"/>
+        <location filename="mainwindow.ui" line="84"/>
         <source>Re&amp;turn Items</source>
         <translation>&amp;Returner genstande</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="86"/>
+        <location filename="mainwindow.ui" line="87"/>
         <source>Return rented items</source>
         <translation>Return lejede genstande</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="91"/>
+        <location filename="mainwindow.ui" line="92"/>
         <source>E&amp;xit</source>
         <translation>&amp;Afslut</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="96"/>
+        <location filename="mainwindow.ui" line="97"/>
         <source>&amp;Add items</source>
         <translation>&amp;Tilføj genstande</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="102"/>
+        <source>&amp;Hired Items</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="105"/>
+        <source>Show all hired items</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Swap</source>
@@ -598,7 +608,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Returner</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="78"/>
+        <location filename="mainwindow.ui" line="79"/>
         <source>Rent Items</source>
         <oldsource>Inventory</oldsource>
         <translation>Lej genstande</translation>
@@ -627,42 +637,42 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">ski</translation>
     </message>
     <message>
-        <location filename="main.cpp" line="126"/>
+        <location filename="main.cpp" line="130"/>
         <source>Unable to load QSQLITE database driver</source>
         <translation>Kan ikke indlæse QSQLITE database driver</translation>
     </message>
     <message>
-        <location filename="main.cpp" line="126"/>
+        <location filename="main.cpp" line="130"/>
         <source>Unable to load QSQLITE database driver. Aborting.</source>
         <translation>Kan ikke indlæse QSQLITE database driver. Afbryder.</translation>
     </message>
     <message>
-        <location filename="main.cpp" line="135"/>
+        <location filename="main.cpp" line="139"/>
         <source>Unable to open database</source>
         <translation>Kan ikke åbne database</translation>
     </message>
     <message>
-        <location filename="main.cpp" line="135"/>
+        <location filename="main.cpp" line="139"/>
         <source>Unable to open database specified as &apos;%0&apos;. Aborting.</source>
         <translation>Kan ikke åbne database angivet som &apos;%0&apos;. Afbryder.</translation>
     </message>
     <message>
-        <location filename="main.cpp" line="146"/>
+        <location filename="main.cpp" line="150"/>
         <source>Incompatible database version</source>
         <translation>Ikke-kompatibel database version</translation>
     </message>
     <message>
-        <location filename="main.cpp" line="147"/>
+        <location filename="main.cpp" line="151"/>
         <source>Database version mismatch. Expected version &apos;%0&apos; on database &apos;%1&apos;, got version &apos;%2&apos;. Aborting</source>
         <translation>Database versioner passer ikke sammen. Forventede version &apos;%0&apos; af database &apos;%1&apos;. Er version &apos;%2&apos;. Afbryder</translation>
     </message>
     <message>
-        <location filename="main.cpp" line="154"/>
+        <location filename="main.cpp" line="158"/>
         <source>Unable to perform initial select on database</source>
         <translation>Kunne ikke gennemføre initiel læsning fra database</translation>
     </message>
     <message>
-        <location filename="main.cpp" line="155"/>
+        <location filename="main.cpp" line="159"/>
         <source>Unable to perform initial select on database &apos;%0&apos;. Aborting.</source>
         <translation>Kunne ikke gennemføre initiel læsning fra database &apos;%0&apos;. Afbryder.</translation>
     </message>
@@ -795,12 +805,12 @@ p, li { white-space: pre-wrap; }
         <translation>Genstanden med id &apos;%0&apos; er allerede tilføjet en anden lejeaftale. Kan ikke tilføjes til denne.</translation>
     </message>
     <message>
-        <location filename="rentdialog.cpp" line="263"/>
+        <location filename="rentdialog.cpp" line="265"/>
         <source>Contract created</source>
         <translation>Lejeaftale dannet</translation>
     </message>
     <message>
-        <location filename="rentdialog.cpp" line="264"/>
+        <location filename="rentdialog.cpp" line="266"/>
         <source>Contract created, printing receipt.</source>
         <translation>Lejeaftale dannet, udskriver kvittering.</translation>
     </message>
@@ -869,6 +879,84 @@ p, li { white-space: pre-wrap; }
         <location filename="stockdialog.ui" line="14"/>
         <source>Dialog</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ViewHiredItemsDialog</name>
+    <message>
+        <location filename="viewhireditemsdialog.ui" line="14"/>
+        <source>Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="viewhireditemsdialog.ui" line="20"/>
+        <source>List of items that are hired</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="viewhireditemsdialog.ui" line="37"/>
+        <source>Contract of selected item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="viewhireditemsdialog.ui" line="69"/>
+        <source>&amp;Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="viewhireditemsdialog.cpp" line="30"/>
+        <source>Id</source>
+        <translation type="unfinished">Id</translation>
+    </message>
+    <message>
+        <location filename="viewhireditemsdialog.cpp" line="31"/>
+        <source>Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="viewhireditemsdialog.cpp" line="32"/>
+        <source>Size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="viewhireditemsdialog.cpp" line="33"/>
+        <source>Mark</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="viewhireditemsdialog.cpp" line="34"/>
+        <source>Model</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="viewhireditemsdialog.cpp" line="35"/>
+        <source>Year</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="viewhireditemsdialog.cpp" line="36"/>
+        <source>Condition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="viewhireditemsdialog.cpp" line="37"/>
+        <source>Price</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="viewhireditemsdialog.cpp" line="38"/>
+        <source>Rentalgroup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="viewhireditemsdialog.cpp" line="39"/>
+        <source>Note</source>
+        <translation type="unfinished">Note</translation>
+    </message>
+    <message>
+        <location filename="viewhireditemsdialog.cpp" line="78"/>
+        <source>No contract found</source>
+        <translation type="unfinished">Ingen lejeaftale fundet</translation>
     </message>
 </context>
 </TS>

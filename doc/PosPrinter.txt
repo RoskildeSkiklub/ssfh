@@ -1,0 +1,15 @@
+The code included in the system is written for at "POS 104" printer.
+I have no idea who the manufactorer is.
+It is made in Taiwan. It was sold as a "POS-104". The documentation
+refers to it as a PRP-085IIIT. Its probably a cheap knockoff of an
+Epson series printer.
+
+It should be pretty standard ESC/POS.
+
+* Linux setup
+
+It is assumed the user has write access to the device the printer is
+connected to. This will most often be /dev/usb/lp0. 
+
+The easiest way is probably to have the user be a member of the "lp"
+group, which in most Linux distros will have write access to line printers.

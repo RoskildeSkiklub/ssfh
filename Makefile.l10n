@@ -18,7 +18,7 @@ SnowStuffForHire_%.ts: $(SOURCES) $(HEADERS) $(FORMS)
 	lupdate $(PRO_FILE) -ts $@
 
 SnowStuffForHire_%.qm: SnowStuffForHire_%.ts
-	lrelease $@
+	lrelease $<
 
 # This could probably be smarter. Works for now.
 danish : SnowStuffForHire_da_DK.ts

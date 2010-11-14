@@ -119,7 +119,8 @@ int main(int argc, char **argv) {
         app.installEventFilter( &interceptor );
 
         // TODO: Fix this to match usb device - something
-        PosPrinter posPrinter ( "/dev/usb/lp0" );
+        // PosPrinter posPrinter ( "/dev/usb/lp0" );
+        PosPrinter posPrinter ( "/tmp/posprint.foo" );
         Globals::posPrinter = &posPrinter;
 
         // Database stuff

@@ -11,5 +11,7 @@ namespace Globals {
     extern Interceptor * interceptor;
     extern PosPrinter * posPrinter;
 
+    PosPrinter & getPosPrinter();
+
 } // namespace;
 #endif // GLOBALS_H
