@@ -10,13 +10,15 @@
 
 using namespace Log;
 
-PosPrinter::PosPrinter( const QString & dev ) : m_dev( dev ){
-    Logger log("PosPrinter::PosPrinter()");
+namespace Pos {
+
+Printer::Printer( const QString & dev ) : m_dev( dev ){
+    Logger log("Printer::Printer()");
     m_device_file.setFileName( dev );
 }
 
-bool PosPrinter::openDevice() {
-    Logger log("PosPrinter::openDevice()");
+bool Printer::openDevice() {
+    Logger log("Printer::openDevice()");
     // TODO: Set up graphics, codepages, stuff like that.
     if ( ! ( m_device_file.isOpen() && m_device_file.isWritable() ) ) {
         log.stream() << "m_device_file '" << m_dev
@@ -32,8 +34,8 @@ bool PosPrinter::openDevice() {
     return true;
 }
 
-bool PosPrinter::emitReceipt( const QByteArray & data ) {
-    Logger log("bool PosPrinter::emitReceipt()");
+bool Printer::emitReceipt( const QByteArray & data ) {
+    Logger log("bool Printer::emitReceipt()");
     if ( openDevice() ) {
         log.stream() << "Outputting receipt";
         m_device_file.write( data );
@@ -48,39 +50,54 @@ bool PosPrinter::emitReceipt( const QByteArray & data ) {
     }
 }
 
-void PosPrinter::startReceipt() {
-    Logger log("void PosPrinter::startReceipt()");
+void Printer::startReceipt() {
+    Logger log("void Printer::startReceipt()");
     m_buffer.clear();
 }
 
-void PosPrinter::endReceipt() {
-    Logger log("void PosPrinter::endReceipt()");
+void Printer::endReceipt() {
+    Logger log("void Printer::endReceipt()");
     emitReceipt( m_buffer );
 }
 
-PosPrinter & PosPrinter::operator <<( const QString & str ) {
-    Logger log( "PosPrinter & PosPrinter::operator <<( const QString & str )" );
+Printer & Printer::operator <<( const QString & str ) {
+    Logger log( "Printer & Printer::operator <<( const QString & str )" );
     m_buffer.append( str.toLatin1() );
     m_buffer.append( m_modifierclose );
     m_modifierclose.clear();
     return *this;
 }
 
-PosPrinter & PosPrinter::bold(PosPrinter &os) {
-    Logger log("PosPrinter & PosPrinter::bold(PosPrinter &os)");
-    os.m_buffer.append( "<bold>" );
-    os.addCloseModifier( "</bold>" );
-    return os;
+Printer & Printer::bold() {
+    Logger log("Printer & Printer::bold()");
+    m_buffer.append( "<bold>" );
+    addCloseModifier( "</bold>" );
+    return *this;
 }
 
-PosPrinter & PosPrinter::endl(PosPrinter &os) {
-    Logger log("PosPrinter & PosPrinter::endl(PosPrinter &os)");
-    os.m_buffer.append( "\n" );
-    return os;
+Printer & Printer::endl() {
+    Logger log("Printer & Printer::endl(Printer &os)");
+    m_buffer.append( "\n" );
+    return *this;
 }
 
 
-void PosPrinter::addCloseModifier(const QByteArray &closing) {
-    Logger log("void PosPrinter::addCloseModifier(const QByteArray &closing)");
+void Printer::addCloseModifier(const QByteArray &closing) {
+    Logger log("void Printer::addCloseModifier(const QByteArray &closing)");
     m_modifierclose.prepend( closing );
 }
+/** \brief Bold text
+  *
+  * This is used to enable bold for the next input */
+Printer & bold( Printer & os ) {
+    return os.bold();
+};
+
+/** \brief Endline
+  *
+  * Ends the current line */
+Printer & endl( Printer & os ) {
+    return os.endl();
+};
+
+}; // namespace

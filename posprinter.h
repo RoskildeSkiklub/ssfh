@@ -1,5 +1,5 @@
-#ifndef POSPRINTER_H
-#define POSPRINTER_H
+#ifndef __POS_PRINTER_H
+#define __POS_PRINTER_H
 
 
 #include <QString>
@@ -26,14 +26,15 @@
   * To enable/disable a printer feature, you use custom io manipulators.
   *
   * \code
-  * PosPrinterInstance << "This is printed" << PosPrinter::bold
-  * << "This will be bold" << PosPrinter::endl
+  * PrinterInstance << "This is printed" << Printer::bold
+  * << "This will be bold" << Printer::endl
   * \endcode
   *
 */
 
+namespace Pos {
 
-class PosPrinter
+class Printer
 {
 public:
     /** \brief Constructor
@@ -42,7 +43,7 @@ public:
      * The instance will keep trying to open the device whenever
      * something is printed, and will perform initialization
      * after opening the device file */
-    PosPrinter( const QString & dev );
+    Printer( const QString & dev );
 
     /** \brief Start a new receipt
       *
@@ -60,24 +61,24 @@ public:
     /** \brief Bold text
       *
       * This is used to enable bold for the next input */
-    static PosPrinter & bold( PosPrinter & os );
+    Printer & bold();
 
     /** \brief Endline
       *
       * Ends the current line */
-    static PosPrinter & endl( PosPrinter & os );
+    Printer & endl();
 
 
     /** \brief Output a string
       *
       * Note, the string is converted to Latin1 before
       * beeing sent to the printer */
-    PosPrinter & operator<<( const QString & str );
+    Printer & operator<<( const QString & str );
 
-    typedef PosPrinter & (*iomanip) (PosPrinter &);
+    typedef Printer & (*iomanip) (Printer &);
 
     /** \brief Output a io manipulator */
-    PosPrinter & operator<<( iomanip iom ) {
+    Printer & operator<<( iomanip iom ) {
         return iom( *this );
     }
 
@@ -118,8 +119,16 @@ private:
 
 };
 
-/*PosPrinter & operator<<( PosPrinter * pos, const QString & str ) {
-    return *pos << str;
-}*/
+/** \brief Bold text
+  *
+  * This is used to enable bold for the next input */
+Printer & bold( Printer & os );
 
-#endif // POSPRINTER_H
+/** \brief Endline
+  *
+  * Ends the current line */
+Printer & endl( Printer & os );
+
+}; // namespace
+
+#endif // Printer_H

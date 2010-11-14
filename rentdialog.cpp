@@ -262,12 +262,12 @@ void RentDialog::on_input_finish_pushButton_clicked() {
     m_contract.activate();
     // TODO: Fix here.
     // Globals::posPrinter->emitReceipt( "Hej, her er en receipt" );
-    PosPrinter & posp( Globals::getPosPrinter() );
+    Pos::Printer & posp( Globals::getPosPrinter() );
     posp.startReceipt();
-    posp << PosPrinter::bold << QString( "Hej med dig" )
+    posp << Pos::bold << QString( "Hej med dig" )
             << QString( "Mere endnu" )
-            << PosPrinter::endl << QString( "Alles ist gut" )
-            << PosPrinter::endl;
+            << Pos::endl << QString( "Alles ist gut" )
+            << Pos::endl;
     posp.endReceipt();
     QMessageBox::information( this, tr( "Contract created" ),
                               tr( "Contract created, printing receipt." ) );

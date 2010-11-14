@@ -5,12 +5,12 @@
 #include "exception.h"
 
 Interceptor * Globals::interceptor;
-PosPrinter * Globals::posPrinter;
+Pos::Printer * Globals::posPrinter;
 
 using namespace Log;
 
 namespace Globals  {
-    PosPrinter & getPosPrinter() {
+    Pos::Printer & getPosPrinter() {
         Logger log("PosPrinter & getPosPrinter()");
         if ( ! posPrinter ) {
             throw Exception( Errors::InternalError )

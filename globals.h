@@ -9,9 +9,9 @@
 namespace Globals {
 
     extern Interceptor * interceptor;
-    extern PosPrinter * posPrinter;
+    extern Pos::Printer * posPrinter;
 
-    PosPrinter & getPosPrinter();
+    Pos::Printer & getPosPrinter();
 
 } // namespace;
 #endif // GLOBALS_H
