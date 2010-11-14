@@ -57,11 +57,15 @@ public:
       * This method prints the buffered receipt. */
     void endReceipt();
 
-
     /** \brief Bold text
       *
       * This is used to enable bold for the next input */
     Printer & bold();
+
+    /** \brief Underline text
+      *
+      * This is used to enable underline for the next input */
+    Printer & underline();
 
     /** \brief Endline
       *
@@ -105,6 +109,14 @@ private:
      * It should be safe to call this function for every page
      * the client wants to print to the printer */
     bool openDevice();
+
+    /** \brief Set up the printer
+      *
+      * This method is called by openDevice to set up the printer
+      * after each openDevice. It downloads e.g. images, sets the
+      * codepage, and stuff like that. It writes directly
+      * to m_device_file, it does not buffer stuff. */
+    void setupPrinter();
 
     /** \brief Emit a receipt to the printer device
       * \param data The data to print to the device
