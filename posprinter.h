@@ -24,18 +24,19 @@
   * converted to Latin1.
   *
   * To enable/disable a printer feature, you use custom io manipulators.
+  * Note, that the combination of manipulators are limited.
+  * E.g. you can not meaningfully center a hr, for instance.
   *
   * \code
   * PrinterInstance << "This is printed" << Printer::bold
-  * << "This will be bold" << Printer::endl
+  * << "This will be bold" << "This will not be bold" << Printer::endl
   * \endcode
   *
 */
 
 namespace Pos {
 
-class Printer
-{
+class Printer {
 public:
     /** \brief Constructor
      * \param dev The name of the device the printer is connected to
@@ -57,6 +58,31 @@ public:
       * This method prints the buffered receipt. */
     void endReceipt();
 
+    /** \brief Output a string
+      *
+      * Note, the string is converted to Latin1 before
+      * beeing sent to the printer */
+    Printer & operator<<( const QString & str );
+
+    /** \brief Get the page/receipt width
+      * \return The receipt with in characters */
+    qlonglong getReceiptWidth() const;
+
+    //////////////////////////////////////////////////////////////////////
+    // Modifiers
+
+    typedef Printer & (*iomanip) (Printer &);
+
+    /** \brief Output a io manipulator */
+    Printer & operator<<( iomanip iom ) {
+        return iom( *this );
+    }
+
+    /** \brief Emit logo.
+      *
+      * Emits the previosly set/loaded logo */
+    Printer & logo();
+
     /** \brief Bold text
       *
       * This is used to enable bold for the next input */
@@ -67,35 +93,43 @@ public:
       * This is used to enable underline for the next input */
     Printer & underline();
 
+    /** \brief Center text
+      *
+      * This is used to enable center for the next input.
+      * Note, that a Pos::Endl is implied, if not present in the buffer already. */
+    Printer & center();
+
+    /** \brief Emit a "horizontal ruler".
+      *
+      * This will emit a series of ----. A Pos::endl is implied, if not
+      * already present in the buffer. */
+    Printer & hr();
+
     /** \brief Endline
       *
       * Ends the current line */
     Printer & endl();
 
-
-    /** \brief Output a string
-      *
-      * Note, the string is converted to Latin1 before
-      * beeing sent to the printer */
-    Printer & operator<<( const QString & str );
-
-    typedef Printer & (*iomanip) (Printer &);
-
-    /** \brief Output a io manipulator */
-    Printer & operator<<( iomanip iom ) {
-        return iom( *this );
-    }
-
 private:
+    /** \brief Name of the device file used to access the device */
     QString m_dev;
+
+    /** \brief File handle into device file */
     QFile m_device_file;
 
     /** The data to emit next, is collected in this buffer
       * This is mostly for testing purposes */
     QByteArray m_buffer;
 
-    /** \brief Store stuff to add after the next QString statement */
+    /** \brief Store stuff to add after the next QString statement.
+     *
+     * This  is added in a stack like filo fashion. */
     QByteArray m_modifierclose;
+
+    /** \brief Center flag
+      *
+      * When set to true, the next QString output will be centered */
+    bool m_center_flag;
 
     /** \brief Method to add a closing modifier to the "stack"
       * of modifiers.
@@ -103,7 +137,10 @@ private:
       * This adds the modifier passed to in the beginning of modifierclose */
     void addCloseModifier( const QByteArray & closing );
 
-    /* \brief Make sure we can talk to the device.
+    /** \brief Ensure buffer is empty or ends with Pos::endl */
+    void ensureEndl();
+
+    /** \brief Make sure we can talk to the device.
      *
      * This sets up the m_device_file to talk to the device.
      * It should be safe to call this function for every page
@@ -136,10 +173,32 @@ private:
   * This is used to enable bold for the next input */
 Printer & bold( Printer & os );
 
+/** \brief Underline text
+  *
+  * This is used to enable underline for the next input */
+Printer & underline( Printer & os );
+
+/** \brief Center text
+  *
+  * This is used to center text for the next input. A Pos::endl is implied, if not
+  * already present in the buffer. */
+Printer & center( Printer & os );
+
+/** \brief Emit a "horizontal ruler".
+  *
+  * This will emit a series of ----. A Pos::endl is implied, if not
+  * already present in the buffer. */
+Printer & hr( Printer & os );
+
 /** \brief Endline
   *
   * Ends the current line */
 Printer & endl( Printer & os );
+
+/** \brief Logo
+  *
+  * This is used to emit a logo */
+Printer & logo( Printer & os );
 
 }; // namespace
 

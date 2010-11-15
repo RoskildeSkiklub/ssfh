@@ -12,6 +12,10 @@
 #include "item.h"
 #include "contractitem.h"
 
+namespace Pos {
+    class Printer;
+};
+
 /** \brief In memory representation *and* business logic class for contracts
   *
   * This class represents a contract from it is created, while it is updated,
@@ -210,6 +214,13 @@ public:
     /** \brief Return a HTML representation of the contract for the rental window
       * \return HTML representation of the contract. */
     QString toReturnHtml() const;
+
+    /** \brief Print to a PosPrinter
+      * \param printer The pos printer instance to use
+      *
+      * Call this method, when renting out the items, after done.
+      * The contract must be active, when this method is called */
+    void printRental( Pos::Printer & posPrinter );
 
 private:
     /** \brief Database field: The id of the contract. Initially -1 */

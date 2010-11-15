@@ -10,6 +10,7 @@
 #include "db_consts.h"
 #include "contractitem.h"
 #include "utility.h"
+#include "posprinter.h"
 
 using namespace Log;
 
@@ -332,6 +333,9 @@ QString Contract::toString() const {
             .arg( m_state ).arg( m_note );
 }
 
+////////////////////////////////////////////////////////////
+// HTML AND PRINT
+
 QString Contract::toRentalHtml( ) const {
     Logger log("QString Contract::toRentalHtml() const");
     return toCommonHtml( true );
@@ -402,6 +406,57 @@ QString Contract::toCommonHtml( bool isRental ) const {
 
 
 };
+
+void Contract::printRental(Pos::Printer &posPrinter) {
+    Logger log("void Contract::printRental(Pos::Printer &posPrinter)");
+    checkInActiveState( "void Contract::printRental" );
+
+    // TODO: Would be better, if not hardcoded...
+    // TODO: Should go into configuration, obviously.
+    // posPrinter.startReceipt();
+
+    // Logo and identifiers of the rental agency
+    posPrinter << Pos::logo << Pos::endl
+            << Pos::center << "Roskilde Skiklub" << Pos::endl
+            << Pos::center << "Hedeland" << Pos::endl << Pos::endl;
+
+    // Heading
+    posPrinter << Pos::bold << Pos::center
+            << tr( "Rental agreement" ) << Pos::endl << Pos::endl;
+
+    // Various information about current time, and rental agreement duration
+    // TODO: Need formats and translation for this.
+    posPrinter << tr("Aftale id            : ") << Pos::endl;// << QString( m_id ) << Pos::endl;
+    posPrinter << tr( "Dato                 : " )
+            << QDateTime::currentDateTime().toString( Qt::ISODate )
+            << Pos::endl;
+    posPrinter << tr( "Udleveringstidspunkt : " )
+            << m_startTime.toString( Qt::ISODate )
+            << Pos::endl;
+    posPrinter << tr( "Afleveringstidspunkt : " )
+            << m_endTime.toString( Qt::ISODate )
+            << Pos::endl;
+
+    // Hirer.printRental( posPrinter );
+    // TODO: Duration, hirer
+
+    posPrinter << Pos::endl << tr( "Items :" );
+    posPrinter << QString::fromUtf8( "æøå ÆØÅ\n" ) << Pos::endl; // TODO: Remove
+    posPrinter << Pos::hr;
+    ContractItem cii;
+    QList<ContractItem>::const_iterator i;
+    for ( i = m_contractItems.begin(); i != m_contractItems.end(); ++i ) {
+        posPrinter << i->getItem().getId() << Pos::endl;
+    }
+    posPrinter << Pos::hr;
+
+    // TODO: Sum and other stuff
+}
+
+//////////////////////////////////////////////////////////////
+// MORE CONTRACT
+
+
 
 void Contract::checkInBookingState( const QString & method ) {
     Logger log( "void Contract::checkInBookingState()" );

@@ -33,14 +33,13 @@ namespace Pos {
 
     const QByteArray cut( GS "V1" );
 
-Printer::Printer( const QString & dev ) : m_dev( dev ){
+Printer::Printer( const QString & dev ) : m_dev( dev ), m_center_flag( false ) {
     Logger log("Printer::Printer()");
     m_device_file.setFileName( dev );
 }
 
 bool Printer::openDevice() {
     Logger log("Printer::openDevice()");
-    // TODO: Set up graphics, codepages, stuff like that.
     if ( ! ( m_device_file.isOpen() && m_device_file.isWritable() ) ) {
         log.stream() << "m_device_file '" << m_dev
                 << "' not open/writeable, trying to open";
@@ -51,6 +50,7 @@ bool Printer::openDevice() {
                     << "' still not open/writeable";
             return false;
         }
+        setupPrinter();
     };
     return true;
 }
@@ -77,6 +77,7 @@ void Printer::setupPrinter() {
                      << "setupPrinter called, but device is not open/writeable.");
     }
     m_device_file.write( setLatin1 );
+    // TODO: Upload a logo.
 }
 
 void Printer::startReceipt() {
@@ -90,11 +91,41 @@ void Printer::endReceipt() {
     emitReceipt( m_buffer );
 }
 
+void Printer::ensureEndl() {
+    Logger log("void Printer::ensureEndl()");
+    if ( ! m_buffer.isEmpty() && m_buffer.at( m_buffer.size() - 1 ) != '\n' ) {
+        m_buffer.append( '\n' );
+    }
+}
+
+qlonglong Printer::getReceiptWidth() const {
+    Logger log("qlonglong Printer::getReceiptWidth() const");
+    return 48;
+}
+
+////////////////////////////////////////////////////////////////////////////////////
+// Modifier support.
+
 Printer & Printer::operator <<( const QString & str ) {
     Logger log( "Printer & Printer::operator <<( const QString & str )" );
+    if ( m_center_flag ) {
+        log.stream() << "Center flag is set";
+        log.stream() << "Str is '" << str << "', str.size() is '" << str.size() << "', getReceiptWidth is '" << getReceiptWidth() << "'";
+        if ( str.size() < getReceiptWidth() ) {
+            log.stream() << "Appending bytes here.";
+            m_buffer.append( QString( ( getReceiptWidth() - str.size() ) / 2, ' ' ).toLatin1() );
+        }
+        m_center_flag = false;
+    }
     m_buffer.append( str.toLatin1() );
     m_buffer.append( m_modifierclose );
     m_modifierclose.clear();
+    return *this;
+}
+
+Printer & Printer::logo() {
+    Logger log("Printer & Printer::logo()");
+    m_buffer.append( QString( "TODO: Support logo\n") );
     return *this;
 }
 
@@ -112,6 +143,20 @@ Printer & Printer::underline() {
     return *this;
 }
 
+Printer & Printer::center() {
+    Logger log("Printer & Printer::center()");
+    m_center_flag = true;
+    return *this;
+}
+
+Printer & Printer::hr() {
+    Logger log("Printer & Printer::hr()");
+    ensureEndl();
+    m_buffer.append( QString( getReceiptWidth(), '-' ) );
+    m_buffer.append( "\n" );
+    return *this;
+}
+
 Printer & Printer::endl() {
     Logger log("Printer & Printer::endl(Printer &os)");
     m_buffer.append( "\n" );
@@ -124,23 +169,29 @@ void Printer::addCloseModifier(const QByteArray &closing) {
     m_modifierclose.prepend( closing );
 }
 
-/** \brief Bold text
-  *
-  * This is used to enable bold for the next input */
+////////////////////////////////////////////////////////////////////////
+// Namespace functions.
+
+Printer & logo( Printer & os ) {
+    return os.logo();
+};
+
 Printer & bold( Printer & os ) {
     return os.bold();
 };
 
-/** \brief Underline text
-  *
-  * This is used to enable underline for the next input */
 Printer & underline( Printer & os ) {
     return os.underline();
 };
 
-/** \brief Endline
-  *
-  * Ends the current line */
+Printer & center( Printer & os ) {
+    return os.center();
+};
+
+Printer & hr( Printer & os ) {
+    return os.hr();
+};
+
 Printer & endl( Printer & os ) {
     return os.endl();
 };
