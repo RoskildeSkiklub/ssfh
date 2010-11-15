@@ -41,7 +41,7 @@ namespace Pos {
     const QByteArray doCut( GS "V1" );
     const QByteArray logoOut( GS "/0", 3 );
 
-Printer::Printer( const QString & dev ) : m_dev( dev ), m_center_flag( false ) {
+Printer::Printer( const QString & dev ) : m_dev( dev ), m_blank_line_flag( true ) {
     Logger log("Printer::Printer()");
     m_device_file.setFileName( dev );
 }
@@ -103,18 +103,21 @@ void Printer::setupPrinter() {
 void Printer::startReceipt() {
     Logger log("void Printer::startReceipt()");
     m_buffer.clear();
+    m_blank_line_flag = true;
 }
 
 void Printer::endReceipt() {
     Logger log("void Printer::endReceipt()");
     m_buffer.append( QByteArray( "\n\n\n\n") + doCut );
     emitReceipt( m_buffer );
+    m_blank_line_flag = true;
 }
 
-void Printer::ensureEndl() {
-    Logger log("void Printer::ensureEndl()");
-    if ( ! m_buffer.isEmpty() && m_buffer.at( m_buffer.size() - 1 ) != '\n' ) {
+void Printer::ensureBlank() {
+    Logger log("void Printer::ensureBlank()");
+    if ( ! m_blank_line_flag ) {
         m_buffer.append( '\n' );
+        m_blank_line_flag = true;
     }
 }
 
@@ -128,17 +131,15 @@ qlonglong Printer::getReceiptWidth() const {
 
 Printer & Printer::operator <<( const QString & str ) {
     Logger log( "Printer & Printer::operator <<( const QString & str )" );
-    if ( m_center_flag ) {
-        log.stream() << "Center flag is set";
-        log.stream() << "Str is '" << str << "', str.size() is '" << str.size() << "', getReceiptWidth is '" << getReceiptWidth() << "'";
-        if ( str.size() < getReceiptWidth() ) {
-            log.stream() << "Appending bytes here.";
-            m_buffer.append( QString( ( getReceiptWidth() - str.size() ) / 2, ' ' ).toLatin1() );
-        }
-        m_center_flag = false;
-    }
     m_buffer.append( str.toLatin1() );
     m_buffer.append( m_modifierclose );
+    // Update blank flag
+    if ( !str.isEmpty() ) {
+        m_blank_line_flag = ( str.at( str.size() - 1 ) == '\n' );
+    }
+    if ( ! m_blank_line_flag && m_modifierclose.contains('\n') ) {
+        m_blank_line_flag = true;
+    }
     m_modifierclose.clear();
     return *this;
 }
@@ -148,6 +149,7 @@ Printer & Printer::logo() {
     m_buffer.append( setAlignCenter );
     m_buffer.append( logoOut );
     m_buffer.append( setAlignLeft );
+    m_blank_line_flag = true;
     return *this;
 }
 
@@ -167,21 +169,26 @@ Printer & Printer::underline() {
 
 Printer & Printer::center() {
     Logger log("Printer & Printer::center()");
-    m_center_flag = true;
+    ensureBlank();
+    m_buffer.append( setAlignCenter );
+    addCloseModifier( QByteArray( "\n" ) + setAlignLeft );
+    // m_center_flag = true;
     return *this;
 }
 
 Printer & Printer::hr() {
     Logger log("Printer & Printer::hr()");
-    ensureEndl();
+    ensureBlank();
     m_buffer.append( QString( getReceiptWidth(), '-' ) );
     m_buffer.append( "\n" );
+    m_blank_line_flag = true;
     return *this;
 }
 
 Printer & Printer::endl() {
     Logger log("Printer & Printer::endl(Printer &os)");
     m_buffer.append( "\n" );
+    m_blank_line_flag = true;
     return *this;
 }
 

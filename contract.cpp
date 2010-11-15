@@ -422,8 +422,8 @@ void Contract::printRental(Pos::Printer &posPrinter) {
     posPrinter << Pos::bold << Pos::center
             << tr( "Rental agreement" ) << Pos::endl << Pos::endl;
 
-    posPrinter << Pos::center << "Roskilde Skiklub" << Pos::endl
-            << Pos::center << "Hedeland" << Pos::endl << Pos::endl;
+    posPrinter << Pos::center << "Roskilde Skiklub"
+            << Pos::center << "Hedeland" << Pos::endl;
 
     // TODO: Need hirer info here....
 

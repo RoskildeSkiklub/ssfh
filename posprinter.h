@@ -105,7 +105,8 @@ public:
     /** \brief Center text
       *
       * This is used to enable center for the next input.
-      * Note, that a Pos::Endl is implied, if not present in the buffer already. */
+      * Note, that a Pos::Endl is implied, if not present in the buffer already, and
+      * is also printed after the next string. So, do not follow with Pos::endl */
     Printer & center();
 
     /** \brief Emit a "horizontal ruler".
@@ -138,10 +139,10 @@ private:
     /** \brief The logo file. If set */
     Image m_logo;
 
-    /** \brief Center flag
+    /** \brief Blank line flag.
       *
-      * When set to true, the next QString output will be centered */
-    bool m_center_flag;
+      * When set to true, the current line only contains nothing or control codes */
+    bool m_blank_line_flag;
 
     /** \brief Method to add a closing modifier to the "stack"
       * of modifiers.
@@ -149,8 +150,10 @@ private:
       * This adds the modifier passed to in the beginning of modifierclose */
     void addCloseModifier( const QByteArray & closing );
 
-    /** \brief Ensure buffer is empty or ends with Pos::endl */
-    void ensureEndl();
+    /** \brief Ensure current line is blank (only holds control stuff)
+      *
+      * Will insert a \n if needed. */
+    void ensureBlank();
 
     /** \brief Make sure we can talk to the device.
      *
