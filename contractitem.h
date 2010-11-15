@@ -55,6 +55,10 @@ public:
       * \return The price of this item on this crontact */
     qlonglong getPrice() const { return m_price; }
 
+    /** \brief Get the rental group of the item in this contract
+      * \return The rental group of the item in this contract */
+    QString getRentalgroup() const { return m_rentalgroup; }
+
     /** \brief Get the state
       * \return The state of the contractitem
       *

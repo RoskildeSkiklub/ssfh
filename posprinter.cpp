@@ -44,7 +44,8 @@ namespace Pos {
     const QByteArray doCut( GS "V1" );
     const QByteArray logoOut( GS "/0", 3 );
 
-Printer::Printer( const QString & dev ) : m_dev( dev ), m_blank_line_flag( true ) {
+Printer::Printer( const QString & dev )
+    : m_dev( dev ), m_blank_line_flag( true ), m_char_width( 1 ), m_char_height( 1 ) {
     Logger log("Printer::Printer()");
     m_device_file.setFileName( dev );
 }
@@ -58,6 +59,27 @@ void Printer::setLogo(const QImage &logo) {
                      << "Unable to convert image to monochrome for use with Pos printer" );
     }
     m_logo = Image( monoImage );
+}
+
+void Printer::setFontSize(unsigned char width, unsigned char height) {
+    Logger log("void Printer::setFontSize(unsigned char width, unsigned char height)");
+    if ( m_char_width != width || m_char_height != height ) {
+        if ( width < 1 || width > 8 ) {
+            throw Exception( Errors::PosPrinterIllegalFontSize )
+                    << ( log.stream( error )
+                         << "Illegal font width '" << width << "' specified." );
+        }
+        if ( height < 1 || width > 8 ) {
+            throw Exception( Errors::PosPrinterIllegalFontSize )
+                    << ( log.stream( error )
+                         << "Illegal font height '" << height << "' specified." );
+        }
+        m_char_width = width;
+        m_char_height = height;
+        unsigned char res = 16 * ( m_char_width - 1 ) + ( m_char_height -1 );
+        m_buffer.append( GS "!" );
+        m_buffer.append( res );
+    }
 }
 
 bool Printer::openDevice() {
@@ -126,7 +148,7 @@ void Printer::ensureBlank() {
 
 qlonglong Printer::getReceiptWidth() const {
     Logger log("qlonglong Printer::getReceiptWidth() const");
-    return 48;
+    return 48 / m_char_width;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////
@@ -189,7 +211,7 @@ Printer & Printer::center() {
 Printer & Printer::hr() {
     Logger log("Printer & Printer::hr()");
     ensureBlank();
-    m_buffer.append( QString( getReceiptWidth(), '-' ) );
+    m_buffer.append( QString( getReceiptWidth() , '-' ) );
     m_buffer.append( "\n" );
     m_blank_line_flag = true;
     return *this;

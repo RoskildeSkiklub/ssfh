@@ -411,7 +411,7 @@ void Contract::printRental(Pos::Printer &posPrinter) {
     Logger log("void Contract::printRental(Pos::Printer &posPrinter)");
     checkInActiveState( "void Contract::printRental" );
 
-    // TODO: Would be better, if not hardcoded...
+    // TODO: Would be better, if the text and stuff was not hardcoded...
     // TODO: Should go into configuration, obviously.
     // posPrinter.startReceipt();
 
@@ -419,42 +419,68 @@ void Contract::printRental(Pos::Printer &posPrinter) {
     posPrinter << Pos::logo << Pos::endl << Pos::endl;
 
     // Heading
-    posPrinter << Pos::bold << Pos::center << Pos::reverse
+    posPrinter.setFontSize( 1, 2 );
+    posPrinter << Pos::bold << Pos::center
             << tr( "Rental agreement" ) << Pos::endl << Pos::endl;
-
+    posPrinter.setFontSize();
     posPrinter << Pos::center << "Roskilde Skiklub"
             << Pos::center << "Hedeland" << Pos::endl;
 
-    // TODO: Need hirer info here....
-
-
     // Various information about current time, and rental agreement duration
-    // TODO: Need formats and translation for this.
-    posPrinter << tr("Aftale id            : ") << Pos::endl;// << QString( m_id ) << Pos::endl;
-    posPrinter << tr( "Dato                 : " )
-            << QDateTime::currentDateTime().toString( Qt::ISODate )
+    int maxSize = qMax( tr( "Contract id" ).size(),
+                        qMax( tr( "Time" ).size(),
+                              qMax( tr( "Rental time").size(),
+                                    tr( "Due back" ).size() ) ) );
+    maxSize = 0 - maxSize;
+    posPrinter << Pos::bold << QString( "%0 : " ).arg( tr( "Contract id"), maxSize )
+            << QString( "%0" ).arg( m_id ) << Pos::endl;
+    posPrinter << QString( "%0 : " ).arg( tr( "Time"), maxSize )
+            << QDateTime::currentDateTime().toString( Qt::ISODate ).replace('T', ' ')
             << Pos::endl;
-    posPrinter << tr( "Udleveringstidspunkt : " )
-            << m_startTime.toString( Qt::ISODate )
+    posPrinter << QString( "%0 : " ).arg( tr( "Rental time" ), maxSize )
+            << m_startTime.toString( Qt::ISODate ).replace('T', ' ')
             << Pos::endl;
-    posPrinter << tr( "Afleveringstidspunkt : " )
-            << m_endTime.toString( Qt::ISODate )
+    posPrinter << QString( "%0 : " ).arg( tr( "Due back" ), maxSize )
+            << m_endTime.toString( Qt::ISODate ).replace('T', ' ')
             << Pos::endl;
 
-    // Hirer.printRental( posPrinter );
-    // TODO: Duration, hirer
+    posPrinter << Pos::endl;
 
-    posPrinter << Pos::endl << tr( "Items :" );
-    posPrinter << QString::fromUtf8( "æøå ÆØÅ\n" ) << Pos::endl; // TODO: Remove
-    posPrinter << Pos::hr;
-    ContractItem cii;
+    // Hirer
+    posPrinter << Pos::bold << tr("Hirer :") << Pos::endl;
+    posPrinter << m_hirer.m_firstName << " " << m_hirer.m_lastName << Pos::endl;
+    posPrinter << m_hirer.m_streetAddress << Pos::endl;
+    posPrinter << m_hirer.m_zip << "  " << m_hirer.m_city << Pos::endl;
+
+    posPrinter << Pos::endl;
+
+    // Items.
+    posPrinter << Pos::bold << tr( "Items :" ) << Pos::hr;
     QList<ContractItem>::const_iterator i;
     for ( i = m_contractItems.begin(); i != m_contractItems.end(); ++i ) {
-        posPrinter << i->getItem().getId() << Pos::endl;
+        const ContractItem & cii = *i;
+        posPrinter << tr( "Item" ) << " " << cii.getItem().getId()
+                << " / " << cii.getRentalgroup() << Pos::endl;
+        posPrinter << cii.getItem().toReceiptString() << Pos::endl;
+
     }
-    posPrinter << Pos::hr;
+    posPrinter << Pos::hr << Pos::endl;
+
 
     // TODO: Sum and other stuff
+
+    // Conditions
+    posPrinter << Pos::center << tr("Conditions available upon request")
+            << Pos::endl << Pos::endl << Pos::endl << Pos::endl;
+
+    // Signature
+    posPrinter << Pos::bold
+            << tr( "Signature : " )
+            << QString( "%0" )
+            .arg( "", posPrinter.getReceiptWidth() - tr( "Signature : ").size(), '_' );
+
+    // Space to handle
+    posPrinter << Pos::endl << Pos::endl << Pos::endl << Pos::endl;
 }
 
 //////////////////////////////////////////////////////////////

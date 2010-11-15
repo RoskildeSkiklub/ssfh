@@ -200,6 +200,19 @@ QString Item::toString() const {
             .arg( m_state ).arg( m_note );
 }
 
+QString Item::toReceiptString() const {
+    Logger log("QString Item::toReceiptString() const");
+    QString res = QString( "%1/%2" )
+                  .arg( m_type ).arg( m_size );
+    if ( m_mark != "" ) {
+        res += "/" + m_mark;
+    }
+    if ( m_model != "" ) {
+        res += "/" + m_model;
+    }
+    return res;
+}
+
 void Item::db_setToOut() {
     Logger log("void Item::db_setToIn()");
     if ( m_state != DB::Item::State::booked ) {

@@ -77,6 +77,13 @@ public:
       * \return The receipt with in characters */
     qlonglong getReceiptWidth() const;
 
+    /** \brief Set font width,height multiplicator
+      * \param width The width of the font, 1-8
+      * \param height The height of the font, 1-8
+      *
+      * This is not a io manipulator. The settings are permanent. Default font size is (1,1)*/
+      void setFontSize( unsigned char width = 1, unsigned char height = 1 );
+
     //////////////////////////////////////////////////////////////////////
     // Modifiers
 

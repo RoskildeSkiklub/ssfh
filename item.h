@@ -37,6 +37,10 @@ public:
       * \return HTML representation of item */
     QString toHtml() const;
 
+    /** \brief Return string suitable for a receipt
+      * \return String suitable for receipt */
+    QString toReceiptString() const;
+
     /** \brief Default constructor */
     Item();
 
