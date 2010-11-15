@@ -1,41 +1,44 @@
 #ifndef __POS_PRINTER_H
 #define __POS_PRINTER_H
 
-
+// Qt
 #include <QString>
 #include <QFile>
 #include <QByteArray>
+class QImage;
 
-/** \brief Printer interface class.
-  *
-  * A global instance of this is used when wanting to print something
-  * to the pos/receipt printer.
-  *
-  *
-  * Printing is statefull. You start printing by calling
-  * startReceipt.
-  * You pass stuff to be printed by using operator<<
-  * Only QString and some custom io manipulators are supported.
-
-  * By default, the printer understands ascii. The class initializes
-  * it to use Latin1. (Because it needs to understand Danish).
-  *
-  * This means, that any strings you pass to it, must be able to be
-  * converted to Latin1.
-  *
-  * To enable/disable a printer feature, you use custom io manipulators.
-  * Note, that the combination of manipulators are limited.
-  * E.g. you can not meaningfully center a hr, for instance.
-  *
-  * \code
-  * PrinterInstance << "This is printed" << Printer::bold
-  * << "This will be bold" << "This will not be bold" << Printer::endl
-  * \endcode
-  *
-*/
+// App
+#include "posimage.h"
 
 namespace Pos {
 
+    /** \brief Printer interface class.
+      *
+      * A global instance of this is used when wanting to print something
+      * to the pos/receipt printer.
+      *
+      *
+      * Printing is statefull. You start printing by calling
+      * startReceipt.
+      * You pass stuff to be printed by using operator<<
+      * Only QString and some custom io manipulators are supported.
+
+      * By default, the printer understands ascii. The class initializes
+      * it to use Latin1. (Because it needs to understand Danish).
+      *
+      * This means, that any strings you pass to it, must be able to be
+      * converted to Latin1.
+      *
+      * To enable/disable a printer feature, you use custom io manipulators.
+      * Note, that the combination of manipulators are limited.
+      * E.g. you can not meaningfully center a hr, for instance.
+      *
+      * \code
+      * PrinterInstance << "This is printed" << Printer::bold
+      * << "This will be bold" << "This will not be bold" << Printer::endl
+      * \endcode
+      *
+    */
 class Printer {
 public:
     /** \brief Constructor
@@ -45,6 +48,12 @@ public:
      * something is printed, and will perform initialization
      * after opening the device file */
     Printer( const QString & dev );
+
+    /** \brief Sets a logo
+      * \param logo The logo to print, whenever the logo io manipulator is used
+      *
+      * Note, the image should be monochrome for best results */
+    void setLogo( const QImage & logo );
 
     /** \brief Start a new receipt
       *
@@ -125,6 +134,9 @@ private:
      *
      * This  is added in a stack like filo fashion. */
     QByteArray m_modifierclose;
+
+    /** \brief The logo file. If set */
+    Image m_logo;
 
     /** \brief Center flag
       *

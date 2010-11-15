@@ -121,6 +121,7 @@ int main(int argc, char **argv) {
         // TODO: Fix this to match usb device - something
         Pos::Printer posPrinter ( "/dev/usb/lp0" );
         // Pos::Printer posPrinter ( "/tmp/posprint.foo" );
+        posPrinter.setLogo( QImage( ":logos/rsh-logo-bw.png" ) );
         Globals::posPrinter = &posPrinter;
 
         // Database stuff

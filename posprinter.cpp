@@ -5,6 +5,9 @@
   * This could be generalized, and whatnot, but I only really have
   * a single printer. So here goes. */
 
+// Qt
+#include <QImage>
+
 // app
 #include "log.h"
 #include "exception.h"
@@ -25,17 +28,33 @@ namespace Pos {
     // Codepage 6 of POS-104 is Latin1
     const QByteArray setLatin1( ml0 + QByteArray( ESC "t\006" ) );
 
-    const QByteArray boldOn( ESC "E\001" );
-    const QByteArray boldOff( ESC "E\000", 3 );
+    const QByteArray setAlignLeft( ESC "a0");
+    const QByteArray setAlignCenter( ESC "a1");
+    const QByteArray setAlignRight( ESC "a2");
 
-    const QByteArray underlineOn( ESC "-\001" );
-    const QByteArray underlineOff( ESC "-\000", 3 );
+    const QByteArray setBoldOn( ESC "E1" );
+    const QByteArray setBoldOff( ESC "E0" );
 
-    const QByteArray cut( GS "V1" );
+    const QByteArray setUnderlineOn( ESC "-1" );
+    const QByteArray setUnderlineOff( ESC "-0" );
+
+    const QByteArray doCut( GS "V1" );
+    const QByteArray logoOut( GS "/0", 3 );
 
 Printer::Printer( const QString & dev ) : m_dev( dev ), m_center_flag( false ) {
     Logger log("Printer::Printer()");
     m_device_file.setFileName( dev );
+}
+
+void Printer::setLogo(const QImage &logo) {
+    Logger log("void Printer::setLogo(const QImage &logo)");
+    QImage monoImage = logo.convertToFormat( QImage::Format_Mono, Qt::MonoOnly );
+    if ( monoImage.isNull() ) {
+        throw Exception( Errors::PosImageUnableToConvert )
+                << ( log.stream(error)
+                     << "Unable to convert image to monochrome for use with Pos printer" );
+    }
+    m_logo = Image( monoImage );
 }
 
 bool Printer::openDevice() {
@@ -77,6 +96,7 @@ void Printer::setupPrinter() {
                      << "setupPrinter called, but device is not open/writeable.");
     }
     m_device_file.write( setLatin1 );
+    m_device_file.write( m_logo.getGSStar() );
     // TODO: Upload a logo.
 }
 
@@ -87,7 +107,7 @@ void Printer::startReceipt() {
 
 void Printer::endReceipt() {
     Logger log("void Printer::endReceipt()");
-    m_buffer.append( QByteArray( "\n\n\n\n") + cut );
+    m_buffer.append( QByteArray( "\n\n\n\n") + doCut );
     emitReceipt( m_buffer );
 }
 
@@ -125,21 +145,23 @@ Printer & Printer::operator <<( const QString & str ) {
 
 Printer & Printer::logo() {
     Logger log("Printer & Printer::logo()");
-    m_buffer.append( QString( "TODO: Support logo\n") );
+    m_buffer.append( setAlignCenter );
+    m_buffer.append( logoOut );
+    m_buffer.append( setAlignLeft );
     return *this;
 }
 
 Printer & Printer::bold() {
     Logger log("Printer & Printer::bold()");
-    m_buffer.append( boldOn );
-    addCloseModifier( boldOff );
+    m_buffer.append( setBoldOn );
+    addCloseModifier( setBoldOff );
     return *this;
 }
 
 Printer & Printer::underline() {
     Logger log("Printer & Printer::bold()");
-    m_buffer.append( underlineOn );
-    addCloseModifier( underlineOff );
+    m_buffer.append( setUnderlineOn );
+    addCloseModifier( setUnderlineOff );
     return *this;
 }
 

@@ -23,7 +23,8 @@ SOURCES += main.cpp \
     contractitem.cpp \
     returndialog.cpp \
     viewhireditemsdialog.cpp \
-    posprinter.cpp
+    posprinter.cpp \
+    posimage.cpp
 HEADERS += mainwindow.h \
     rentdialog.h \
     stockdialog.h \
@@ -42,7 +43,8 @@ HEADERS += mainwindow.h \
     contractitem.h \
     returndialog.h \
     viewhireditemsdialog.h \
-    posprinter.h
+    posprinter.h \
+    posimage.h
 FORMS += mainwindow.ui \
     rentdialog.ui \
     stockdialog.ui \
@@ -69,3 +71,6 @@ DISTFILES = doc/NotesOnSundhedsKort.txt \
 
 # The version
 VERSION = -0.3.0
+
+# Resources
+RESOURCES     = SnowStuffForHire.qrc

@@ -37,6 +37,8 @@ namespace Errors {
         ContractItemDoesNotExist = 4001,
 
         PosPrinterNotOpen = 5000,
+        PosImageTooLarge = 5001,
+        PosImageUnableToConvert = 5002,
 
         MagswipeNoMatch = 10000,
     };

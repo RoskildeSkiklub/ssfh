@@ -416,13 +416,17 @@ void Contract::printRental(Pos::Printer &posPrinter) {
     // posPrinter.startReceipt();
 
     // Logo and identifiers of the rental agency
-    posPrinter << Pos::logo << Pos::endl
-            << Pos::center << "Roskilde Skiklub" << Pos::endl
-            << Pos::center << "Hedeland" << Pos::endl << Pos::endl;
+    posPrinter << Pos::logo << Pos::endl << Pos::endl;
 
     // Heading
     posPrinter << Pos::bold << Pos::center
             << tr( "Rental agreement" ) << Pos::endl << Pos::endl;
+
+    posPrinter << Pos::center << "Roskilde Skiklub" << Pos::endl
+            << Pos::center << "Hedeland" << Pos::endl << Pos::endl;
+
+    // TODO: Need hirer info here....
+
 
     // Various information about current time, and rental agreement duration
     // TODO: Need formats and translation for this.
