@@ -38,6 +38,9 @@ namespace Pos {
     const QByteArray setUnderlineOn( ESC "-1" );
     const QByteArray setUnderlineOff( ESC "-0" );
 
+    const QByteArray setReverseOn( GS "B1" );
+    const QByteArray setReverseOff( GS "B0" );
+
     const QByteArray doCut( GS "V1" );
     const QByteArray logoOut( GS "/0", 3 );
 
@@ -161,9 +164,16 @@ Printer & Printer::bold() {
 }
 
 Printer & Printer::underline() {
-    Logger log("Printer & Printer::bold()");
+    Logger log("Printer & Printer::underline()");
     m_buffer.append( setUnderlineOn );
     addCloseModifier( setUnderlineOff );
+    return *this;
+}
+
+Printer & Printer::reverse() {
+    Logger log("Printer & Printer::reverse()");
+    m_buffer.append( setReverseOn );
+    addCloseModifier( setReverseOff );
     return *this;
 }
 
@@ -211,6 +221,10 @@ Printer & bold( Printer & os ) {
 
 Printer & underline( Printer & os ) {
     return os.underline();
+};
+
+Printer & reverse( Printer & os ) {
+    return os.reverse();
 };
 
 Printer & center( Printer & os ) {

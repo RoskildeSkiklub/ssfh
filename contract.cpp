@@ -419,7 +419,7 @@ void Contract::printRental(Pos::Printer &posPrinter) {
     posPrinter << Pos::logo << Pos::endl << Pos::endl;
 
     // Heading
-    posPrinter << Pos::bold << Pos::center
+    posPrinter << Pos::bold << Pos::center << Pos::reverse
             << tr( "Rental agreement" ) << Pos::endl << Pos::endl;
 
     posPrinter << Pos::center << "Roskilde Skiklub"

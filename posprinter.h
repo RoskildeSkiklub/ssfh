@@ -102,6 +102,11 @@ public:
       * This is used to enable underline for the next input */
     Printer & underline();
 
+    /** \brief Black/white reverse text
+      *
+      * This is used to enable black/white reverse for the next input */
+    Printer & reverse();
+
     /** \brief Center text
       *
       * This is used to enable center for the next input.
@@ -143,6 +148,13 @@ private:
       *
       * When set to true, the current line only contains nothing or control codes */
     bool m_blank_line_flag;
+
+    /** \brief Vertical character width */
+    unsigned char m_char_width;
+
+    /** \brief Vertical character height */
+    unsigned char m_char_height;
+
 
     /** \brief Method to add a closing modifier to the "stack"
       * of modifiers.
@@ -192,6 +204,11 @@ Printer & bold( Printer & os );
   *
   * This is used to enable underline for the next input */
 Printer & underline( Printer & os );
+
+/** \brief Black white reverse text
+  *
+  * This is used to enable reverse black/white for the next input */
+Printer & reverse( Printer & os );
 
 /** \brief Center text
   *
