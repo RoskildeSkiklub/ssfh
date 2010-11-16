@@ -305,7 +305,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="db_consts.cpp" line="32"/>
         <source>out</source>
-        <translation>udlånt</translation>
+        <translation>udlejet</translation>
     </message>
     <message>
         <location filename="db_consts.cpp" line="33"/>
@@ -576,7 +576,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="db_consts.cpp" line="22"/>
         <source>out</source>
-        <translation>udlånt</translation>
+        <translation>udlejet</translation>
     </message>
     <message>
         <location filename="db_consts.cpp" line="37"/>
