@@ -456,14 +456,26 @@ void Contract::printRental(Pos::Printer &posPrinter) {
     QList<ContractItem>::const_iterator i;
     for ( i = m_contractItems.begin(); i != m_contractItems.end(); ++i ) {
         const ContractItem & cii = *i;
-        posPrinter << tr( "Item" ) << " " << cii.getItem().getId()
-                << " / " << cii.getRentalgroup() << Pos::endl;
-        posPrinter.setFont( Pos::FontB );
-        posPrinter << "  " << cii.getItem().toReceiptString() << Pos::endl;
-        posPrinter.setFont( Pos::FontA );
+        QString idesc = QString( "%0/%1")
+                        .arg( cii.getItem().getType() )
+                        .arg( cii.getRentalgroup() );
+        posPrinter << idesc
+                << QString( "%0,00")
+                .arg( cii.getPrice(),
+                      posPrinter.getReceiptWidth() - 3 - idesc.size() ) << Pos::endl;
+        // posPrinter.setFont( Pos::FontB );
+        posPrinter << "   " << cii.getItem().toReceiptString() << Pos::endl;
+        // posPrinter.setFont( Pos::FontA );
     }
-    posPrinter << Pos::hr << Pos::endl;
-
+    // The sum of the items
+    posPrinter << Pos::hr;
+    posPrinter.setFontSize( 1, 2 );
+    posPrinter << tr("Total") << QString( "%0,00" )
+            .arg( getTotalPrice(),
+                  posPrinter.getReceiptWidth() - 3 - tr("Total").size() )
+            << Pos::endl;
+    posPrinter.setFontSize();
+    posPrinter << Pos::endl << Pos::endl;
 
     // TODO: Sum and other stuff
 

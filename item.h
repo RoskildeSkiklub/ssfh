@@ -48,6 +48,10 @@ public:
       * \return The id of the item */
     QString getId() const;
 
+    /** \brief Return the type of the item
+      * \return The type of the item */
+    QString getType() const;
+
     /** \brief Return the rental group
       * \return The rental group of the item */
     QString getRentalGroup() const;
@@ -55,7 +59,6 @@ public:
     /** \brief Get the state of the item
       * \return The state of the item */
     QString getState() const;
-
 
     /** \brief Update the state of this item in the database to "out"
       *

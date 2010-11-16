@@ -150,6 +150,12 @@ QString Item::getId() const {
     return m_id;
 }
 
+QString Item::getType() const {
+    Logger log("QString Item::getType()");
+    return m_type;
+}
+
+
 QString Item::getRentalGroup() const {
     Logger log("QString Item::getRentalGroup()");
     return m_rentalgroup;
@@ -202,13 +208,13 @@ QString Item::toString() const {
 
 QString Item::toReceiptString() const {
     Logger log("QString Item::toReceiptString() const");
-    QString res = QString( "%1 / %2" )
-                  .arg( m_type ).arg( m_size );
+    QString res = QString( "%0: %1/%2" )
+                  .arg( m_id ).arg( m_type ).arg( m_size );
     if ( m_mark != "" ) {
-        res += " / " + m_mark;
+        res += ", " + m_mark;
     }
     if ( m_model != "" ) {
-        res += "/" + m_model;
+        res += " " + m_model;
     }
     return res;
 }
