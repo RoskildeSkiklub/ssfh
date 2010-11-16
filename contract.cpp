@@ -501,7 +501,7 @@ void Contract::printGeneralReceipt( Pos::Printer &posPrinter, ReceiptType receip
             // This prints the state of the item
             posPrinter << idesc << Pos::bold
                     << QString( "%0")
-                    .arg( cii.getState(),
+                    .arg( ContractItem::tr( cii.getState().toLatin1().constData() ),
                           posPrinter.getReceiptWidth() - idesc.size() ) << Pos::endl;
         } else {
             // This prints the cost of the item
