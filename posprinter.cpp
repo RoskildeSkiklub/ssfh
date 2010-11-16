@@ -51,6 +51,11 @@ Printer::Printer( const QString & dev )
     m_device_file.setFileName( dev );
 }
 
+bool Printer::ready() {
+    Logger log("bool Printer::ready()");
+    return openDevice();
+}
+
 void Printer::setLogo(const QImage &logo) {
     Logger log("void Printer::setLogo(const QImage &logo)");
     QImage monoImage = logo.convertToFormat( QImage::Format_Mono, Qt::MonoOnly );

@@ -260,13 +260,17 @@ void RentDialog::on_input_item_lineEdit_textChanged(QString newText) {
 void RentDialog::on_input_finish_pushButton_clicked() {
     Logger log("void RentDialog::on_input_finish_pushButton_clicked()");
     m_contract.activate();
-    // TODO: CHECK Printer connected here, allow for fiddling around.
-    Pos::Printer & posp( Globals::getPosPrinter() );
-    posp.startReceipt();
-    m_contract.printRental( posp );
-    posp.endReceipt();
-    QMessageBox::information( this, tr( "Contract created" ),
-                              tr( "Contract created, printing receipt." ) );
+    if ( Globals::checkPosPrinter() ) {
+        Pos::Printer & posp( Globals::getPosPrinter() );
+        posp.startReceipt();
+        m_contract.printRental( posp );
+        posp.endReceipt();
+        QMessageBox::information( this, tr( "Contract created" ),
+                                  tr( "Contract created, printing receipt." ) );
+    } else {
+        QMessageBox::information( this, tr( "Contract created" ),
+                                  tr( "Contract created. Unable to print receipt." ) );
+    }
     close();
 
 }

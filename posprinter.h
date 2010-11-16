@@ -57,7 +57,14 @@ public:
      * after opening the device file */
     Printer( const QString & dev );
 
-    /** \brief Sets a logo
+    /** \brief Check if the printer is ready
+      * \return true if ready, false otherwise
+      *
+      * This method also try to make the printer ready, if it is not. */
+    bool ready();
+
+
+    /** \brief Sets a log
       * \param logo The logo to print, whenever the logo io manipulator is used
       *
       * Note, the image should be monochrome for best results */
