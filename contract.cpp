@@ -444,7 +444,8 @@ void Contract::printRental(Pos::Printer &posPrinter) {
     posPrinter << Pos::endl;
 
     // Hirer
-    posPrinter << Pos::bold << tr("Hirer :") << Pos::endl;
+    posPrinter << Pos::bold << tr("Hirer id : ")
+            << QString("%0").arg( m_hirer.m_id ) << Pos::endl;
     posPrinter << m_hirer.m_firstName << " " << m_hirer.m_lastName << Pos::endl;
     posPrinter << m_hirer.m_streetAddress << Pos::endl;
     posPrinter << m_hirer.m_zip << "  " << m_hirer.m_city << Pos::endl;
