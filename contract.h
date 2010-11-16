@@ -215,14 +215,21 @@ public:
       * \return HTML representation of the contract. */
     QString toReturnHtml() const;
 
-    /** \brief Print to a PosPrinter
+    /** \brief Print rental agreement to a PosPrinter
       * \param printer The pos printer instance to use
       *
       * Call this method, when renting out the items, after done.
       * The contract must be active, when this method is called */
     void printRental( Pos::Printer & posPrinter );
 
-    /** \brief Print to a PosPrinter
+    /** \brief Print rental receipt to a PosPrinter
+      * \param printer The pos printer instance to use
+      *
+      * Call this method in order to produce a receipt for the customer after rental.
+      * The contract must be active, when this method is called */
+    void printReceipt( Pos::Printer & posPrinter );
+
+    /** \brief Print return receipt to a PosPrinter
       * \param printer The pos printer instance to use
       *
       * Call this method, when all items have been returned, and the contract have been closed.
@@ -304,6 +311,14 @@ private:
       * Only the base part, not hirer and contract item */
     QString toString() const;
 
+    typedef enum {
+        RentalAgreement = 0,
+        RentalReceipt = 1,
+        ReturnReceipt = 2
+    } ReceiptType;
+
+    /** \brief Print a rental agreement or an receipt */
+    void printGeneralReceipt( Pos::Printer & posPrinter, ReceiptType receiptType );
 };
 
 #endif // CONTRACT_H

@@ -265,7 +265,6 @@ void Contract::close() {
     }
 }
 
-
 Contract Contract::db_load(qlonglong id) {
     Logger log("Contract Contract::db_load(qlonglong id)");
     log.stream() << "Loading contract with id '" << id << "'";
@@ -410,107 +409,56 @@ QString Contract::toCommonHtml( bool isRental ) const {
 void Contract::printRental(Pos::Printer &posPrinter) {
     Logger log("void Contract::printRental(Pos::Printer &posPrinter)");
     checkInActiveState( "void Contract::printRental" );
+    printGeneralReceipt( posPrinter, RentalAgreement );
+ }
 
-    // TODO: Would be better, if the text and stuff was not hardcoded...
-    // TODO: Should go into configuration, obviously.
-    // posPrinter.startReceipt();
-
-    // Logo and identifiers of the rental agency
-    // Don't wont that on the signing stuff, waste of paper, makes it harder to handle.
-    // posPrinter << Pos::logo << Pos::endl << Pos::endl;
-
-    // Heading
-    posPrinter.setFontSize( 1, 2 );
-    posPrinter << Pos::bold << Pos::center
-            << tr( "Rental agreement" ) << Pos::endl << Pos::endl;
-    posPrinter.setFontSize();
-    posPrinter << Pos::center << "Roskilde Skiklub"
-            << Pos::center << "Hedeland" << Pos::endl;
-
-    // Various information about current time, and rental agreement duration
-    int maxSize = qMax( tr( "Contract id" ).size(),
-                        qMax( tr( "Time" ).size(),
-                              qMax( tr( "Rental time").size(),
-                                    tr( "Due back" ).size() ) ) );
-    maxSize = 0 - maxSize;
-    posPrinter << Pos::bold << QString( "%0 : " ).arg( tr( "Contract id"), maxSize )
-            << QString( "%0" ).arg( m_id ) << Pos::endl;
-    posPrinter << QString( "%0 : " ).arg( tr( "Time"), maxSize )
-            << QDateTime::currentDateTime() << Pos::endl;
-    posPrinter << QString( "%0 : " ).arg( tr( "Rental time" ), maxSize )
-            << m_startTime << Pos::endl;
-    posPrinter << QString( "%0 : " ).arg( tr( "Due back" ), maxSize )
-            << m_endTime << Pos::endl;
-
-    posPrinter << Pos::endl;
-
-    // Hirer
-    posPrinter << Pos::bold << tr("Hirer id : ")
-            << QString("%0").arg( m_hirer.m_id ) << Pos::endl;
-    posPrinter << m_hirer.m_firstName << " " << m_hirer.m_lastName << Pos::endl;
-    posPrinter << m_hirer.m_streetAddress << Pos::endl;
-    posPrinter << m_hirer.m_zip << "  " << m_hirer.m_city << Pos::endl;
-
-    posPrinter << Pos::endl;
-
-    // Items.
-    posPrinter << Pos::bold << tr( "Items:" ) << Pos::hr;
-    QList<ContractItem>::const_iterator i;
-    for ( i = m_contractItems.begin(); i != m_contractItems.end(); ++i ) {
-        const ContractItem & cii = *i;
-        QString idesc = QString( "%0/%1")
-                        .arg( cii.getItem().getType() )
-                        .arg( cii.getRentalgroup() );
-        posPrinter << idesc
-                << QString( "%0,00")
-                .arg( cii.getPrice(),
-                      posPrinter.getReceiptWidth() - 3 - idesc.size() ) << Pos::endl;
-        // posPrinter.setFont( Pos::FontB );
-        posPrinter << "   " << cii.getItem().toReceiptString() << Pos::endl;
-        // posPrinter.setFont( Pos::FontA );
-    }
-    // The sum of the items
-    posPrinter << Pos::hr;
-    posPrinter.setFontSize( 1, 2 );
-    posPrinter << tr("Total") << QString( "%0,00" )
-            .arg( getTotalPrice(),
-                  posPrinter.getReceiptWidth() - 3 - tr("Total").size() )
-            << Pos::endl;
-    posPrinter.setFontSize();
-    posPrinter << Pos::endl << Pos::endl;
-
-    // Conditions
-    posPrinter << Pos::center << tr("Conditions available upon request")
-            << Pos::endl << Pos::endl << Pos::endl << Pos::endl;
-
-    // Signature
-    posPrinter.setFont( Pos::FontB );
-    posPrinter << Pos::bold
-            << tr( "Signature : " )
-            << QString( "%0" )
-            .arg( "", posPrinter.getReceiptWidth() - tr( "Signature : ").size(), '_' );
-    posPrinter.setFont( Pos::FontA );
-    // Space to handle
-    posPrinter << Pos::endl << Pos::endl << Pos::endl << Pos::endl;
+void Contract::printReceipt(Pos::Printer &posPrinter) {
+    Logger log("void Contract::printReceipt(Pos::Printer &posPrinter)");
+    checkInActiveState( "void Contract::printReceipt" );
+    printGeneralReceipt( posPrinter, RentalReceipt );
 }
 
 void Contract::printReturn(Pos::Printer &posPrinter) {
     Logger log("void Contract::printReturn(Pos::Printer &posPrinter)");
     checkInClosedState( "void Contract::printReturn" );
+    printGeneralReceipt( posPrinter, ReturnReceipt );
+}
 
+
+void Contract::printGeneralReceipt( Pos::Printer &posPrinter, ReceiptType receiptType ) {
+    Logger log("printGeneralReceipt( Pos::Printer &posPrinter, ReceiptType receiptType )" );
     // TODO: Would be better, if the text and stuff was not hardcoded...
-    // TODO: Should go into configuration, obviously.
+    // TODO: Name of rental agency, really should go into configuration, obviously.
 
-    // Logo and identifiers of the rental agency
-    posPrinter << Pos::logo << Pos::endl << Pos::endl;
+    ///////////////////////////////////////////////////////////////////
+    // Logo of the rental agency are only printed on stuff
+    // that the customer gets to keep
+    if ( receiptType != RentalAgreement ) {
+        posPrinter << Pos::logo << Pos::endl << Pos::endl;
+    };
 
+    ///////////////////////////////////////////////////////////////////
     // Heading
     posPrinter.setFontSize( 1, 2 );
-    posPrinter << Pos::bold << Pos::center
-            << tr( "Return receipt" ) << Pos::endl << Pos::endl;
+    posPrinter << Pos::bold << Pos::center;
+    switch( receiptType ) {
+    case RentalAgreement: posPrinter << tr("Rental Agreement"); break;
+    case RentalReceipt: posPrinter << tr("Rental Receipt"); break;
+    case ReturnReceipt: posPrinter << tr("Return Receipt"); break;
+    }
+    posPrinter << Pos::endl;
     posPrinter.setFontSize();
 
-    // Various information about current time, and rental agreement duration
+    ///////////////////////////////////////////////////////////////////
+    // For the rental agreement, add the name of the club here
+    if ( receiptType == RentalAgreement ) {
+        posPrinter << Pos::center << "Roskilde Skiklub Hedeland" << Pos::endl;
+    }
+    posPrinter << Pos::endl;
+
+    ////////////////////////////////////////////////////////////////////
+    // Information about the contract comes next.
+    // Figure out how to line it up
     int maxSize = qMax( tr( "Contract id" ).size(),
                         qMax( tr( "Time" ).size(),
                               qMax( tr( "Rental time").size(),
@@ -524,18 +472,24 @@ void Contract::printReturn(Pos::Printer &posPrinter) {
             << m_startTime << Pos::endl;
     posPrinter << QString( "%0 : " ).arg( tr( "Due back" ), maxSize )
             << m_endTime << Pos::endl;
-
     posPrinter << Pos::endl;
 
-    // Hirer
-    posPrinter << Pos::bold << tr("Hirer:") << Pos::endl;
+    ////////////////////////////////////////////////////////////////////
+    // Hirer - the id is not present on the stuff the user gets
+    if ( receiptType == RentalAgreement) {
+        posPrinter << Pos::bold << tr("Hirer id : ")
+                << QString("%0").arg( m_hirer.m_id ) << Pos::endl;
+    } else {
+        posPrinter << Pos::bold << tr("Hirer:") << Pos::endl;
+    }
     posPrinter << m_hirer.m_firstName << " " << m_hirer.m_lastName << Pos::endl;
     posPrinter << m_hirer.m_streetAddress << Pos::endl;
     posPrinter << m_hirer.m_zip << "  " << m_hirer.m_city << Pos::endl;
-
     posPrinter << Pos::endl;
 
+    ////////////////////////////////////////////////////////////////////
     // Items.
+    // On agreement and rental receipt, cost is listed, on return, state of item
     posPrinter << Pos::bold << tr( "Items:" ) << Pos::hr;
     QList<ContractItem>::const_iterator i;
     for ( i = m_contractItems.begin(); i != m_contractItems.end(); ++i ) {
@@ -543,34 +497,72 @@ void Contract::printReturn(Pos::Printer &posPrinter) {
         QString idesc = QString( "%0/%1")
                         .arg( cii.getItem().getType() )
                         .arg( cii.getRentalgroup() );
-        posPrinter << idesc << Pos::bold
-                << QString( "%0")
-                .arg( cii.getState(),
-                      posPrinter.getReceiptWidth() - idesc.size() ) << Pos::endl;
+        if ( receiptType == ReturnReceipt ) {
+            // This prints the state of the item
+            posPrinter << idesc << Pos::bold
+                    << QString( "%0")
+                    .arg( cii.getState(),
+                          posPrinter.getReceiptWidth() - idesc.size() ) << Pos::endl;
+        } else {
+            // This prints the cost of the item
+            // TODO: When sale is added, these must be marked in a special way.
+            posPrinter << idesc
+                    << QString( "%0,00")
+                    .arg( cii.getPrice(),
+                          posPrinter.getReceiptWidth() - 3 - idesc.size() ) << Pos::endl;
+        }
         posPrinter << "   " << cii.getItem().toReceiptString() << Pos::endl;
     }
-    posPrinter << Pos::hr << Pos::endl;
-
-    // Are there any outstanding items?
+    posPrinter << Pos::hr;
     posPrinter.setFontSize( 1, 2 );
-    posPrinter << Pos::center;
-    if ( hasReturnableItems() ) {
-        posPrinter << tr( "Some items not returned" );
+    // The sum of the items is printed, except for returns, where it is the state of the contract
+    // TODO: Discount and stuff is missing from this.
+    if ( receiptType == ReturnReceipt ) {
+        posPrinter << Pos::center;
+        if ( hasReturnableItems() ) {
+            posPrinter << tr( "Some items not returned" );
+        } else {
+            posPrinter << tr( "All items returned" );
+        }
     } else {
-        posPrinter << tr( "All items returned" );
+        posPrinter << tr("Total") << QString( "%0,00" )
+                .arg( getTotalPrice(),
+                      posPrinter.getReceiptWidth() - 3 - tr("Total").size() )
+                << Pos::endl;
     }
-    posPrinter << Pos::endl;
     posPrinter.setFontSize();
+    posPrinter << Pos::endl << Pos::endl;
 
-    posPrinter << Pos::endl;
-    // Blurp
-    posPrinter << Pos::center << tr( "Thank you for visiting") << Pos::endl << Pos::endl;
-    posPrinter << Pos::center << "Roskilde Skiklub Hedeland";
-    posPrinter << Pos::center << "www.roskildeskiklub.dk" << Pos::endl;
+    ///////////////////////////////////////////////////////////////////////////////
+    // Finally, some blurbs
+    // Thank you/Conditions
+    if ( receiptType == ReturnReceipt ) {
+        posPrinter << Pos::center << tr( "Thank you for visiting");
+    } else {
+        posPrinter << Pos::center << tr("Conditions available upon request");
+    }
+    posPrinter << Pos::endl << Pos::endl;
 
-    // Space to handle
-    posPrinter << Pos::endl << Pos::endl << Pos::endl << Pos::endl;
+    // Signature or ident
+    if ( receiptType == RentalAgreement ) {
+        posPrinter << Pos::endl << Pos::endl;
+        posPrinter.setFont( Pos::FontB );
+        posPrinter << Pos::bold
+                << tr( "Signature : " )
+                << QString( "%0" )
+                .arg( "", posPrinter.getReceiptWidth() - tr( "Signature : ").size(), '_' ) << Pos::endl;
+        posPrinter.setFont( Pos::FontA );
+        posPrinter << Pos::endl;
+    } else {
+        posPrinter << Pos::center << "Roskilde Skiklub Hedeland";
+        posPrinter << Pos::center << "www.roskildeskiklub.dk" << Pos::endl;
+    }
+
+    //////////////////////////////////////////////////////////////////////////////
+    // Add some space to allow easy handling.
+    posPrinter << Pos::endl << Pos::endl;
 }
+
 //////////////////////////////////////////////////////////////
 // MORE CONTRACT
 

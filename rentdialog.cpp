@@ -164,9 +164,6 @@ void RentDialog::set_hirer ( const Hirer & hirer ) {
     }
 }
 
-
-
-
 ////////////////////////////////////////////////////////////////////////////////
 // ITEM RELATED STUFF
 
@@ -211,7 +208,6 @@ bool RentDialog::try_add_item(const QString &item_id) {
     return true;
 }
 
-
 ////////////////////////////////////////////////////////////////////////////////
 // SLOTS
 
@@ -225,7 +221,6 @@ void RentDialog::changeEvent(QEvent *e) {
         break;
     }
 }
-
 
 void RentDialog::set_hirer (const DKSundhedskort &dsk) {
     Logger log( "void RentDialog::set_hirer (const DKSundhedskort &dsk)" );
@@ -262,9 +257,17 @@ void RentDialog::on_input_finish_pushButton_clicked() {
     m_contract.activate();
     if ( Globals::checkPosPrinter() ) {
         Pos::Printer & posp( Globals::getPosPrinter() );
+        // The receipt the customer needs to sign
         posp.startReceipt();
         m_contract.printRental( posp );
         posp.endReceipt();
+
+        // The receipt for the customer
+        posp.startReceipt();
+        m_contract.printReceipt( posp );
+        posp.endReceipt();
+
+
         QMessageBox::information( this, tr( "Contract created" ),
                                   tr( "Contract created, printing receipt." ) );
     } else {
