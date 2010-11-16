@@ -24,7 +24,8 @@ SOURCES += main.cpp \
     returndialog.cpp \
     viewhireditemsdialog.cpp \
     posprinter.cpp \
-    posimage.cpp
+    posimage.cpp \
+    printchecklistdialog.cpp
 HEADERS += mainwindow.h \
     rentdialog.h \
     stockdialog.h \
@@ -44,14 +45,16 @@ HEADERS += mainwindow.h \
     returndialog.h \
     viewhireditemsdialog.h \
     posprinter.h \
-    posimage.h
+    posimage.h \
+    printchecklistdialog.h
 FORMS += mainwindow.ui \
     rentdialog.ui \
     stockdialog.ui \
     hirerdialog.ui \
     addnewitemdialog.ui \
     returndialog.ui \
-    viewhireditemsdialog.ui
+    viewhireditemsdialog.ui \
+    printchecklistdialog.ui
 TRANSLATIONS = SnowStuffForHire_da_DK.ts
 
 # Extra files to include in dist

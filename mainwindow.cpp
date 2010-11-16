@@ -6,6 +6,7 @@
 #include "returndialog.h"
 #include "addnewitemdialog.h"
 #include "viewhireditemsdialog.h"
+#include "printchecklistdialog.h"
 
 // App
 #include "log.h"
@@ -69,6 +70,12 @@ void MainWindow::showHiredItemsDialog() const {
     vhdi.exec();
 }
 
+void MainWindow::showPrintChecklistDialog() const {
+    Logger log("void MainWindow::showPrintChecklistDialog() const");
+    log.stream() << "Displaying PrintChecklist dialog";
+    PrintChecklistDialog pcld;
+    pcld.exec();
+}
 
 
 /////
@@ -102,4 +109,10 @@ void MainWindow::on_action_HiredItems_triggered()
 {
     Logger log("void MainWindow::on_action_HiredItems_triggered()");
     showHiredItemsDialog();
+}
+
+void MainWindow::on_actionPrint_Checklist_triggered()
+{
+    Logger log("void MainWindow::on_actionPrint_Checklist_triggered()");
+    showPrintChecklistDialog();
 }

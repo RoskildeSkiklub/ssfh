@@ -23,8 +23,10 @@ private:
     void showReturnDialog() const;
     void showAddItemsDialog() const;
     void showHiredItemsDialog() const;
+    void showPrintChecklistDialog() const;
 
 private slots:
+    void on_actionPrint_Checklist_triggered();
     void on_action_HiredItems_triggered();
     void on_action_AddItems_triggered();
     void on_action_ReturnItems_triggered();

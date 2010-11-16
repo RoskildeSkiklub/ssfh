@@ -67,6 +67,7 @@
     </property>
     <addaction name="action_AddItems"/>
     <addaction name="action_HiredItems"/>
+    <addaction name="actionPrint_Checklist"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_Stock"/>
@@ -103,6 +104,14 @@
    </property>
    <property name="toolTip">
     <string>Show all hired items</string>
+   </property>
+  </action>
+  <action name="actionPrint_Checklist">
+   <property name="text">
+    <string>Print Checklist</string>
+   </property>
+   <property name="toolTip">
+    <string>&amp;Print Checklist</string>
    </property>
   </action>
  </widget>

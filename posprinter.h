@@ -47,6 +47,13 @@ namespace Pos {
         // FontC = 2 // 8 x 16
     } Font;
 
+    class Barcode {
+        QString m_text;
+    public:
+        Barcode( const QString & text ) : m_text( text ) {}
+        const QString & getBarcode() const { return m_text; }
+    };
+
 class Printer {
 public:
     /** \brief Constructor
@@ -92,6 +99,13 @@ public:
       *
       * This formats the time as '2010-11-31 13:44' and outputs it */
     Printer & operator<<( const QDateTime & dt );
+
+    /** \brief Output a barcode
+      *
+      * This emits a "low" barcode on a single line, in code 39, with no text.
+      * Note, that if the barcode is more than 10 chars long it will not be printed, but just ignored.*/
+    Printer & operator<<( const Barcode & barcode );
+
 
     /** \brief Get the page/receipt width
       * \return The receipt with in characters */

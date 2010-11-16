@@ -45,6 +45,7 @@ namespace Pos {
     const QByteArray doCut( GS "V1" );
     const QByteArray logoOut( GS "/0", 3 );
 
+
 Printer::Printer( const QString & dev )
     : m_dev( dev ), m_blank_line_flag( true ), m_font( FontA ), m_char_width( 1 ), m_char_height( 1 ) {
     Logger log("Printer::Printer()");
@@ -200,6 +201,19 @@ Printer & Printer::operator <<( const QString & str ) {
 Printer & Printer::operator <<( const QDateTime & dt ) {
     Logger log("Printer & Printer::operator <<( const QDateTime & dt )");
     return this->operator <<( dt.toString( "yyyy-MM-dd hh:mm" ) );
+}
+
+Printer & Printer::operator <<( const Barcode & barcode ) {
+    Logger log("printer & Printer::operator <<( const Barcode & barcode )");
+    if ( barcode.getBarcode().size() > 10 ) {
+        log.stream( error ) << "Unable to print barcode '" << barcode.getBarcode() << "' because it is too long.";
+        return *this;
+    }
+    ensureBlank();
+    m_buffer.append( QByteArray( GS "hA" GS "H0" ) );
+    m_buffer.append( GS "kE" );
+    m_buffer.append( static_cast<unsigned char>( barcode.getBarcode().size() ) );
+    return this->operator<<( barcode.getBarcode() );
 }
 
 Printer & Printer::logo() {
