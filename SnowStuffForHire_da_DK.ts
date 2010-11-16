@@ -225,7 +225,7 @@ p, li { white-space: pre-wrap; }
         <location filename="contract.cpp" line="464"/>
         <location filename="contract.cpp" line="471"/>
         <source>Rental time</source>
-        <translation>Udlejet</translation>
+        <translation>Udlejes</translation>
     </message>
     <message>
         <location filename="contract.cpp" line="465"/>
@@ -236,7 +236,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="contract.cpp" line="480"/>
         <source>Hirer id : </source>
-        <translation>Lejer nr.</translation>
+        <translation>Lejer nr. : </translation>
     </message>
     <message>
         <location filename="contract.cpp" line="483"/>
