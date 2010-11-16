@@ -639,7 +639,7 @@ p, li { white-space: pre-wrap; }
         <location filename="mainwindow.ui" line="40"/>
         <location filename="mainwindow.ui" line="76"/>
         <source>&amp;Rent</source>
-        <translation>&amp;Lej</translation>
+        <translation type="unfinished">&amp;Udlej</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="57"/>
