@@ -222,6 +222,13 @@ public:
       * The contract must be active, when this method is called */
     void printRental( Pos::Printer & posPrinter );
 
+    /** \brief Print to a PosPrinter
+      * \param printer The pos printer instance to use
+      *
+      * Call this method, when all items have been returned, and the contract have been closed.
+      * The contract must be closed, when this method is called */
+    void printReturn( Pos::Printer & posPrinter );
+
 private:
     /** \brief Database field: The id of the contract. Initially -1 */
     qlonglong m_id;
@@ -265,6 +272,10 @@ private:
     /** \brief Checks the contract is in active state, throws otherwise
       * \param method The name of the method calling this method, used for error reporting */
     void checkInActiveState( const QString & method );
+
+    /** \brief Checks the contract is in closed state, throws otherwise
+      * \param method The name of the method calling this method, used for error reporting */
+    void checkInClosedState( const QString & method );
 
     /** \brief Calculates the price of a single item on this contract
       * \param item The item to calculate for

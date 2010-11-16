@@ -165,8 +165,12 @@ void ReturnDialog::return_item(const QString &item_id) {
     update();
     if ( ! m_contract.hasReturnableItems() ) {
         m_contract.close();
+        Pos::Printer & posp( Globals::getPosPrinter() );
+        posp.startReceipt();
+        m_contract.printReturn( posp );
+        posp.endReceipt();
         QMessageBox::information( this, tr("Contract closed"),
-                                  tr( "All items returned. Printing receipt, and closing contract.") );
+                                  tr( "All items returned. Printing receipt." ) );
         close();
     }
 }

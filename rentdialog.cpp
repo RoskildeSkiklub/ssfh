@@ -260,8 +260,7 @@ void RentDialog::on_input_item_lineEdit_textChanged(QString newText) {
 void RentDialog::on_input_finish_pushButton_clicked() {
     Logger log("void RentDialog::on_input_finish_pushButton_clicked()");
     m_contract.activate();
-    // TODO: Fix here.
-    // Globals::posPrinter->emitReceipt( "Hej, her er en receipt" );
+    // TODO: CHECK Printer connected here, allow for fiddling around.
     Pos::Printer & posp( Globals::getPosPrinter() );
     posp.startReceipt();
     m_contract.printRental( posp );

@@ -416,7 +416,8 @@ void Contract::printRental(Pos::Printer &posPrinter) {
     // posPrinter.startReceipt();
 
     // Logo and identifiers of the rental agency
-    posPrinter << Pos::logo << Pos::endl << Pos::endl;
+    // Don't wont that on the signing stuff, waste of paper, makes it harder to handle.
+    // posPrinter << Pos::logo << Pos::endl << Pos::endl;
 
     // Heading
     posPrinter.setFontSize( 1, 2 );
@@ -453,7 +454,7 @@ void Contract::printRental(Pos::Printer &posPrinter) {
     posPrinter << Pos::endl;
 
     // Items.
-    posPrinter << Pos::bold << tr( "Items :" ) << Pos::hr;
+    posPrinter << Pos::bold << tr( "Items:" ) << Pos::hr;
     QList<ContractItem>::const_iterator i;
     for ( i = m_contractItems.begin(); i != m_contractItems.end(); ++i ) {
         const ContractItem & cii = *i;
@@ -478,8 +479,6 @@ void Contract::printRental(Pos::Printer &posPrinter) {
     posPrinter.setFontSize();
     posPrinter << Pos::endl << Pos::endl;
 
-    // TODO: Sum and other stuff
-
     // Conditions
     posPrinter << Pos::center << tr("Conditions available upon request")
             << Pos::endl << Pos::endl << Pos::endl << Pos::endl;
@@ -495,10 +494,85 @@ void Contract::printRental(Pos::Printer &posPrinter) {
     posPrinter << Pos::endl << Pos::endl << Pos::endl << Pos::endl;
 }
 
+void Contract::printReturn(Pos::Printer &posPrinter) {
+    Logger log("void Contract::printReturn(Pos::Printer &posPrinter)");
+    checkInClosedState( "void Contract::printReturn" );
+
+    // TODO: Would be better, if the text and stuff was not hardcoded...
+    // TODO: Should go into configuration, obviously.
+
+    // Logo and identifiers of the rental agency
+    posPrinter << Pos::logo << Pos::endl << Pos::endl;
+
+    // Heading
+    posPrinter.setFontSize( 1, 2 );
+    posPrinter << Pos::bold << Pos::center
+            << tr( "Return receipt" ) << Pos::endl << Pos::endl;
+    posPrinter.setFontSize();
+
+    // Various information about current time, and rental agreement duration
+    int maxSize = qMax( tr( "Contract id" ).size(),
+                        qMax( tr( "Time" ).size(),
+                              qMax( tr( "Rental time").size(),
+                                    tr( "Due back" ).size() ) ) );
+    maxSize = 0 - maxSize;
+    posPrinter << Pos::bold << QString( "%0 : " ).arg( tr( "Contract id"), maxSize )
+            << QString( "%0" ).arg( m_id ) << Pos::endl;
+    posPrinter << QString( "%0 : " ).arg( tr( "Time"), maxSize )
+            << QDateTime::currentDateTime() << Pos::endl;
+    posPrinter << QString( "%0 : " ).arg( tr( "Rental time" ), maxSize )
+            << m_startTime << Pos::endl;
+    posPrinter << QString( "%0 : " ).arg( tr( "Due back" ), maxSize )
+            << m_endTime << Pos::endl;
+
+    posPrinter << Pos::endl;
+
+    // Hirer
+    posPrinter << Pos::bold << tr("Hirer:") << Pos::endl;
+    posPrinter << m_hirer.m_firstName << " " << m_hirer.m_lastName << Pos::endl;
+    posPrinter << m_hirer.m_streetAddress << Pos::endl;
+    posPrinter << m_hirer.m_zip << "  " << m_hirer.m_city << Pos::endl;
+
+    posPrinter << Pos::endl;
+
+    // Items.
+    posPrinter << Pos::bold << tr( "Items:" ) << Pos::hr;
+    QList<ContractItem>::const_iterator i;
+    for ( i = m_contractItems.begin(); i != m_contractItems.end(); ++i ) {
+        const ContractItem & cii = *i;
+        QString idesc = QString( "%0/%1")
+                        .arg( cii.getItem().getType() )
+                        .arg( cii.getRentalgroup() );
+        posPrinter << idesc << Pos::bold
+                << QString( "%0")
+                .arg( cii.getState(),
+                      posPrinter.getReceiptWidth() - idesc.size() ) << Pos::endl;
+        posPrinter << "   " << cii.getItem().toReceiptString() << Pos::endl;
+    }
+    posPrinter << Pos::hr << Pos::endl;
+
+    // Are there any outstanding items?
+    posPrinter.setFontSize( 1, 2 );
+    posPrinter << Pos::center;
+    if ( hasReturnableItems() ) {
+        posPrinter << tr( "Some items not returned" );
+    } else {
+        posPrinter << tr( "All items returned" );
+    }
+    posPrinter << Pos::endl;
+    posPrinter.setFontSize();
+
+    posPrinter << Pos::endl;
+    // Blurp
+    posPrinter << Pos::center << tr( "Thank you for visiting") << Pos::endl << Pos::endl;
+    posPrinter << Pos::center << "Roskilde Skiklub Hedeland";
+    posPrinter << Pos::center << "www.roskildeskiklub.dk" << Pos::endl;
+
+    // Space to handle
+    posPrinter << Pos::endl << Pos::endl << Pos::endl << Pos::endl;
+}
 //////////////////////////////////////////////////////////////
 // MORE CONTRACT
-
-
 
 void Contract::checkInBookingState( const QString & method ) {
     Logger log( "void Contract::checkInBookingState()" );
@@ -520,6 +594,15 @@ void Contract::checkInActiveState( const QString & method ) {
     }
 }
 
+void Contract::checkInClosedState( const QString & method ) {
+    Logger log( "void Contract::checkInClosedState()" );
+    if ( m_state != DB::Contract::State::closed) {
+        throw Exception( Errors::ContractNotInClosedState )
+                << ( log.stream( error )
+                     << QString( "Contract::%0 was called, but contract was not in expected state '%1', but in state '%2'" )
+                     .arg( method ).arg( DB::Contract::State::closed ).arg( m_state ) );
+    }
+}
 
 // Inserts a very rough contract, with almost no information at all.
 void Contract::db_insert() {
