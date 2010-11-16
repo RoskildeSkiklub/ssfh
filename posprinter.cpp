@@ -7,6 +7,7 @@
 
 // Qt
 #include <QImage>
+#include <QDateTime>
 
 // app
 #include "log.h"
@@ -45,7 +46,7 @@ namespace Pos {
     const QByteArray logoOut( GS "/0", 3 );
 
 Printer::Printer( const QString & dev )
-    : m_dev( dev ), m_blank_line_flag( true ), m_char_width( 1 ), m_char_height( 1 ) {
+    : m_dev( dev ), m_blank_line_flag( true ), m_font( FontA ), m_char_width( 1 ), m_char_height( 1 ) {
     Logger log("Printer::Printer()");
     m_device_file.setFileName( dev );
 }
@@ -61,25 +62,35 @@ void Printer::setLogo(const QImage &logo) {
     m_logo = Image( monoImage );
 }
 
+void Printer::setFont( Font font) {
+    Logger log("void Printer::setFont(unsigned char font)");
+    if ( font < 0 || font > 2 ) {
+        throw Exception( Errors::PosPrinterIllegalFont )
+                << ( log.stream( error )
+                     << "Illegal font '" << font << "' specified." );
+    }
+    m_font = font;
+    m_buffer.append( ESC "M" );
+    m_buffer.append( static_cast<unsigned char>( font ) );
+}
+
 void Printer::setFontSize(unsigned char width, unsigned char height) {
     Logger log("void Printer::setFontSize(unsigned char width, unsigned char height)");
-    if ( m_char_width != width || m_char_height != height ) {
-        if ( width < 1 || width > 8 ) {
-            throw Exception( Errors::PosPrinterIllegalFontSize )
-                    << ( log.stream( error )
-                         << "Illegal font width '" << width << "' specified." );
-        }
-        if ( height < 1 || width > 8 ) {
-            throw Exception( Errors::PosPrinterIllegalFontSize )
-                    << ( log.stream( error )
-                         << "Illegal font height '" << height << "' specified." );
-        }
-        m_char_width = width;
-        m_char_height = height;
-        unsigned char res = 16 * ( m_char_width - 1 ) + ( m_char_height -1 );
-        m_buffer.append( GS "!" );
-        m_buffer.append( res );
+    if ( width < 1 || width > 8 ) {
+        throw Exception( Errors::PosPrinterIllegalFontSize )
+                << ( log.stream( error )
+                     << "Illegal font width '" << width << "' specified." );
     }
+    if ( height < 1 || width > 8 ) {
+        throw Exception( Errors::PosPrinterIllegalFontSize )
+                << ( log.stream( error )
+                     << "Illegal font height '" << height << "' specified." );
+    }
+    m_char_width = width;
+    m_char_height = height;
+    unsigned char res = 16 * ( m_char_width - 1 ) + ( m_char_height -1 );
+    m_buffer.append( GS "!" );
+    m_buffer.append( res );
 }
 
 bool Printer::openDevice() {
@@ -122,7 +133,11 @@ void Printer::setupPrinter() {
     }
     m_device_file.write( setLatin1 );
     m_device_file.write( m_logo.getGSStar() );
-    // TODO: Upload a logo.
+    // Set the font and fontsize, then flush the buffer
+    setFont( m_font );
+    setFontSize( m_char_width, m_char_height );
+    m_device_file.write( m_buffer );
+    m_buffer.clear();
 }
 
 void Printer::startReceipt() {
@@ -148,11 +163,19 @@ void Printer::ensureBlank() {
 
 qlonglong Printer::getReceiptWidth() const {
     Logger log("qlonglong Printer::getReceiptWidth() const");
-    return 48 / m_char_width;
+    switch( m_font ) {
+    case FontA: return 576 / 12 / m_char_width;
+    case FontB: return 576 / 9 / m_char_width;
+    // case FontC: return 576 / 8 / m_char_width;
+    default:
+        throw Exception( Errors::InternalError )
+                << ( log.stream(error)
+                     << "Unknown font size in Pos::Printer" );
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////
-// Modifier support.
+// Output and modifier support.
 
 Printer & Printer::operator <<( const QString & str ) {
     Logger log( "Printer & Printer::operator <<( const QString & str )" );
@@ -167,6 +190,11 @@ Printer & Printer::operator <<( const QString & str ) {
     }
     m_modifierclose.clear();
     return *this;
+}
+
+Printer & Printer::operator <<( const QDateTime & dt ) {
+    Logger log("Printer & Printer::operator <<( const QDateTime & dt )");
+    return this->operator <<( dt.toString( "yyyy-MM-dd hh:mm" ) );
 }
 
 Printer & Printer::logo() {

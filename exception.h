@@ -39,7 +39,8 @@ namespace Errors {
         PosPrinterNotOpen = 5000,
         PosImageTooLarge = 5001,
         PosImageUnableToConvert = 5002,
-        PosPrinterIllegalFontSize = 5003,
+        PosPrinterIllegalFont = 5003,
+        PosPrinterIllegalFontSize = 5004,
 
         MagswipeNoMatch = 10000,
     };

@@ -202,10 +202,10 @@ QString Item::toString() const {
 
 QString Item::toReceiptString() const {
     Logger log("QString Item::toReceiptString() const");
-    QString res = QString( "%1/%2" )
+    QString res = QString( "%1 / %2" )
                   .arg( m_type ).arg( m_size );
     if ( m_mark != "" ) {
-        res += "/" + m_mark;
+        res += " / " + m_mark;
     }
     if ( m_model != "" ) {
         res += "/" + m_model;

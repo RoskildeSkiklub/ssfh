@@ -6,6 +6,7 @@
 #include <QFile>
 #include <QByteArray>
 class QImage;
+class QDateTime;
 
 // App
 #include "posimage.h"
@@ -39,6 +40,13 @@ namespace Pos {
       * \endcode
       *
     */
+
+    typedef enum {
+        FontA = 0, // 12 x 24
+        FontB = 1 //, // 9 x 17 / 10 x 24
+        // FontC = 2 // 8 x 16
+    } Font;
+
 class Printer {
 public:
     /** \brief Constructor
@@ -73,9 +81,21 @@ public:
       * beeing sent to the printer */
     Printer & operator<<( const QString & str );
 
+    /** \brief Output a QDateTime
+      *
+      * This formats the time as '2010-11-31 13:44' and outputs it */
+    Printer & operator<<( const QDateTime & dt );
+
     /** \brief Get the page/receipt width
       * \return The receipt with in characters */
     qlonglong getReceiptWidth() const;
+
+    /** \brief Set font
+      * \param Font, one of 0, 1 or 2
+      *
+      * This sets the font to use by the printer. This is not an io manipulator. The
+      * settings are permanent. Font 0 is the largest font, font 1 is the smallest */
+    void setFont( Font font );
 
     /** \brief Set font width,height multiplicator
       * \param width The width of the font, 1-8
@@ -155,6 +175,9 @@ private:
       *
       * When set to true, the current line only contains nothing or control codes */
     bool m_blank_line_flag;
+
+    /** \brief The font to use */
+    Font m_font;
 
     /** \brief Vertical character width */
     unsigned char m_char_width;

@@ -435,14 +435,11 @@ void Contract::printRental(Pos::Printer &posPrinter) {
     posPrinter << Pos::bold << QString( "%0 : " ).arg( tr( "Contract id"), maxSize )
             << QString( "%0" ).arg( m_id ) << Pos::endl;
     posPrinter << QString( "%0 : " ).arg( tr( "Time"), maxSize )
-            << QDateTime::currentDateTime().toString( Qt::ISODate ).replace('T', ' ')
-            << Pos::endl;
+            << QDateTime::currentDateTime() << Pos::endl;
     posPrinter << QString( "%0 : " ).arg( tr( "Rental time" ), maxSize )
-            << m_startTime.toString( Qt::ISODate ).replace('T', ' ')
-            << Pos::endl;
+            << m_startTime << Pos::endl;
     posPrinter << QString( "%0 : " ).arg( tr( "Due back" ), maxSize )
-            << m_endTime.toString( Qt::ISODate ).replace('T', ' ')
-            << Pos::endl;
+            << m_endTime << Pos::endl;
 
     posPrinter << Pos::endl;
 
@@ -461,8 +458,9 @@ void Contract::printRental(Pos::Printer &posPrinter) {
         const ContractItem & cii = *i;
         posPrinter << tr( "Item" ) << " " << cii.getItem().getId()
                 << " / " << cii.getRentalgroup() << Pos::endl;
-        posPrinter << cii.getItem().toReceiptString() << Pos::endl;
-
+        posPrinter.setFont( Pos::FontB );
+        posPrinter << "  " << cii.getItem().toReceiptString() << Pos::endl;
+        posPrinter.setFont( Pos::FontA );
     }
     posPrinter << Pos::hr << Pos::endl;
 
@@ -474,11 +472,12 @@ void Contract::printRental(Pos::Printer &posPrinter) {
             << Pos::endl << Pos::endl << Pos::endl << Pos::endl;
 
     // Signature
+    posPrinter.setFont( Pos::FontB );
     posPrinter << Pos::bold
             << tr( "Signature : " )
             << QString( "%0" )
             .arg( "", posPrinter.getReceiptWidth() - tr( "Signature : ").size(), '_' );
-
+    posPrinter.setFont( Pos::FontA );
     // Space to handle
     posPrinter << Pos::endl << Pos::endl << Pos::endl << Pos::endl;
 }
