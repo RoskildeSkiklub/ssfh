@@ -39,6 +39,10 @@ namespace Pos {
       * << "This will be bold" << "This will not be bold" << Printer::endl
       * \endcode
       *
+      * Note, you must call "startReceipt" before starting to print, then
+      * endReceipt to print/flush the buffer.
+      * The device is reset with each call to startReceipt. This is by design.
+      *
     */
 
     typedef enum {
@@ -206,6 +210,8 @@ private:
     /** \brief Vertical character height */
     unsigned char m_char_height;
 
+    /** \brief Track if logo has been transferred or not for the current receipt. */
+    bool m_logo_transferred;
 
     /** \brief Method to add a closing modifier to the "stack"
       * of modifiers.
@@ -225,10 +231,18 @@ private:
      * the client wants to print to the printer */
     bool openDevice();
 
+    /** \brief Close the device file */
+    void closeDevice();
+
+    /** \brief Transfers the logo, unless already done in this session
+      *
+      * The logo is transferred on demand when the a Pos::logo */
+    void transferLogo();
+
     /** \brief Set up the printer
       *
-      * This method is called by openDevice to set up the printer
-      * after each openDevice. It downloads e.g. images, sets the
+      * This method should be called after calling openDevice to set up the printer.
+      * It sets the, fontsize, stuff like that.
       * codepage, and stuff like that. It writes directly
       * to m_device_file, it does not buffer stuff. */
     void setupPrinter();

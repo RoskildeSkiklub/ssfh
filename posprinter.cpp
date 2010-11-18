@@ -47,7 +47,8 @@ namespace Pos {
 
 
 Printer::Printer( const QString & dev )
-    : m_dev( dev ), m_blank_line_flag( true ), m_font( FontA ), m_char_width( 1 ), m_char_height( 1 ) {
+    : m_dev( dev ), m_blank_line_flag( true ), m_font( FontA ),
+    m_char_width( 1 ), m_char_height( 1 ), m_logo_transferred( false ) {
     Logger log("Printer::Printer()");
     m_device_file.setFileName( dev );
 }
@@ -66,6 +67,7 @@ void Printer::setLogo(const QImage &logo) {
                      << "Unable to convert image to monochrome for use with Pos printer" );
     }
     m_logo = Image( monoImage );
+    m_logo_transferred = false;
 }
 
 void Printer::setFont( Font font) {
@@ -110,10 +112,14 @@ bool Printer::openDevice() {
             log.stream( warn ) << "m_device_file '" << m_dev
                     << "' still not open/writeable";
             return false;
-        }
-        setupPrinter();
+        }    
     };
     return true;
+}
+
+void Printer::closeDevice() {
+    Logger log("void Printer::closeDevice()");
+    m_device_file.close();
 }
 
 bool Printer::emitReceipt( const QByteArray & data ) {
@@ -137,8 +143,11 @@ void Printer::setupPrinter() {
                 << ( log.stream( error )
                      << "setupPrinter called, but device is not open/writeable.");
     }
+    // Reset the printer ...
+    m_device_file.write( ESC "@" );
+    m_logo_transferred = false;
     m_device_file.write( setLatin1 );
-    m_device_file.write( m_logo.getGSStar() );
+
     // Set the font and fontsize, then flush the buffer
     setFont( m_font );
     setFontSize( m_char_width, m_char_height );
@@ -146,9 +155,19 @@ void Printer::setupPrinter() {
     m_buffer.clear();
 }
 
+void Printer::transferLogo() {
+    Logger log("void Printer::transferLogo()");
+    if ( ! m_logo_transferred ) {
+        m_device_file.write( m_logo.getGSStar() );
+        m_logo_transferred = true;
+    }
+};
+
 void Printer::startReceipt() {
     Logger log("void Printer::startReceipt()");
     m_buffer.clear();
+    openDevice();
+    setupPrinter();
     m_blank_line_flag = true;
 }
 
@@ -156,7 +175,9 @@ void Printer::endReceipt() {
     Logger log("void Printer::endReceipt()");
     m_buffer.append( QByteArray( "\n\n\n\n") + doCut );
     emitReceipt( m_buffer );
+    m_buffer.clear();
     m_blank_line_flag = true;
+    closeDevice();
 }
 
 void Printer::ensureBlank() {
@@ -218,6 +239,7 @@ Printer & Printer::operator <<( const Barcode & barcode ) {
 
 Printer & Printer::logo() {
     Logger log("Printer & Printer::logo()");
+    transferLogo();
     m_buffer.append( setAlignCenter );
     m_buffer.append( logoOut );
     m_buffer.append( setAlignLeft );
