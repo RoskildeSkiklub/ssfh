@@ -2,6 +2,7 @@
 #define PRINTCHECKLISTDIALOG_H
 
 #include <QDialog>
+#include <QStringList>
 
 namespace Ui {
     class PrintChecklistDialog;
@@ -18,8 +19,26 @@ public:
 private:
     Ui::PrintChecklistDialog *ui;
 
+    /** \brief Holds the current sort criteria
+      *
+      * This is in database names. */
+    QStringList sortList;
+
+    /** \brief Actual print method
+      *
+      * This does the actual printing, based on settings in the dialog */
+    void doPrint();
+
+    /** \brief Update the count of items in a current state */
+    void updateItemsCount();
+
+    /** \brief Update the display of the sort criteria */
+    void updateSortDisplay();
+
 private slots:
-    void on_pushButton_clicked();
+    void on_input_sortBy_comboBox_currentIndexChanged(int index);
+    void on_input_itemState_comboBox_currentIndexChanged(int index);
+    void on_input_print_pushButton_clicked();
 };
 
 #endif // PRINTCHECKLISTDIALOG_H
