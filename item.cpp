@@ -69,12 +69,7 @@ void Item::db_insert() {
             << "note: '" << m_note << "'";
     // Add a log line to the log
     log.stream() << "Adding log line to itemevents";
-    query_check_prepare( query, "insert into itemevents ( item_id, time, event ) "
-                         "values ( :item_id, :time, :event )" );
-    query.bindValue( ":item_id", m_id );
-    query.bindValue( ":time", QDateTime::currentDateTime() );
-    query.bindValue( ":event", DB::Item::Event::created );
-    query_check_exec( query );
+    addEventLine( DB::Item::Event::created, "" );
 }
 
 Item Item::db_load(const QString &id) {
@@ -138,8 +133,7 @@ Item Item::locate_and_book_in_db( const QString & id ) {
     query_check_exec( query );
     res.m_state = DB::Item::State::booked;
     log.stream( info ) << "Booked item '" << id << "'";
-    // TODO: LOG A LINE IN THE ITEMEVENTS LOG
-
+    res.addEventLine( DB::Item::Event::booked, "" );
     // Done, returning
     return res;
 
@@ -233,17 +227,64 @@ void Item::db_setToOut() {
     query.bindValue( ":id", m_id );
     query.bindValue( ":state", DB::Item::State::out );
     query_check_exec( query );
-    // TODO: Log in event log
+    addEventLine( DB::Item::Event::handed_out, "" );
     m_state = DB::Item::State::out;
 }
 
 void Item::db_setToIn() {
-    Logger log("void Item::db_setToOut()");
+    Logger log("void Item::db_setToIn()");
     QSqlQuery query;
     query_check_prepare( query, "update items set state=:state where id=:id" );
     query.bindValue( ":id", m_id );
     query.bindValue( ":state", DB::Item::State::in );
     query_check_exec( query );
-    // TODO: Log in event log
+    addEventLine( DB::Item::Event::returned, "" );
     m_state = DB::Item::State::in;
+}
+
+void Item::db_forceState(const QString &state) {
+    Logger log("void Item::db_forceState(const QString &state)");
+    if ( state != DB::Item::State::discarded
+         && state != DB::Item::State::in
+         && state != DB::Item::State::lost
+         && state != DB::Item::State::maintenance ) {
+        throw Exception( Errors::ItemForceStateOnIllegalState )
+                << ( log.stream( error )
+                     << "Illegal state '" << state << "' passed as argument to Item::forceState");
+    }
+    QSqlQuery query;
+    query_check_prepare( query, "update items set state=:state where id=:id" );
+    query.bindValue( ":id", m_id );
+    query.bindValue( ":state",  state );
+    query_check_exec( query );
+    QString event = DB::Item::Event::other;
+    if ( state == DB::Item::State::in ) {
+        event = DB::Item::Event::returned;
+    }
+    if ( state == DB::Item::State::discarded ) {
+        event = DB::Item::Event::discarded;
+    }
+    if ( state == DB::Item::State::lost ) {
+        event = DB::Item::Event::lost;
+    }
+    if ( state == DB::Item::State::maintenance ) {
+        event = DB::Item::Event::sent_for_maintenance;
+    }
+
+    addEventLine( event, QString( "State change to %0 by Item::db_forceState")
+                  .arg( state ) );
+    m_state = state;
+}
+
+void Item::addEventLine(const QString &event, const QString &note) const {
+    Logger log("void Item::addEventLine(const QString &event, const QString &note) const");
+    QSqlQuery query;
+    query_check_prepare( query, "insert into itemevents "
+                         "(item_id, time, event, note) "
+                         "values( :item_id, :time, :event, :note)");
+    query.bindValue(":item_id", m_id );
+    query.bindValue(":time", QDateTime::currentDateTime() );
+    query.bindValue( ":event", event);
+    query.bindValue( ":note", note );
+    query_check_exec( query );
 }

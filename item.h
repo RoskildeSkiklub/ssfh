@@ -70,6 +70,15 @@ public:
       *
       * This updates the state in the database, and also updates the in-memory state */
     void db_setToIn();
+
+    /** \brief Update only the state of the item.
+      * \param state The new state
+      *
+      * This method updates only the state in the database, and in
+      * the in memory representation.
+      * It will throw, if the state is not known or illegal for this method.
+      * 'out' and 'booked' are illegal for this method. */
+    void db_forceState( const QString & state );
 private:
     QString m_id;
     QString m_type;
@@ -85,6 +94,15 @@ private:
 
     /** \brief String representation for log files */
     QString toString() const;
+
+    /** \brief Apply a db event line
+      * \param event The type of event
+      * \param note Optional note */
+    void addEventLine( const QString & event,
+                       const QString & note ) const;
+
+
+
 };
 
 #endif // ITEM_H
