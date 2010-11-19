@@ -555,6 +555,9 @@ void Contract::printGeneralReceipt( Pos::Printer &posPrinter, ReceiptType receip
         posPrinter << Pos::endl;
     } else {
         posPrinter << Pos::center << "Roskilde Skiklub Hedeland";
+        if ( receiptType == RentalReceipt ) {
+            posPrinter << Pos::center << "CVR: 33510055";
+        }
         posPrinter << Pos::center << "www.roskildeskiklub.dk" << Pos::endl;
     }
 
