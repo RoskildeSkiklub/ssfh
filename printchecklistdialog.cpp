@@ -215,3 +215,30 @@ void PrintChecklistDialog::on_input_sortBy_comboBox_currentIndexChanged(int inde
                                 ui->input_sortBy_comboBox->currentIndex() ).toString() ) );
     }
 }
+
+void PrintChecklistDialog::on_input_addSortCriteria_pushButton_clicked() {
+    Logger log("void PrintChecklistDialog::on_input_addSortCriteria_pushButton_clicked()");
+    int ci = ui->input_sortBy_comboBox->currentIndex();
+    if ( ci >= 0 ) {
+        if ( !sortList.contains( ui->input_sortBy_comboBox->itemData( ci ).toString() ) ) {
+            sortList.append( ui->input_sortBy_comboBox->itemData( ci ).toString() );
+            updateSortDisplay();
+        }
+    }
+    ui->input_addSortCriteria_pushButton->setEnabled( false );
+    ui->input_removeSortCriteria_pushButton->setEnabled( true );
+}
+
+void PrintChecklistDialog::on_input_removeSortCriteria_pushButton_clicked() {
+    Logger log("void PrintChecklistDialog::on_input_removeSortCriteria_pushButton_clicked()");
+    sortList.removeLast();
+    updateSortDisplay();
+    ui->input_removeSortCriteria_pushButton->setEnabled( !sortList.isEmpty() );
+    // More tricky - this could probably be handled better via some signals...
+    int ci = ui->input_sortBy_comboBox->currentIndex();
+    if ( ci >= 0 ) {
+        if ( !sortList.contains( ui->input_sortBy_comboBox->itemData( ci ).toString() ) ) {
+            ui->input_addSortCriteria_pushButton->setEnabled( true );
+        }
+    }
+}
