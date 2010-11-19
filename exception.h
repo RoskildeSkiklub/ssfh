@@ -28,6 +28,7 @@ namespace Errors {
         ItemNotInBookedState = 2002,
         ItemNotPartOfContract = 2003,
         ItemAlreadyPartOfContract = 2004,
+        ItemForceStateOnIllegalState = 2005,
 
         ContractDoesNotExist = 3000,
         ContractNotInBookingState = 3001,
@@ -42,6 +43,8 @@ namespace Errors {
         PosImageUnableToConvert = 5002,
         PosPrinterIllegalFont = 5003,
         PosPrinterIllegalFontSize = 5004,
+
+        DbMaintenanceForceStateOnIllegalState = 6000,
 
         MagswipeNoMatch = 10000,
     };
