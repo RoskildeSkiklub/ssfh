@@ -24,8 +24,10 @@ private:
     void showAddItemsDialog() const;
     void showHiredItemsDialog() const;
     void showPrintChecklistDialog() const;
+    void showMassStateChangeDialog() const;
 
 private slots:
+    void on_action_Mass_State_Change_triggered();
     void on_actionPrint_Checklist_triggered();
     void on_action_HiredItems_triggered();
     void on_action_AddItems_triggered();

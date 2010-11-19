@@ -7,6 +7,7 @@
 #include "addnewitemdialog.h"
 #include "viewhireditemsdialog.h"
 #include "printchecklistdialog.h"
+#include "massstatechangedialog.h"
 
 // App
 #include "log.h"
@@ -77,6 +78,13 @@ void MainWindow::showPrintChecklistDialog() const {
     pcld.exec();
 }
 
+void MainWindow::showMassStateChangeDialog() const {
+    Logger log("void MainWindow::showMassStateChangeDialog() const");
+    log.stream() << "Displaying MassStateChange dialog";
+    MassStateChangeDialog mscd;
+    mscd.exec();
+}
+
 
 /////
 
@@ -115,4 +123,10 @@ void MainWindow::on_actionPrint_Checklist_triggered()
 {
     Logger log("void MainWindow::on_actionPrint_Checklist_triggered()");
     showPrintChecklistDialog();
+}
+
+void MainWindow::on_action_Mass_State_Change_triggered()
+{
+    Logger log("void MainWindow::on_action_Mass_State_Change_triggered()");
+    showMassStateChangeDialog();
 }

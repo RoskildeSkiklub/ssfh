@@ -68,6 +68,7 @@
     <addaction name="action_AddItems"/>
     <addaction name="action_HiredItems"/>
     <addaction name="actionPrint_Checklist"/>
+    <addaction name="action_Mass_State_Change"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_Stock"/>
@@ -108,10 +109,15 @@
   </action>
   <action name="actionPrint_Checklist">
    <property name="text">
-    <string>Print Checklist</string>
+    <string>&amp;Print Checklist</string>
    </property>
    <property name="toolTip">
     <string>&amp;Print Checklist</string>
+   </property>
+  </action>
+  <action name="action_Mass_State_Change">
+   <property name="text">
+    <string>&amp;Mass State Change</string>
    </property>
   </action>
  </widget>
