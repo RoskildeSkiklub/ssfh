@@ -27,11 +27,12 @@ namespace Log {
         }
     }
 
-    void Log::begin( Level level ) {
+    QDateTime Log::begin( Level level ) {
         QDateTime now( QDateTime::currentDateTime() );
         getTextStream() << now.toString( Qt::ISODate ) << now.time().toString( ".zzz" )
                 << " : " << levelToString( level )
                 << " : " << QString( indent, ' ' ) << QString( indent, ' ' );
+        return now;
     }
 
     void Log::init( const QString & filename ) {
