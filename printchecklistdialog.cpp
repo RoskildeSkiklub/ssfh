@@ -199,14 +199,14 @@ void PrintChecklistDialog::on_input_print_pushButton_clicked() {
     doPrint();
 }
 
-void PrintChecklistDialog::on_input_itemState_comboBox_currentIndexChanged(int index) {
+void PrintChecklistDialog::on_input_itemState_comboBox_currentIndexChanged(int) {
     Logger log("void PrintChecklistDialog::on_input_itemState_comboBox_currentIndexChanged(int index)");
     updateItemsCount();
 }
 
 
 
-void PrintChecklistDialog::on_input_sortBy_comboBox_currentIndexChanged(int index) {
+void PrintChecklistDialog::on_input_sortBy_comboBox_currentIndexChanged(int) {
     Logger log("void PrintChecklistDialog::on_input_sortBy_comboBox_currentIndexChanged(int index)");
     if ( ui->input_itemState_comboBox->currentIndex() >= 0 ) {
         ui->input_addSortCriteria_pushButton->setEnabled(
