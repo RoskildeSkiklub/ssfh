@@ -208,7 +208,7 @@ Hirer HirerDialog::getHirer() {
 // Check if we need auto lookup, perform if yes.
 // Check if empty, go to blank state, if that is the case
 // Otherwise, emit input_field_edited to state machine
-void HirerDialog::on_input_field_edited(QString value) {
+void HirerDialog::on_input_field_edited(QString) {
     Logger log( "HirerDialog::on_input_field_edited(const QString & value)");
     if ( ui->checkBox_autoLookup->isChecked() ) {
         updateQueryModel();
