@@ -52,7 +52,8 @@ TASK: Return stuff.
 70) Report functionality.
 
 Open issues:
-- Version information / config information in database. ( Created, but needs interface)
+- Version information / config information in database. ( Created, but
+needs interface in code)
 - Font sizes (Handle through system settings)
 - Translation
 - Log all item transactions
