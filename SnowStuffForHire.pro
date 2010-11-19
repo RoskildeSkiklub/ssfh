@@ -26,7 +26,8 @@ SOURCES += main.cpp \
     posprinter.cpp \
     posimage.cpp \
     printchecklistdialog.cpp \
-    massstatechangedialog.cpp
+    massstatechangedialog.cpp \
+    dbmaintenance.cpp
 HEADERS += mainwindow.h \
     rentdialog.h \
     stockdialog.h \
@@ -48,7 +49,8 @@ HEADERS += mainwindow.h \
     posprinter.h \
     posimage.h \
     printchecklistdialog.h \
-    massstatechangedialog.h
+    massstatechangedialog.h \
+    dbmaintenance.h
 FORMS += mainwindow.ui \
     rentdialog.ui \
     stockdialog.ui \

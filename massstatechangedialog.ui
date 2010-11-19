@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>299</width>
-    <height>73</height>
+    <width>371</width>
+    <height>260</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -23,22 +23,28 @@
    <item row="0" column="0">
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Set item: </string>
+      <string>New &amp;state:</string>
+     </property>
+     <property name="buddy">
+      <cstring>input_state_comboBox</cstring>
      </property>
     </widget>
    </item>
    <item row="0" column="1">
-    <widget class="QLineEdit" name="input_item_lineEdit"/>
+    <widget class="QComboBox" name="input_state_comboBox"/>
    </item>
    <item row="0" column="2">
     <widget class="QLabel" name="label_2">
      <property name="text">
-      <string>to state: </string>
+      <string>for &amp;item:</string>
+     </property>
+     <property name="buddy">
+      <cstring>input_item_lineEdit</cstring>
      </property>
     </widget>
    </item>
    <item row="0" column="3">
-    <widget class="QComboBox" name="input_state_comboBox"/>
+    <widget class="QLineEdit" name="input_item_lineEdit"/>
    </item>
    <item row="0" column="4">
     <widget class="QPushButton" name="input_doIt_pushButton">
@@ -47,8 +53,41 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="4">
-    <widget class="QPushButton" name="pushButton">
+   <item row="1" column="0" colspan="2">
+    <widget class="QLabel" name="label_3">
+     <property name="text">
+      <string>Recently updated items</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0" rowspan="2" colspan="4">
+    <widget class="QTextBrowser" name="output_log_textBrowser">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>10</verstretch>
+      </sizepolicy>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="4">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>72</width>
+       <height>157</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="3" column="4">
+    <widget class="QPushButton" name="input_done_pushButton">
      <property name="text">
       <string>D&amp;one</string>
      </property>
@@ -56,6 +95,13 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>input_state_comboBox</tabstop>
+  <tabstop>input_item_lineEdit</tabstop>
+  <tabstop>input_doIt_pushButton</tabstop>
+  <tabstop>input_done_pushButton</tabstop>
+  <tabstop>output_log_textBrowser</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
