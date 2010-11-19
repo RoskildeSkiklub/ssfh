@@ -6,6 +6,9 @@
 #include <QMessageBox>
 #include <QVariant>
 #include <QString>
+#include <QVector>
+#include <QtGlobal>
+#include <QDateTime>
 
 // app
 #include "log.h"
@@ -66,8 +69,8 @@ void PrintChecklistDialog::doPrint() {
     if ( ui->input_itemState_comboBox->currentIndex() < 0 ) {
         return;
     }
-    // Get the level of sorting from the dialog
-    int sortLevel = ui->input_splitSortLevels_spinBox->value();
+    // Get the level of sorting from the dialog - limit to number of sortable items
+    int sortLevel = qMin( ui->input_splitSortLevels_spinBox->value(), sortList.count( ) );
     int maxItems = ui->input_maxItemsPerPage_spinBox->value();
 
     // Build the query from the sortlevels.
@@ -87,8 +90,13 @@ void PrintChecklistDialog::doPrint() {
     query_check_exec( query );
     if ( query.first() ) {
         if ( Globals::checkPosPrinter() ) {
-            int count = 0;
+            // Date for the print
+            QDateTime now = QDateTime::currentDateTime();
 
+            // Track count here. This is reset for each page.
+            int count = 0;
+            // Track the content of the last printed item. at(0) is also reset for each page
+            QVector<QVariant> prevItem( 1 + sortLevel );
 
             Pos::Printer & posp( Globals::getPosPrinter() );
             posp.setFontSize( 1, 2 );
@@ -98,12 +106,33 @@ void PrintChecklistDialog::doPrint() {
 
             log.stream( info ) << "Starting print of check list";
             do {
+                bool breakPage = false;
+
+                // Check if we should do a pagebreak, *before* printing the next value now.
+                if ( prevItem.at(0).isValid() ) {
+                    for( int i = 1; i <= sortLevel; ++i ) {
+                        if ( prevItem.at( i ) != query.value( i ) ) {
+                            breakPage = true;
+                            break;
+                        }
+                    }
+                }
+
+                if ( breakPage || ( count != 0 && count % maxItems == 0 ) ) {
+                    posp.endReceipt();
+                    needToStartReceipt = true;
+                    shouldEndReceipt = false;
+                }
+
                 // Start new receipt, if needed, set up for final closure.
                 if ( needToStartReceipt ) {
                     posp.startReceipt();
                     needToStartReceipt = false;
+                    count = 0;
+                    prevItem[ 0 ] = QVariant();
                     posp << tr( "List of items with state: " )
-                            << ui->input_itemState_comboBox->currentText();
+                            << ui->input_itemState_comboBox->currentText() << Pos::endl;
+                    posp << tr( "Printed at " ) << now << Pos::endl;
                     posp << Pos::hr;
                     shouldEndReceipt = true;
                 }
@@ -115,13 +144,12 @@ void PrintChecklistDialog::doPrint() {
                 posp << item.toReceiptString() << Pos::endl;
                 // posp << Pos::center << Pos::Barcode( item_id ) << Pos::hr;
 
-                // Check if we should do a pagebreak now. Base it on count for now.
+                // Adjust split controllers
                 ++count;
-                if ( ( count % maxItems ) == 0 ) {
-                    posp.endReceipt();
-                    needToStartReceipt = true;
-                    shouldEndReceipt = false;
+                for( int i = 0; i <= sortLevel; ++i ) {
+                    prevItem[ i ] = query.value( i );
                 }
+
             } while( query.next() );
 
             if ( shouldEndReceipt ) {
