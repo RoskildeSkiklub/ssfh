@@ -65,6 +65,10 @@ public:
       * The states can be one of 'booked', 'out' or 'returned' */
     QString getState() const { return m_state; }
 
+    /** \brief Get the contract id of this contract item
+      * \return The contract id of this item */
+    qlonglong getContractId() const { return m_contract_id; }
+
     /** \brief Update the state
       * \param state The new state
       *
