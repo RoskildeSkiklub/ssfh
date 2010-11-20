@@ -236,6 +236,13 @@
        </property>
       </widget>
      </item>
+     <item>
+      <widget class="QPushButton" name="input_close_pushButton">
+       <property name="text">
+        <string>&amp;Close</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
   </layout>

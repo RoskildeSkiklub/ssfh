@@ -118,7 +118,7 @@ void PrintChecklistDialog::doPrint() {
                     }
                 }
 
-                if ( breakPage || ( count != 0 && count % maxItems == 0 ) ) {
+                if ( breakPage || ( maxItems != 0 && count != 0 && count % maxItems == 0 ) ) {
                     posp.endReceipt();
                     needToStartReceipt = true;
                     shouldEndReceipt = false;
@@ -142,7 +142,11 @@ void PrintChecklistDialog::doPrint() {
                 QString item_id = query.value(0).toString();
                 Item item( Item::db_load( item_id ) );
                 posp << item.toReceiptString() << Pos::endl;
-                // posp << Pos::center << Pos::Barcode( item_id ) << Pos::hr;
+                if ( ui->input_includeBarcodes_checkBox->isChecked() ) {
+                    posp.setFontSize();
+                    posp << Pos::center << Pos::Barcode( item_id ) << Pos::hr;
+                    posp.setFontSize(1, 2);
+                }
 
                 // Adjust split controllers
                 ++count;
@@ -241,4 +245,10 @@ void PrintChecklistDialog::on_input_removeSortCriteria_pushButton_clicked() {
             ui->input_addSortCriteria_pushButton->setEnabled( true );
         }
     }
+}
+
+void PrintChecklistDialog::on_input_close_pushButton_clicked()
+{
+    Logger log("void PrintChecklistDialog::on_input_close_pushButton_clicked()");
+    close();
 }

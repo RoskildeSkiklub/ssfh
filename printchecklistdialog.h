@@ -36,6 +36,7 @@ private:
     void updateSortDisplay();
 
 private slots:
+    void on_input_close_pushButton_clicked();
     void on_input_removeSortCriteria_pushButton_clicked();
     void on_input_addSortCriteria_pushButton_clicked();
     void on_input_sortBy_comboBox_currentIndexChanged(int index);
