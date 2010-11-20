@@ -25,12 +25,15 @@ private:
 
 private slots:
 
+    void on_input_close_pushButton_clicked();
+    void on_input_doIt_pushButton_clicked();
+
+public slots:
+
     /** \brief Update the state of an item with the current selected state
       * \param item_id The id of the item to update */
-    void on_input_doIt_pushButton_clicked();
     void update_item( const QString & item_id );
 
-    void on_input_done_pushButton_clicked();
 };
 
 #endif // MASSSTATECHANGEDIALOG_H

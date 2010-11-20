@@ -60,11 +60,6 @@ void MassStateChangeDialog::update_item(const QString &item_id) {
                      + ui->output_log_textBrowser->toHtml() );
 }
 
-void MassStateChangeDialog::on_input_done_pushButton_clicked()
-{
-    Logger log("void MassStateChangeDialog::on_input_done_pushButton_clicked()");
-    close();
-}
 
 void MassStateChangeDialog::on_input_doIt_pushButton_clicked() {
     Logger log( "void MassStateChangeDialog::on_input_doIt_pushButton_clicked()");
@@ -75,4 +70,10 @@ void MassStateChangeDialog::on_input_doIt_pushButton_clicked() {
         ui->input_item_lineEdit->clear();
         ui->input_item_lineEdit->setFocus();
     }
+}
+
+void MassStateChangeDialog::on_input_close_pushButton_clicked()
+{
+    Logger log("void MassStateChangeDialog::on_input_close_pushButton_clicked()");
+    close();
 }

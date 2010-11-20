@@ -87,9 +87,9 @@
     </spacer>
    </item>
    <item row="3" column="4">
-    <widget class="QPushButton" name="input_done_pushButton">
+    <widget class="QPushButton" name="input_close_pushButton">
      <property name="text">
-      <string>D&amp;one</string>
+      <string>&amp;Close</string>
      </property>
     </widget>
    </item>
@@ -99,7 +99,7 @@
   <tabstop>input_state_comboBox</tabstop>
   <tabstop>input_item_lineEdit</tabstop>
   <tabstop>input_doIt_pushButton</tabstop>
-  <tabstop>input_done_pushButton</tabstop>
+  <tabstop>input_close_pushButton</tabstop>
   <tabstop>output_log_textBrowser</tabstop>
  </tabstops>
  <resources/>
