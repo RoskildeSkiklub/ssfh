@@ -231,8 +231,9 @@ Printer & Printer::operator <<( const Barcode & barcode ) {
         return *this;
     }
     ensureBlank();
-    m_buffer.append( QByteArray( GS "hA" GS "H0" ) );
-    m_buffer.append( GS "kE" );
+    // Set height, and id below barcode
+    m_buffer.append( QByteArray( GS "hA" GS "H2" ) );
+    m_buffer.append( GS "kE" ); // Used code 39
     m_buffer.append( static_cast<unsigned char>( barcode.getBarcode().size() ) );
     return this->operator<<( barcode.getBarcode() );
 }
