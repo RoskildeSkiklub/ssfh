@@ -323,10 +323,21 @@ void HirerDialog::on_pushButton_clear_clicked() {
     updateQueryModel();
 }
 
-void HirerDialog::on_pushButton_add_clicked()
-{
-    // TODO: If the values reflecting the current input fields, can be added to the hirer, then
-    // emit select_hirer()
+void HirerDialog::on_pushButton_add_clicked() {
+    Logger log("void HirerDialog::on_pushButton_add_clicked()");
+    hirer.m_memberId      = ui->lineEdit_memberId->text();
+    hirer.m_ssn           = ui->lineEdit_SSN->text();
+    hirer.m_firstName     = ui->lineEdit_firstName->text();
+    hirer.m_lastName      = ui->lineEdit_lastName->text();
+    hirer.m_streetAddress = ui->lineEdit_streetAddress->text();
+    hirer.m_zip           = ui->lineEdit_zip->text();
+    hirer.m_city          = ui->lineEdit_city->text();
+    hirer.m_country       = ui->lineEdit_country->text();
+    hirer.m_note          = ui->plainTextEdit_note->toPlainText();
+
+    hirer.db_insert();
+    emit select_hirer();
+    updateQueryModel();
 }
 
 void HirerDialog::on_pushButton_update_clicked()

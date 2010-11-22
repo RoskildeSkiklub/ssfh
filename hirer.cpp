@@ -127,6 +127,30 @@ Hirer::Hirer( const QString & firstName, const QString & lastName,
     m_valid = true;
 }
 
+void Hirer::db_insert() {
+    Logger log("void Hirer::db_insert()");
+    QSqlQuery query;
+    query_check_prepare( query, "insert into hirers "
+                         "( memberId, ssn, firstName, lastName, streetAddress, zip, city, country, note ) "
+                         "values( :memberId, :ssn, :firstName, :lastName, :streetAddress, :zip, :city, :country, :note)" );
+    query.bindValue( ":memberId", m_memberId );
+    query.bindValue( ":ssn", m_ssn );
+    query.bindValue( ":firstName", m_firstName );
+    query.bindValue( ":lastName", m_lastName );
+    query.bindValue( ":streeAddress", m_streetAddress );
+    query.bindValue( ":zip", m_zip );
+    query.bindValue( ":city", m_city );
+    query.bindValue( ":country", m_country );
+    query.bindValue( ":note", m_note );
+    query_check_exec( query );
+    // Read back the last value
+    query_check_prepare( query, "select last_insert_rowid() from hirers" );
+    query_check_exec( query );
+    query_check_first( query );
+    m_id = query.value( 0 ).toLongLong();
+    m_valid = true;
+}
+
 QString Hirer::toHtml() const {
     QString res = QString( "%6<em>%1 %2</em><br/>%3<br/>%4  %5" )
                   .arg( m_firstName ).arg( m_lastName ).arg( m_streetAddress ).arg( m_zip ).arg( m_city );

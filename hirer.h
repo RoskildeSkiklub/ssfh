@@ -59,6 +59,13 @@ public:
     /** \brief Format as HTML for use in dialogs */
     QString toHtml() const;
 
+    /** \brief Insert this hirer into the database
+      *
+      * Use the embedded values in this Hirer instance - expect an
+      * id - to create a new hirer. Load the id back in to memory,
+      * and set the hirer to valid. */
+     void db_insert();
+
 private:
     /** \brief Holds the valid state */
     bool m_valid;
