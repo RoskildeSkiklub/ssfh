@@ -70,8 +70,15 @@
     <addaction name="actionPrint_Checklist"/>
     <addaction name="action_Mass_State_Change"/>
    </widget>
+   <widget class="QMenu" name="menu_Tools">
+    <property name="title">
+     <string>&amp;Tools</string>
+    </property>
+    <addaction name="action_Print_Command_Sheet"/>
+   </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_Stock"/>
+   <addaction name="menu_Tools"/>
   </widget>
   <widget class="QStatusBar" name="statusBar">
    <property name="sizeGripEnabled">
@@ -80,7 +87,7 @@
   </widget>
   <action name="action_RentItems">
    <property name="text">
-    <string>&amp;Rent</string>
+    <string>&amp;Rent...</string>
    </property>
    <property name="toolTip">
     <string>Rent Items</string>
@@ -88,7 +95,7 @@
   </action>
   <action name="action_ReturnItems">
    <property name="text">
-    <string>Re&amp;turn Items</string>
+    <string>Re&amp;turn Items...</string>
    </property>
    <property name="toolTip">
     <string>Return rented items</string>
@@ -101,12 +108,12 @@
   </action>
   <action name="action_AddItems">
    <property name="text">
-    <string>&amp;Add items</string>
+    <string>&amp;Add items...</string>
    </property>
   </action>
   <action name="action_HiredItems">
    <property name="text">
-    <string>&amp;Hired Items</string>
+    <string>&amp;Hired Items...</string>
    </property>
    <property name="toolTip">
     <string>Show all hired items</string>
@@ -114,7 +121,7 @@
   </action>
   <action name="actionPrint_Checklist">
    <property name="text">
-    <string>&amp;Print Checklist</string>
+    <string>&amp;Print Checklist...</string>
    </property>
    <property name="toolTip">
     <string>&amp;Print Checklist</string>
@@ -122,11 +129,20 @@
   </action>
   <action name="action_Mass_State_Change">
    <property name="text">
-    <string>&amp;Mass State Change</string>
+    <string>&amp;Mass State Change...</string>
+   </property>
+  </action>
+  <action name="action_Print_Command_Sheet">
+   <property name="text">
+    <string>&amp;Print Command Sheet</string>
    </property>
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <tabstops>
+  <tabstop>input_rent_pushButton</tabstop>
+  <tabstop>input_return_pushButton</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
  <slots>

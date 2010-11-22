@@ -28,6 +28,7 @@ private:
     void showHiredItemsDialog() const;
     void showPrintChecklistDialog() const;
     void showMassStateChangeDialog() const;
+    void doPrintCommandSheet();
 
     /** \brief Pointer to statusbar db label
       *
@@ -42,6 +43,7 @@ private:
     void showEvent ( QShowEvent * event );
 
 private slots:
+    void on_action_Print_Command_Sheet_triggered();
     void on_action_Mass_State_Change_triggered();
     void on_actionPrint_Checklist_triggered();
     void on_action_HiredItems_triggered();

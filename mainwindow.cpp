@@ -6,6 +6,7 @@
 #include <QShowEvent>
 #include <QMap>
 #include <QString>
+#include <QMessageBox>
 
 // App ui
 #include "mainwindow.h"
@@ -22,6 +23,8 @@
 #include "exception.h"
 #include "utility.h"
 #include "db_consts.h"
+#include "posprinter.h"
+#include "globals.h"
 
 
 using namespace Log;
@@ -145,8 +148,48 @@ void MainWindow::showMassStateChangeDialog() const {
     updateDbStatusDisplay();
 }
 
+// TODO: I am not entirely sure this should go here. For now...
+using namespace Globals::BarcodeCommands;
+void MainWindow::doPrintCommandSheet() {
+    Logger log("void MainWindow::doPrintCommandSheet() const");
+    // List of commands
+    QList<Command> commands;
+    commands << Command( OperationDone, tr( "Done" ) )
+            // TODO: This should match some kind of configuration/db lookup, when POS is added.
+            // Perhaps use the configuration table (*doh*)
+            << Command( ContractAddIndividual, tr( "Add Adult" ), tr( "Adult" ) )
+            << Command( ContractAddIndividual, tr( "Add Child" ), tr( "Child" ) )
+            << Command( ContractRemoveIndividual, tr( "Remove Adult" ), tr( "Adult" ) )
+            << Command( ContractRemoveIndividual, tr( "Remove Child" ), tr( "Child" ) )
+            << Command( ContractAddLiftCard, tr( "Add Adult" ), tr( "Adult" ) )
+            << Command( ContractAddLiftCard, tr( "Add Child" ), tr( "Child" ) )
+            << Command( ContractRemoveLiftCard, tr( "Remove Adult" ), tr( "Adult" ) )
+            << Command( ContractRemoveLiftCard, tr( "Remove Child" ), tr( "Child" ) );
 
-/////
+    if ( Globals::checkPosPrinter() ) {
+        Pos::Printer & posp( Globals::getPosPrinter() );
+        posp.startReceipt();
+        posp.setFontSize(1, 2);
+        posp << Pos::center << tr("List of Barcode Commands");
+        posp << Pos::hr;
+        QList<Command>::const_iterator i;
+        for ( i = commands.begin(); i != commands.end(); ++i ) {
+            posp << Pos::center << i->m_label;
+            if ( i->m_param.isEmpty() ) {
+                posp << Pos::Barcode( QString("CMD%0").arg( i->m_code ) );
+            } else {
+                posp << Pos::Barcode( QString("CMD%0:%1").arg( i->m_code ).arg( i->m_param ) );
+            }
+            posp << Pos::hr;
+        }
+        posp.endReceipt();
+        statusBar()->showMessage( tr( "Command List printed" ), 5000 );;
+        QMessageBox::information( this, tr( "Command List Printed"),
+                                  tr( "Printed Command List to printer.") );
+    }
+}
+
+////////////////////////////////////////////////////////////////////
 
 void MainWindow::on_action_RentItems_triggered() {
     Logger log("void MainWindow::on_action_RentItems_triggered()");
@@ -189,4 +232,10 @@ void MainWindow::on_action_Mass_State_Change_triggered()
 {
     Logger log("void MainWindow::on_action_Mass_State_Change_triggered()");
     showMassStateChangeDialog();
+}
+
+void MainWindow::on_action_Print_Command_Sheet_triggered()
+{
+    Logger log("void MainWindow::on_action_Print_Command_Sheet_triggered()");
+    doPrintCommandSheet();
 }
