@@ -342,8 +342,20 @@ void HirerDialog::on_pushButton_add_clicked() {
 
 void HirerDialog::on_pushButton_update_clicked()
 {
-    // TODO: As for add, more or less
-    // emit select_hirer();
+    Logger log("void HirerDialog::on_pushButton_add_clicked()");
+    hirer.m_memberId      = ui->lineEdit_memberId->text();
+    hirer.m_ssn           = ui->lineEdit_SSN->text();
+    hirer.m_firstName     = ui->lineEdit_firstName->text();
+    hirer.m_lastName      = ui->lineEdit_lastName->text();
+    hirer.m_streetAddress = ui->lineEdit_streetAddress->text();
+    hirer.m_zip           = ui->lineEdit_zip->text();
+    hirer.m_city          = ui->lineEdit_city->text();
+    hirer.m_country       = ui->lineEdit_country->text();
+    hirer.m_note          = ui->plainTextEdit_note->toPlainText();
+
+    hirer.db_update();
+    emit select_hirer();
+    updateQueryModel();
 }
 
 // If auto search is changed, enable/disable manual search.

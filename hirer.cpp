@@ -151,6 +151,31 @@ void Hirer::db_insert() {
     m_valid = true;
 }
 
+void Hirer::db_update() {
+    Logger log("void Hirer::db_update()");
+    if ( ! m_valid ) {
+        throw Exception( Errors::HirerNotValid )
+                << ( log.stream( error ) << "Hirer::db_update() called, but hirer was not valid.");
+    }
+    QSqlQuery query;
+    query_check_prepare( query, "update hirers "
+                         "set memberId=:memberId, ssn=:ssn, firstName=:firstName, "
+                         "lastName=:lastName, streetAddress=:streetAddress, zip=:zip, "
+                         "city=:city, country=:country, note=:note "
+                         "where id=:id" );
+    query.bindValue( ":memberId", m_memberId );
+    query.bindValue( ":ssn", m_ssn );
+    query.bindValue( ":firstName", m_firstName );
+    query.bindValue( ":lastName", m_lastName );
+    query.bindValue( ":streeAddress", m_streetAddress );
+    query.bindValue( ":zip", m_zip );
+    query.bindValue( ":city", m_city );
+    query.bindValue( ":country", m_country );
+    query.bindValue( ":note", m_note );
+    query.bindValue( ":id", m_id );
+    query_check_exec( query );
+}
+
 QString Hirer::toHtml() const {
     QString res = QString( "%6<em>%1 %2</em><br/>%3<br/>%4  %5" )
                   .arg( m_firstName ).arg( m_lastName ).arg( m_streetAddress ).arg( m_zip ).arg( m_city );

@@ -66,6 +66,13 @@ public:
       * and set the hirer to valid. */
      void db_insert();
 
+     /** \brief Update this hirer in the database
+       *
+       * Use the embedded values in this Hirer instance - expect an
+       * id - to update the hirer in the database. Requires that
+       * the hirer is valid. */
+      void db_update();
+
 private:
     /** \brief Holds the valid state */
     bool m_valid;

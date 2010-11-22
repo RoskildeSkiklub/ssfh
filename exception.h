@@ -44,7 +44,9 @@ namespace Errors {
         PosPrinterIllegalFont = 5003,
         PosPrinterIllegalFontSize = 5004,
 
-        DbMaintenanceForceStateOnIllegalState = 6000,
+        HirerNotValid = 6000,
+
+        DbMaintenanceForceStateOnIllegalState = 7000,
 
         MagswipeNoMatch = 10000,
     };
