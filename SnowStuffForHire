@@ -6,6 +6,10 @@
 # and after run, and pass the command parameters to the program.
 
 # Some constants.
+KPTITLE="Snow Stuff For Hire"
+KPTIMEOUT=5
+KPBACKUPSTART="Starter backup af database"
+KPBACKUPEND="Afsluttet backup af database"
 
 # Datadir holds the database *and* the log
 DATADIR=/store/SnowStuffForHire/data
@@ -68,13 +72,17 @@ info All checks passed, performing backup
 
 ############################################################
 # Take a backup before starting. This should be quick.
+$KDIALOG --title "$KPTITLE" --passivepopup "$KPBACKUPSTART" $KPTIMEOUT
 $FAUBACKUP "$DATADIR" "$BACKUPDIR" || die "Kunne ikke lave backup af data inden start af SnowStuffForHire"
+$KDIALOG --title "$KPTITLE" --passivepopup "$KPBACKUPEND" $KPTIMEOUT
 
 info Backup OK, starting binary
 $SSFH $DATABASE $LOGFILE &> $OUTFILE
 
 info Binary terminated with exit code $? - doing post backup
+$KDIALOG --title "$KPTITLE" --passivepopup "$KPBACKUPSTART" $KPTIMEOUT
 $FAUBACKUP "$DATADIR" "$BACKUPDIR" || die "Kunne ikke lave backup af data efter start af SnowStuffForHire"
+$KDIALOG --title "$KPTITLE" --passivepopup "$KPBACKUPEND" $KPTIMEOUT
 info Postbackup done, exiting
 
  
