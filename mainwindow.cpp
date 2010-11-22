@@ -67,28 +67,31 @@ void MainWindow::updateDbStatusDisplay() const {
     Logger log("void MainWindow::updateDbStatusDisplay()");
     QMap<QString,QString> item_map;
     QSqlQuery query;
-    query_check_prepare( query, "select type, state, count(*) "
+    query_check_prepare( query, "select type, rentalgroup, state, count(*) "
                          "from items "
                          "where state=:state1 "
                          "or state=:state2 "
                          "or state=:state3 "
-                         "group by type, state "
-                         "order by type, state" );
+                         "group by type, rentalgroup, state "
+                         "order by type, rentalgroup, state" );
     query.bindValue(":state1", DB::Item::State::in );
     query.bindValue(":state2", DB::Item::State::booked );
     query.bindValue(":state3", DB::Item::State::out );
     query_check_exec( query );
 
     while( query.next() ) {
-        QString ikey = query.value( 0 ).toString();
+        QString ikey = QString( "%0/%1" )
+                       .arg( query.value( 0 ).toString() )
+                       .arg( query.value( 1 ).toString() );
+
 
         if ( !item_map.contains( ikey ) ) {
             item_map.insert( ikey, QString( "<b>%0:</b>").arg( ikey ) );
         }
         item_map[ ikey ] = item_map[ ikey ]
                            + QString( " %0:%1")
-                           .arg( Item::tr( query.value( 1 ).toString().toLatin1().constData() ) )
-                           .arg( query.value( 2 ).toLongLong() );
+                           .arg( Item::tr( query.value( 2 ).toString().toLatin1().constData() ) )
+                           .arg( query.value( 3 ).toLongLong() );
     }
     status_db_label->setText( QStringList( item_map.values() ).join( "  " ) );
 }
