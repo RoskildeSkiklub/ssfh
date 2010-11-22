@@ -1,7 +1,10 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+// Qt
 #include <QMainWindow>
+class QLabel;
+class QShowEvent;
 
 namespace Ui {
     class MainWindow;
@@ -25,6 +28,18 @@ private:
     void showHiredItemsDialog() const;
     void showPrintChecklistDialog() const;
     void showMassStateChangeDialog() const;
+
+    /** \brief Pointer to statusbar db label
+      *
+      * This points to the label used to display information about
+      * the database in the statusbar */
+    QLabel * status_db_label;
+
+    /**  \brief Updates the display of the db status */
+    void updateDbStatusDisplay() const;
+
+    /** \brief Make sure display is updated from event */
+    void showEvent ( QShowEvent * event );
 
 private slots:
     void on_action_Mass_State_Change_triggered();
