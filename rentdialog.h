@@ -72,6 +72,7 @@ public slots:
     void on_barcodeCommandScan( const Globals::BarcodeCommands::Command & command );
 
 private slots:
+    void on_input_cancel_pushButton_clicked();
     void on_input_editNote_pushButton_clicked();
     void on_input_finish_pushButton_clicked();
     void on_input_item_lineEdit_textChanged(QString );
@@ -122,6 +123,7 @@ signals:
     void hirer_set(); // emitted when a hirer has successfully been set on the contract
     void duration_changed(); // emitted when a contract has succesfully has its duration changed.
     void item_added(); // emitted when an item has succesfully been set on the contract
+    void contract_blanked(); // Emitted when a contract has been cancelled
 };
 
 #endif // RENTDIALOG_H

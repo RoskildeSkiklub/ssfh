@@ -105,6 +105,7 @@ RentDialog::RentDialog(QWidget *parent) :
     has_hirer->assignProperty( ui->input_editNote_pushButton, "enabled", false );
     // From has_hirer to has_item on item_added
     has_hirer->addTransition( this, SIGNAL( item_added() ), has_item );
+    has_hirer->addTransition( this, SIGNAL( contract_blanked()), blank );
     // TODO: TO BLANK
 
     // has_item
@@ -117,6 +118,7 @@ RentDialog::RentDialog(QWidget *parent) :
     has_item->assignProperty( ui->input_rentalgroup_pushButton, "enabled", true );
     has_item->assignProperty( ui->input_editNote_pushButton, "enabled", true );
     // TODO: From has_item to no_hirer on item_added ===> BLANK...
+    has_item->addTransition( this, SIGNAL( contract_blanked()), blank );
     // blank->addTransition( this, SIGNAL( item_added()) ), has_item );
 
     // Set initial state and start
@@ -155,7 +157,33 @@ void RentDialog::closeEvent(QCloseEvent * event) {
         }
     }
     if ( is_in_state( "has_item") ) {
-        TODO("Implement support for park and contract cancel");
+        log.stream( info ) << "Close called, but contract is in has_item state. Asking user what to do";
+        QMessageBox mbox( QMessageBox::Warning, tr( "Contract must be closed or parked"),
+                          tr("The contract must be cancelled or parked in order to close this window.<br>"
+                             "Would you like to..."), QMessageBox::Cancel );
+        QPushButton * cancelContract = mbox.addButton( tr("Cancel Contract"), QMessageBox::DestructiveRole );
+        QPushButton * parkContract = mbox.addButton( tr( "Park Contract"), QMessageBox::ActionRole );
+        mbox.exec();
+        if( QMessageBox::Cancel == mbox.result() ) {
+            log.stream( info ) << "User choose to cancel close";
+            event->ignore();
+            return;
+        }
+        if ( cancelContract == mbox.clickedButton() ) {
+            log.stream( info ) << "User choose to cancel the contract";
+            m_contract.cancel();
+            event->accept();
+            return;
+        }
+        if ( parkContract == mbox.clickedButton() ) {
+            log.stream( info ) << "User choose to park the contract";
+            TODO( "Implement park contract" );
+            // m_contract.cancel();
+            event->ignore();
+            return;
+        }
+
+        TODO( "Support cancel or park on close... ")
         return;
     }
     throw Exception( Errors::InternalError )
@@ -344,4 +372,11 @@ void RentDialog::on_input_editNote_pushButton_clicked() {
         m_contract.setNote( pted.getText() );
         update();
     }
+}
+
+void RentDialog::on_input_cancel_pushButton_clicked() {
+    Logger log("void RentDialog::on_input_cancel_pushButton_clicked()");
+    m_contract.cancel(); // Explicit cancel
+    contract_blanked(); // To make sure we can close the window
+    close();
 }

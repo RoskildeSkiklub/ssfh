@@ -275,6 +275,49 @@ void Contract::close() {
     }
 }
 
+void Contract::cancel() {
+    Logger log("void Contract::cancel()");
+    checkInBookingState( "Contract::cancel()");
+
+    if ( m_id != -1 ) {
+        QSqlQuery query; // For deleting stuff.
+
+        log.stream( info ) << "Contract with id: '" << m_id << "' has been created in the database. Need to delete it. Checking ContractItems";
+        QList<ContractItem>::iterator cii;
+        for ( cii = m_contractItems.begin(); cii != m_contractItems.end(); ++cii ) {
+            log.stream() << "Cancelling item with id '" << cii->getItem().getId() << "'";
+            if ( cii->getItem().getState() != DB::Item::State::booked ) {
+                log.stream( warn ) << "Expected state of Item to be '"
+                        << DB::Item::State::booked << "', but it was '"
+                        << cii->getItem().getState() << "'";
+            }
+            cii->getItem().db_setToIn();
+            // If the contractItem has been inserted into the database, delete it
+            log.stream() << "Deleting ContractItem with id '" << cii->getId() << "'";
+            if ( cii->getId() != -1 ) {
+                log.stream() << "ContractItem in database, deleting it";
+                query_check_prepare( query, "delete from contractitems "
+                                     " where id = :ci_id" );
+                query.bindValue( ":ci_id", cii->getId() );
+                query_check_exec( query );
+            } else {
+                log.stream() << "ContractItem not in database, ignoring it";
+            }
+        }
+        // Finally, delete the contract
+        query_check_prepare( query, "delete from contracts "
+                             "where id=:id" );
+        query.bindValue( ":id", m_id );
+        query_check_exec( query );
+        // Assigning to this is never pretty...
+        *this = Contract();
+        log.stream( info ) << "Contract has been cancelled";
+    } else {
+        log.stream() << "Contract has not been created in the database";
+    }
+}
+
+
 Contract Contract::db_load(qlonglong id) {
     Logger log("Contract Contract::db_load(qlonglong id)");
     log.stream() << "Loading contract with id '" << id << "'";
