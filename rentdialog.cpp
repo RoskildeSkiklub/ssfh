@@ -62,7 +62,9 @@ RentDialog::RentDialog(QWidget *parent) :
     //connect( ui->addButton, SIGNAL(clicked()), this, SLOT(on_addButton_clicked()));
 
     // Get the signals from the scan input events.
-    connect( Globals::interceptor, SIGNAL(barcodeItemScan(QString)), this, SLOT(add_item(QString)));
+    connect( Globals::interceptor, SIGNAL( barcodeItemScan(QString)), this, SLOT( add_item(QString)));
+    connect( Globals::interceptor, SIGNAL( barcodeCommandScan(Globals::BarcodeCommands::Command)),
+             this, SLOT( on_barcodeCommandScan(Globals::BarcodeCommands::Command) ) );
     connect( Globals::interceptor, SIGNAL( magSwipe(DKSundhedskort)), this, SLOT( set_hirer(DKSundhedskort) ) );
 
     // Initialize the state machine
@@ -126,6 +128,20 @@ RentDialog::~RentDialog()
     delete ui;
 }
 
+void RentDialog::on_barcodeCommandScan(const Globals::BarcodeCommands::Command &command) {
+    Logger log("void RentDialog::on_barcodeCommandScan(const Globals::BarcodeCommands::Command &command)");
+    if ( QApplication::activeWindow() != this ) {
+        log.stream() << "Ignoring commandScan because window is not active";
+        return;
+    }
+    if ( command.m_code == Globals::BarcodeCommands::OperationDone ) {
+        log.stream() << "Command is 'OperationDone' - calling finish";
+        finish();
+    }
+}
+
+
+
 void RentDialog::update() {
     Logger log( "void RentDialog::update()" );
     ui->output_contract_textBrowser->setText( m_contract.toRentalHtml() );
@@ -140,6 +156,33 @@ bool RentDialog::is_in_state( const QString & state ) {
     } else {
         log.stream() << "Could not find state, returning false";
         return false;
+    }
+}
+
+void RentDialog::finish() {
+    Logger log("void RentDialog::finish()");
+    if ( is_in_state( "has_item" ) ) {
+        m_contract.activate();
+        if ( Globals::checkPosPrinter() ) {
+            Pos::Printer & posp( Globals::getPosPrinter() );
+            // The receipt the customer needs to sign
+            posp.startReceipt();
+            m_contract.printRental( posp );
+            posp.endReceipt();
+
+            // The receipt for the customer
+            posp.startReceipt();
+            m_contract.printReceipt( posp );
+            posp.endReceipt();
+            QMessageBox::information( this, tr( "Contract created" ),
+                                      tr( "Contract created, printing receipt." ) );
+        } else {
+            QMessageBox::information( this, tr( "Contract created" ),
+                                      tr( "Contract created. Unable to print receipt." ) );
+        }
+        close();
+    } else {
+        log.stream( warn ) << "Ignoring call to finish, because state is not has_item";
     }
 }
 
@@ -254,26 +297,5 @@ void RentDialog::on_input_item_lineEdit_textChanged(QString newText) {
 
 void RentDialog::on_input_finish_pushButton_clicked() {
     Logger log("void RentDialog::on_input_finish_pushButton_clicked()");
-    m_contract.activate();
-    if ( Globals::checkPosPrinter() ) {
-        Pos::Printer & posp( Globals::getPosPrinter() );
-        // The receipt the customer needs to sign
-        posp.startReceipt();
-        m_contract.printRental( posp );
-        posp.endReceipt();
-
-        // The receipt for the customer
-        posp.startReceipt();
-        m_contract.printReceipt( posp );
-        posp.endReceipt();
-
-
-        QMessageBox::information( this, tr( "Contract created" ),
-                                  tr( "Contract created, printing receipt." ) );
-    } else {
-        QMessageBox::information( this, tr( "Contract created" ),
-                                  tr( "Contract created. Unable to print receipt." ) );
-    }
-    close();
-
+    finish();
 }

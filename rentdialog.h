@@ -26,6 +26,11 @@
 // App
 #include "contract.h"
 class DKSundhedskort;
+namespace Globals {
+    namespace BarcodeCommands {
+        class Command;
+    }
+};
 
 
 namespace Ui {
@@ -59,6 +64,12 @@ public slots:
       * This method tries to match the scanned hirer to a hirer in the database.
       * If not found, the hirer is created. It then calls set_hirer. */
     void set_hirer( const DKSundhedskort & dsk );
+
+    /** \brief Interprets the command, if applicable
+      * \param command The command to interpret
+      *
+      * This method currently only reacts to "OperationDone", if applicable */
+    void on_barcodeCommandScan( const Globals::BarcodeCommands::Command & command );
 
 private slots:
     void on_input_finish_pushButton_clicked();
@@ -94,6 +105,14 @@ private:
       *
       * \note This requires that all states are named */
     bool is_in_state( const QString & state );
+
+    /** \brief Finish the rental
+      *
+      * This activates the contract, prints the receipt, and closes the window.
+      * It is required that the dialog is in "has_item", state, otherwise
+      * a warning is logged, and it is ignored */
+    void finish();
+
 
 signals:
     void hirer_set(); // emitted when a hirer has successfully been set on the contract
