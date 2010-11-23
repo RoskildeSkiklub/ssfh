@@ -92,9 +92,9 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="input_addNote_pushButton">
+      <widget class="QPushButton" name="input_editNote_pushButton">
        <property name="text">
-        <string>Add &amp;note</string>
+        <string>Edit &amp;note</string>
        </property>
       </widget>
      </item>

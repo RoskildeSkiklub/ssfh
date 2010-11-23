@@ -72,6 +72,7 @@ public slots:
     void on_barcodeCommandScan( const Globals::BarcodeCommands::Command & command );
 
 private slots:
+    void on_input_editNote_pushButton_clicked();
     void on_input_finish_pushButton_clicked();
     void on_input_item_lineEdit_textChanged(QString );
 

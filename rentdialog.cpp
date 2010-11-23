@@ -10,6 +10,7 @@
 #include <QSqlDatabase>
 #include <QSet>
 #include <QAbstractState>
+#include <QDialog>
 
 // App
 #include "globals.h"
@@ -18,6 +19,7 @@
 #include "hirerdialog.h"
 #include "dksundhedskort.h"
 #include "utility.h"
+#include "plaintexteditdialog.h"
 
 using namespace Log;
 
@@ -39,7 +41,7 @@ using namespace Log;
 *   item_added => has_item
 
 * has_item: Hirer has been selected, duration is fixed, at least one item is added
-*   active_buttons: Rentalgroup, Add item, Finish, Park, Cancel
+*   active_buttons: Rentalgroup, Add item, Finish, Park, Cancel, Edit note
 *   +rental group  => has_item
 *   +item_added => has_item
 *   +cancel => revert contract
@@ -87,6 +89,7 @@ RentDialog::RentDialog(QWidget *parent) :
     blank->assignProperty( ui->input_park_pushButton, "enabled", false );
     blank->assignProperty( ui->input_item_lineEdit, "enabled", false );
     blank->assignProperty( ui->input_rentalgroup_pushButton, "enabled", false );
+    blank->assignProperty( ui->input_editNote_pushButton, "enabled", false );
     // From blank to has_hirer if hirer_set
     blank->addTransition( this, SIGNAL( hirer_set() ), has_hirer );
 
@@ -98,6 +101,7 @@ RentDialog::RentDialog(QWidget *parent) :
     has_hirer->assignProperty( ui->input_park_pushButton, "enabled", true );
     has_hirer->assignProperty( ui->input_item_lineEdit, "enabled", true );
     has_hirer->assignProperty( ui->input_rentalgroup_pushButton, "enabled", false );
+    has_hirer->assignProperty( ui->input_editNote_pushButton, "enabled", false );
     // From has_hirer to has_item on item_added
     has_hirer->addTransition( this, SIGNAL( item_added() ), has_item );
     // TODO: TO BLANK
@@ -110,6 +114,7 @@ RentDialog::RentDialog(QWidget *parent) :
     has_item->assignProperty( ui->input_park_pushButton, "enabled", true );
     has_item->assignProperty( ui->input_item_lineEdit, "enabled", true );
     has_item->assignProperty( ui->input_rentalgroup_pushButton, "enabled", true );
+    has_item->assignProperty( ui->input_editNote_pushButton, "enabled", true );
     // TODO: From has_item to no_hirer on item_added ===> BLANK...
     // blank->addTransition( this, SIGNAL( item_added()) ), has_item );
 
@@ -298,4 +303,16 @@ void RentDialog::on_input_item_lineEdit_textChanged(QString newText) {
 void RentDialog::on_input_finish_pushButton_clicked() {
     Logger log("void RentDialog::on_input_finish_pushButton_clicked()");
     finish();
+}
+
+void RentDialog::on_input_editNote_pushButton_clicked() {
+    Logger log("void RentDialog::on_input_editNote_pushButton_clicked()");
+    PlainTextEditDialog pted( tr( "Set note for contract"),
+                              tr( "<b>Current note</b>"),
+                              m_contract.getNote() );
+    if ( QDialog::Accepted == pted.exec()) {
+        log.stream() << "Setting note on contract.";
+        m_contract.setNote( pted.getText() );
+        update();
+    }
 }
