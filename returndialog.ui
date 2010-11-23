@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>Return Items</string>
   </property>
+  <property name="modal">
+   <bool>true</bool>
+  </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0" rowspan="4">
     <widget class="QTextBrowser" name="output_contract_textBrowser"/>
