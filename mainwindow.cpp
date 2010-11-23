@@ -93,6 +93,29 @@ void MainWindow::updateDbStatusDisplay() const {
     Logger log("void MainWindow::updateDbStatusDisplay()");
     QMap<QString,QString> item_map;
     QSqlQuery query;
+
+    // Contracts
+    query_check_prepare( query , "select state, count(*) "
+                         "from contracts "
+                         "where state=:state1 "
+                         "or state=:state2 "
+                         "or state=:state3 "
+                         "group by state "
+                         "order by state ");
+    query.bindValue(":state1", DB::Contract::State::active);
+    query.bindValue(":state2", DB::Contract::State::booking);
+    query.bindValue(":state3", DB::Contract::State::parked);
+    query_check_exec( query );
+    QString cres;
+    while( query.next() ) {
+        cres += QString( " %0:%1" )
+                .arg( Contract::tr( query.value( 0 ).toString().toLatin1().constData() ) )
+                .arg( query.value( 1 ).toLongLong() );
+    }
+    if ( !cres.isEmpty() ) {
+        cres = tr( "<b>contracts:</b>") + cres + " ";
+    }
+    // Items
     query_check_prepare( query, "select type, rentalgroup, state, count(*) "
                          "from items "
                          "where state=:state1 "
@@ -104,7 +127,6 @@ void MainWindow::updateDbStatusDisplay() const {
     query.bindValue(":state2", DB::Item::State::booked );
     query.bindValue(":state3", DB::Item::State::out );
     query_check_exec( query );
-
     while( query.next() ) {
         QString ikey = QString( "%0/%1" )
                        .arg( query.value( 0 ).toString() )
@@ -119,7 +141,7 @@ void MainWindow::updateDbStatusDisplay() const {
                            .arg( Item::tr( query.value( 2 ).toString().toLatin1().constData() ) )
                            .arg( query.value( 3 ).toLongLong() );
     }
-    status_db_label->setText( QStringList( item_map.values() ).join( "  " ) );
+    status_db_label->setText( cres + QStringList( item_map.values() ).join( "  " ) );
 }
 
 
