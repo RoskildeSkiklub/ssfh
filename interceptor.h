@@ -11,6 +11,12 @@
 
 class QEvent;
 class DKSundhedskort;
+namespace Globals {
+    namespace BarcodeCommands {
+        class Command;
+    }
+};
+
 /** \brief Class to intercept keyboard events, and possibly translate to barcode/magnetic swipe events.
   *
   * This class intercepts any keyboard events. It looks for patterns that indicates that
@@ -35,13 +41,40 @@ private:
 
 
     void postCollected(); // Post collected info. Called when no match.
+
+    /** \brief Called when a barcode has been scanned, and a signal needs emitting.
+      *
+      * This method emits one of the barcodeItemScan or
+      * barcodeCommandScan signals as appropiate */
     void emitBarcodeScan() const;
+
     void emitMagSwipe() const;
+
+    void barcodeScan( const QString & code ) const;
+
 
 private slots:
     void timeout(); // Called by the timer, when it times out...
+
+
 signals:
-    void barcodeScan( const QString & id ) const;
+
+    /** \brief An item was scanned with the barcode reader
+      * \param id The id of the scanned item
+      *
+      * This signal indicates that an item was scanned */
+    void barcodeItemScan( const QString & id ) const;
+
+    /** \brief A command was scanned with the barcode reader
+      * \param command The command that was scanned
+      *
+      * This signal indicates that a command was scanned */
+    void barcodeCommandScan( const Globals::BarcodeCommands::Command & command ) const;
+
+    /** \brief A magnetic DKSundhedskort was read with the magtek reader
+      * \param dks The social security card read
+      *
+      * This signals that a danish security card was read */
     void magSwipe( const DKSundhedskort & dks ) const;
 
 };

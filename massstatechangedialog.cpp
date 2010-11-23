@@ -36,7 +36,7 @@ MassStateChangeDialog::MassStateChangeDialog(QWidget *parent) :
     ui->input_state_comboBox->setCurrentIndex( 0 );
 
     // Set up signals
-    connect( Globals::interceptor, SIGNAL(barcodeScan(QString)),
+    connect( Globals::interceptor, SIGNAL(barcodeItemScan(QString)),
              this, SLOT(update_item(QString)));
 
 }

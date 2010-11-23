@@ -54,7 +54,7 @@ AddNewItemDialog::AddNewItemDialog(QWidget *parent) :
     doSetupBasedOnType();
 
     // Connect signal from barcode to here...
-    connect( Globals::interceptor, SIGNAL(barcodeScan(QString)), this, SLOT(add_item(QString)));
+    connect( Globals::interceptor, SIGNAL(barcodeItemScan(QString)), this, SLOT(add_item(QString)));
 
     //);
 }

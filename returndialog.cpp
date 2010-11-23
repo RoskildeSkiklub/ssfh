@@ -42,7 +42,7 @@ ReturnDialog::ReturnDialog(QWidget *parent) :
     ui->setupUi(this);
 
     // Get the signals from the scan input events.
-    connect( Globals::interceptor, SIGNAL(barcodeScan(QString)), this, SLOT(return_item(QString)));
+    connect( Globals::interceptor, SIGNAL(barcodeItemScan(QString)), this, SLOT(return_item(QString)));
     // connect( Globals::interceptor, SIGNAL( magSwipe(DKSundhedskort)), this, SLOT( set_hirer(DKSundhedskort) ) );
 
     // Initialize the state machine

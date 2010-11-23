@@ -62,7 +62,7 @@ RentDialog::RentDialog(QWidget *parent) :
     //connect( ui->addButton, SIGNAL(clicked()), this, SLOT(on_addButton_clicked()));
 
     // Get the signals from the scan input events.
-    connect( Globals::interceptor, SIGNAL(barcodeScan(QString)), this, SLOT(add_item(QString)));
+    connect( Globals::interceptor, SIGNAL(barcodeItemScan(QString)), this, SLOT(add_item(QString)));
     connect( Globals::interceptor, SIGNAL( magSwipe(DKSundhedskort)), this, SLOT( set_hirer(DKSundhedskort) ) );
 
     // Initialize the state machine

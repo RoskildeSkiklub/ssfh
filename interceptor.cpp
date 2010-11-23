@@ -15,6 +15,7 @@
 #include "log.h"
 #include "dksundhedskort.h"
 #include "exception.h"
+#include "globals.h"
 
 using namespace Log;
 
@@ -22,7 +23,7 @@ using namespace Log;
 // some sort of generic matcher/translate to signal thingy. For now, YAGNI.
 
 Interceptor::Interceptor()
-    :  barcode_exp( "ABCD(\\d+)\r" ),
+    :  barcode_exp( "ABCD([\\dA-Z ]+)\r" ),
     magswipe_exp( DKSundhedskort::getRegExp() ),
     collecting( false ), timer( this ), ignore_next_keyevent( false ) {
     barcode_exp.setCaseSensitivity( Qt::CaseInsensitive ); // Needed, because user may press caps-lock....
@@ -178,15 +179,25 @@ void Interceptor::emitBarcodeScan() const {
                 << barcode_exp.captureCount() << ". Not emitting barcodeScan";
         return;
     }
-    QString ids = barcode_exp.cap( 1 );
-/*  Well, ids are strings. Whadayouknow.  bool OK;
-    qulonglong id = ids.toULongLong(  & OK );
-    if ( ! OK ) {
-        log.stream( error ) << "Internal error: Wrong type of capture, unable to convert to qulonglong: '"
-                << ids << "'";
-    } */
-    log.stream() << "Emitting barcodeScan( " << ids << " )";
-    emit barcodeScan( ids );
+    QString code = barcode_exp.cap( 1 );
+    // Check if this is a command or an id
+    if ( code.startsWith( "C" ) ) {
+        log.stream() << "Thinking '" << code << "' is a command scan";
+        QRegExp cmdexp( "C(\\d+) {0,1}([A-Z]*)");
+        if ( ! cmdexp.exactMatch( code ) ) {
+            log.stream( error ) << "No exact command match on '" << code << "'. Not emitting barcodeScan";
+            return;
+        }
+        Globals::BarcodeCommands::Command cmd ( static_cast<Globals::BarcodeCommands::Code> ( cmdexp.cap( 1 ).toInt() ), "", "" );
+        if ( cmdexp.captureCount() == 2 ) {
+            cmd.m_param = cmdexp.cap( 2 );
+        }
+        log.stream() << "Emitting barcodeCommandScan( { m_code: '" << cmd.m_code << "', m_param: '" << cmd.m_param << "' } )";
+        emit barcodeCommandScan( cmd );
+    } else {
+        log.stream() << "Emitting barcodeItemScan( '" << code << "' )";
+        emit barcodeItemScan( code );
+    }
 }
 
 void Interceptor::emitMagSwipe() const {

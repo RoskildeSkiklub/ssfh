@@ -179,7 +179,7 @@ void MainWindow::doPrintCommandSheet() {
             if ( i->m_param.isEmpty() ) {
                 posp << Pos::Barcode( QString("C%0").arg( i->m_code ) );
             } else {
-                posp << Pos::Barcode( QString("C%0/%1").arg( i->m_code ).arg( i->m_param ).toUpper() );
+                posp << Pos::Barcode( QString("C%0 %1").arg( i->m_code ).arg( i->m_param ).toUpper() );
             }
             posp << Pos::hr;
         }

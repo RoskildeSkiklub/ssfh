@@ -42,7 +42,7 @@ namespace Globals {
             QString m_param; // Code param
             Command( const Code & code, const QString & label,
                      const QString & param = QString("") )
-                : m_code( code ), m_label( label ), m_param( param )  {};
+                : m_code( code ), m_label( label ), m_param( param )  {}
         };
     };
 
