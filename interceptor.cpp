@@ -103,6 +103,7 @@ bool Interceptor::eventFilter( QObject *obj, QEvent *ev ) {
             log.stream( info ) << "NEW BARCODE EVENT (1): '"
                     << kev->text().toLocal8Bit().toPercentEncoding().constData() << "'";
             timer.stop();
+            collected = "";
             emitBarcodeScan();
             return true;
         }
@@ -111,6 +112,7 @@ bool Interceptor::eventFilter( QObject *obj, QEvent *ev ) {
             log.stream( info ) << "NEW MAGSWIPE EVENT (1): '"
                     << kev->text().toLocal8Bit().toPercentEncoding().constData() << "'";
             timer.stop();
+            collected = "";
             emitMagSwipe();
             return true;
         }
@@ -137,16 +139,18 @@ bool Interceptor::eventFilter( QObject *obj, QEvent *ev ) {
             log.stream( info ) << "NEW BARCODE EVENT (2): '"
                     << collected.toLocal8Bit().toPercentEncoding().constData() << "'";
             timer.stop();
-            emitBarcodeScan();
+            collected = "";
             collecting = false;
+            emitBarcodeScan();
             return true;
         }
         if ( magswipe_exp.exactMatch( collected ) ) {
             log.stream( info ) << "NEW MAGSWIPE EVENT (2): '"
                     << collected.toLocal8Bit().toPercentEncoding().constData() << "'";
             timer.stop();
-            emitMagSwipe();
+            collected = "";
             collecting = false;
+            emitMagSwipe();
             return true;
         }
         // No exact match. We must have partial match on the collected string, to continue
