@@ -85,6 +85,9 @@ private slots:
 protected:
     void changeEvent(QEvent *e);
 
+    /** \brief Only allow close, if the contract is parked or something */
+    void closeEvent(QCloseEvent *);
+
     /** \brief Sets the hirer for the current contract
       * \param hirer The hirer to set
       *

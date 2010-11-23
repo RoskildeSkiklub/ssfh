@@ -11,6 +11,7 @@
 #include <QSet>
 #include <QAbstractState>
 #include <QDialog>
+#include <QCloseEvent>
 
 // App
 #include "globals.h"
@@ -131,6 +132,34 @@ RentDialog::RentDialog(QWidget *parent) :
 RentDialog::~RentDialog()
 {
     delete ui;
+}
+
+void RentDialog::closeEvent(QCloseEvent * event) {
+    Logger log("RentDialog::closeEvent(QCloseEvent *)");
+    // If blank, just close
+    // If has_hirer, ask if sure to close
+    // If has_item, ask if parking or cancel
+    if ( is_in_state( "blank" ) ) {
+        event->accept();
+        return;
+    }
+    if ( is_in_state( "has_hirer" ) ) {
+        if ( QMessageBox::Yes == QMessageBox::question( this, tr("Ok to close dialog?"),
+                                                         tr( "The contract will be cancelled. Ok to continue?" ),
+                                                         QMessageBox::Yes | QMessageBox::No ) ) {
+            event->accept();
+            return;
+        } else {
+            event->ignore();
+            return;
+        }
+    }
+    if ( is_in_state( "has_item") ) {
+        TODO("Implement support for park and contract cancel");
+        return;
+    }
+    throw Exception( Errors::InternalError )
+            << ( log.stream( error ) << "Missing handler for state in RentDialog::closeEvent");
 }
 
 void RentDialog::on_barcodeCommandScan(const Globals::BarcodeCommands::Command &command) {
