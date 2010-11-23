@@ -181,7 +181,8 @@ public:
       *
       * This changes the state to park. This is mostly useful in order to postpone
       * the handling of the contract in the GUI.
-      * You can only park a contract in the booking state. */
+      * You can only park a contract in the booking state.
+      * All (contract)items are written to the db as booked. */
     void park();
 
     /** \brief Activate the contract

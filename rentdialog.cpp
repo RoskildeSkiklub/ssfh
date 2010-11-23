@@ -146,9 +146,11 @@ void RentDialog::closeEvent(QCloseEvent * event) {
         return;
     }
     if ( is_in_state( "has_hirer" ) ) {
-        if ( QMessageBox::Yes == QMessageBox::question( this, tr("Ok to close dialog?"),
-                                                         tr( "The contract will be cancelled. Ok to continue?" ),
-                                                         QMessageBox::Yes | QMessageBox::No ) ) {
+        if ( QMessageBox::Yes
+             == QMessageBox::question( this,
+                                       tr("Cancel Contract?"),
+                                       tr( "Are you sure you want to cancel the contract?" ),
+                                       QMessageBox::Yes | QMessageBox::No ) ) {
             event->accept();
             return;
         } else {
@@ -177,17 +179,18 @@ void RentDialog::closeEvent(QCloseEvent * event) {
         }
         if ( parkContract == mbox.clickedButton() ) {
             log.stream( info ) << "User choose to park the contract";
-            TODO( "Implement park contract" );
-            // m_contract.cancel();
-            event->ignore();
+            m_contract.park();
+            event->accept();
             return;
         }
-
-        TODO( "Support cancel or park on close... ")
+        //throw Exception( Errors::InternalError )
+        log.stream(error) << "Internal error in RentDialog::closeEvent, value returned from user question was not handled";
+        event->accept();
         return;
     }
-    throw Exception( Errors::InternalError )
-            << ( log.stream( error ) << "Missing handler for state in RentDialog::closeEvent");
+    log.stream(error) << "Internal error in RentDialog::closeEvent, missing handler for dialog state";
+    event->accept();
+    return;
 }
 
 void RentDialog::on_barcodeCommandScan(const Globals::BarcodeCommands::Command &command) {
@@ -376,7 +379,26 @@ void RentDialog::on_input_editNote_pushButton_clicked() {
 
 void RentDialog::on_input_cancel_pushButton_clicked() {
     Logger log("void RentDialog::on_input_cancel_pushButton_clicked()");
-    m_contract.cancel(); // Explicit cancel
-    contract_blanked(); // To make sure we can close the window
-    close();
+    if ( QMessageBox::Yes
+         == QMessageBox::question( this,
+                                   tr("Cancel Contract?"),
+                                   tr( "Are you sure you want to cancel the contract?" ),
+                                   QMessageBox::Yes | QMessageBox::No ) ) {
+        m_contract.cancel(); // Explicit cancel
+        emit contract_blanked(); // To make sure we can close the window
+        close();
+    }
+}
+
+void RentDialog::on_input_park_pushButton_clicked() {
+    Logger log("void RentDialog::on_input_park_pushButton_clicked()");
+    if ( QMessageBox::Yes
+         == QMessageBox::question( this,
+                                   tr("Park Contract?"),
+                                   tr( "Are you sure you want to park the contract?" ),
+                                   QMessageBox::Yes | QMessageBox::No ) ) {
+        m_contract.park(); // Explicit cancel
+        emit contract_blanked(); // To make sure we can close the window
+        close();
+    }
 }

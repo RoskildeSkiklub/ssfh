@@ -257,6 +257,36 @@ void Contract::activate() {
     }
 
 }
+void Contract::park() {
+    Logger log("void Contract::park()");
+    checkInBookingState( "park" );
+
+    // We use a transaction for this.... right?
+    database_transaction( "void Contract::park()" );
+    try {
+        // First contract items and items
+        QList<ContractItem>::iterator cii;
+        for( cii = m_contractItems.begin(); cii != m_contractItems.end(); ++cii ) {
+            // cii->getItem().db_setToOut(); Not done for park....
+            // cii->setState( DB::ContractItem::State::out ); They are already booking
+            cii->db_insert();
+        }
+        // Then the contract - it just needs updating.
+        m_state = DB::Contract::State::parked;
+        try {
+            db_update();
+        } catch ( ... ) {
+            m_state = DB::Contract::State::booking;
+            throw;
+        }
+        database_commit("void Contract::park()");
+    }
+    catch( ... ) {
+        database_rollback( "void Contract::park()" );
+        throw;
+    }
+
+}
 
 void Contract::close() {
     Logger log("void Contract::close()");
