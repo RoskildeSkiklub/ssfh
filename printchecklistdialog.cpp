@@ -200,6 +200,17 @@ void PrintChecklistDialog::updateSortDisplay() {
 
 void PrintChecklistDialog::on_input_print_pushButton_clicked() {
     Logger log("void PrintChecklistDialog::on_input_print_pushButton_clicked()");
+    bool ok;
+    qlonglong numItems = ui->output_numberOfMatchingItems_label->text().toLongLong(&ok);
+    if ( ok && numItems > 100 ) {
+        if ( QMessageBox::Yes == QMessageBox::warning( this, tr("High number of items"),
+                                                        tr( "The number of items in the checklist will be quite high.<br>"
+                                                            "Are you sure you wish to print?" ),
+                                                        QMessageBox::Yes | QMessageBox::No ) ) {
+            doPrint();
+        }
+        return;
+    }
     doPrint();
 }
 
