@@ -163,6 +163,14 @@ public:
       * \returns the amount allready payed by the hirer */
     qlonglong getPayed() const;
 
+    /** \brief Get the note of the contract
+      * \return Copy of the note of the contract */
+    QString getNote() const;
+
+    /** \brief Set the note on the contract
+      * \param note The new note on the contract */
+    void setNote( const QString & note );
+
     /** \brief Add a payment to the contract
       * \param amount The amount to add to payed
       *

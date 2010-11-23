@@ -195,6 +195,16 @@ QString Contract::getState() const {
     return m_state;
 }
 
+QString Contract::getNote() const {
+    Logger log("QString Contract::getNote() const");
+    return m_note;
+}
+
+void Contract::setNote(const QString &note) {
+    Logger log("void Contract::setNote(const QString &note)");
+    m_note = note;
+}
+
 qlonglong Contract::getDiscount() const {
     Logger log("qlonglong Contract::getDiscount() const");
     return m_discount;
@@ -400,6 +410,12 @@ QString Contract::toCommonHtml( bool isRental ) const {
     res += QString( "<tr><td>%0</td><td align=\"right\" class=\"total\">%1</td></tr>" )
            .arg( tr( "Payable amount" ) ).arg( getPayableAmount() );
     res += "</table>";
+
+    // Note
+    if ( !m_note.isEmpty() ) {
+        res += "<h3>" + tr( "Note" ) + "</h3>";
+        res += "<p>" + m_note + "</p>";
+    }
 
     return res + "</body>";
 
