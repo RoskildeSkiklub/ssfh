@@ -29,10 +29,12 @@ namespace Globals {
     namespace BarcodeCommands {
         enum Code {
             OperationDone            = 0, // Used to signal done/close to rental/return windows
-            ContractRemoveIndividual = 1, // Command is parameterized with kind
-            ContractAddIndividual    = 2, // Command is parameterized with kind
-            ContractRemoveLiftCard   = 3, // Command is parameterized with kind
-            ContractAddLiftCard      = 4, // Command is parameterized with kind.
+            OpenRentalWindow         = 1, // MainWindow - open rental window
+            OpenReturnWindow         = 2, // MainWindow - open return window
+            ContractRemoveIndividual = 3, // Command is parameterized with kind
+            ContractAddIndividual    = 4, // Command is parameterized with kind
+            ContractRemoveLiftCard   = 5, // Command is parameterized with kind
+            ContractAddLiftCard      = 6, // Command is parameterized with kind.
         };
 
         class Command {

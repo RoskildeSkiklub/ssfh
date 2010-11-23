@@ -6,6 +6,14 @@
 class QLabel;
 class QShowEvent;
 
+// App
+class DKSundhedskort;
+namespace Globals {
+    namespace BarcodeCommands {
+        class Command;
+    }
+};
+
 namespace Ui {
     class MainWindow;
 }
@@ -28,7 +36,7 @@ private:
     void showHiredItemsDialog() const;
     void showPrintChecklistDialog() const;
     void showMassStateChangeDialog() const;
-    void doPrintCommandSheet();
+    void doPrintCommandSheet() const;
 
     /** \brief Pointer to statusbar db label
       *
@@ -52,6 +60,9 @@ private slots:
     void on_action_RentItems_triggered();
     void on_input_return_pushButton_clicked();
     void on_input_rent_pushButton_clicked();
+
+public slots:
+    void on_barcodeCommandScan( const Globals::BarcodeCommands::Command & command );
 };
 
 #endif // MAINWINDOW_H

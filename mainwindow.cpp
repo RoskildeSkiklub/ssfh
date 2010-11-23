@@ -8,6 +8,8 @@
 #include <QString>
 #include <QMessageBox>
 
+#include <QFileDialog>
+
 // App ui
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -34,11 +36,13 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    // This is not needed,
-    // because we use the on_*_clicked pattern?
-    // connect( ui->rentButton, SIGNAL(clicked()), this, SLOT(on_rentButton_clicked()) );
 
-    // Set up the db label widget
+    // Connect to barcode command event
+    connect( Globals::interceptor, SIGNAL(barcodeCommandScan(Globals::BarcodeCommands::Command)),
+             this, SLOT(on_barcodeCommandScan(Globals::BarcodeCommands::Command)) );
+
+
+    // Set up the db label widget in the statusbard
     status_db_label = new QLabel(this);
     statusBar()->addWidget( status_db_label );
     // updateDbStatusDisplay();
@@ -65,6 +69,25 @@ void MainWindow::showEvent(QShowEvent *event) {
     Logger log("void MainWindow::showEvent(QShowEvent *event)");
     updateDbStatusDisplay();
 }
+
+void MainWindow::on_barcodeCommandScan(const Globals::BarcodeCommands::Command &command) {
+    Logger log("void MainWindow::on_barcodeCommandScan(const Globals::BarcodeCommands::Command &command)");
+    if ( QApplication::activeWindow() != this ) {
+        log.stream() << "Ignoring commandScan because window is not active";
+        return;
+    }
+
+    if ( command.m_code == Globals::BarcodeCommands::OpenRentalWindow ) {
+        showRentDialog();
+        return;
+    }
+    if ( command.m_code == Globals::BarcodeCommands::OpenReturnWindow ) {
+        showReturnDialog();
+        return;
+    }
+
+}
+
 
 void MainWindow::updateDbStatusDisplay() const {
     Logger log("void MainWindow::updateDbStatusDisplay()");
@@ -150,13 +173,18 @@ void MainWindow::showMassStateChangeDialog() const {
 
 // TODO: I am not entirely sure this should go here. For now...
 using namespace Globals::BarcodeCommands;
-void MainWindow::doPrintCommandSheet() {
+void MainWindow::doPrintCommandSheet() const {
     Logger log("void MainWindow::doPrintCommandSheet() const");
     // List of commands
     QList<Command> commands;
     commands << Command( OperationDone, tr( "Done" ) )
             // TODO: This should match some kind of configuration/db lookup, when POS is added.
             // Perhaps use the configuration table (*doh*)
+
+            << Command( OpenRentalWindow, tr( "Open Rental Window") )
+            << Command( OpenReturnWindow, tr( "Open Return Window" ) );
+    /*
+
             << Command( ContractAddIndividual, tr( "Add Adult to Contract" ), tr( "Adult" ) )
             << Command( ContractAddIndividual, tr( "Add Child to Contract" ), tr( "Child" ) )
             << Command( ContractRemoveIndividual, tr( "Remove Adult from Contract" ), tr( "Adult" ) )
@@ -164,7 +192,7 @@ void MainWindow::doPrintCommandSheet() {
             << Command( ContractAddLiftCard, tr( "Add Adult Lift Card" ), tr( "Adult" ) )
             << Command( ContractAddLiftCard, tr( "Add Child Lift Card" ), tr( "Child" ) )
             << Command( ContractRemoveLiftCard, tr( "Remove Adult Lift Card" ), tr( "Adult" ) )
-            << Command( ContractRemoveLiftCard, tr( "Remove Child Lift Card" ), tr( "Child" ) );
+            << Command( ContractRemoveLiftCard, tr( "Remove Child Lift Card" ), tr( "Child" ) ) */
 
     if ( Globals::checkPosPrinter() ) {
         Pos::Printer & posp( Globals::getPosPrinter() );
@@ -185,7 +213,7 @@ void MainWindow::doPrintCommandSheet() {
         }
         posp.endReceipt();
         statusBar()->showMessage( tr( "Command List printed" ), 5000 );;
-        QMessageBox::information( this, tr( "Command List Printed"),
+        QMessageBox::information( 0, tr( "Command List Printed"),
                                   tr( "Printed Command List to printer.") );
     }
 }
