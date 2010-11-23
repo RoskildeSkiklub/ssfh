@@ -35,13 +35,6 @@ void query_check_prepare( QSqlQuery & query, const QString & queryString ) {
 void query_check_exec( QSqlQuery & query ) {
     Logger log( "void query_check_exec( const QSqlQuery & query )" );
     log.stream() << "Preparing to execute query '" << query.lastQuery() << "'";
-    if ( ! query.exec() ) {
-        throw Exception( Errors::DBError )
-            << ( log.stream( error ) << "Error executing query '"
-                << query.lastQuery()
-                << "' : '" << query.lastError().text() << "'" );
-    }
-    log.stream() << "Executed query '" << query.executedQuery() << "'";
     // Dump any bound values
     QMapIterator<QString, QVariant> i(query.boundValues());
     if ( i.hasNext() ) {
@@ -53,6 +46,13 @@ void query_check_exec( QSqlQuery & query ) {
         }
         log.stream() << "Done dumping bound values";
     }
+    if ( ! query.exec() ) {
+        throw Exception( Errors::DBError )
+            << ( log.stream( error ) << "Error executing query '"
+                << query.lastQuery()
+                << "' : '" << query.lastError().text() << "'" );
+    }
+    log.stream() << "Executed query '" << query.executedQuery() << "'";
 };
 
 void query_check_first( QSqlQuery & query ) {
