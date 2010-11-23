@@ -157,14 +157,14 @@ void MainWindow::doPrintCommandSheet() {
     commands << Command( OperationDone, tr( "Done" ) )
             // TODO: This should match some kind of configuration/db lookup, when POS is added.
             // Perhaps use the configuration table (*doh*)
-            << Command( ContractAddIndividual, tr( "Add Adult" ), tr( "Adult" ) )
-            << Command( ContractAddIndividual, tr( "Add Child" ), tr( "Child" ) )
-            << Command( ContractRemoveIndividual, tr( "Remove Adult" ), tr( "Adult" ) )
-            << Command( ContractRemoveIndividual, tr( "Remove Child" ), tr( "Child" ) )
-            << Command( ContractAddLiftCard, tr( "Add Adult" ), tr( "Adult" ) )
-            << Command( ContractAddLiftCard, tr( "Add Child" ), tr( "Child" ) )
-            << Command( ContractRemoveLiftCard, tr( "Remove Adult" ), tr( "Adult" ) )
-            << Command( ContractRemoveLiftCard, tr( "Remove Child" ), tr( "Child" ) );
+            << Command( ContractAddIndividual, tr( "Add Adult to Contract" ), tr( "Adult" ) )
+            << Command( ContractAddIndividual, tr( "Add Child to Contract" ), tr( "Child" ) )
+            << Command( ContractRemoveIndividual, tr( "Remove Adult from Contract" ), tr( "Adult" ) )
+            << Command( ContractRemoveIndividual, tr( "Remove Child from Contract" ), tr( "Child" ) )
+            << Command( ContractAddLiftCard, tr( "Add Adult Lift Card" ), tr( "Adult" ) )
+            << Command( ContractAddLiftCard, tr( "Add Child Lift Card" ), tr( "Child" ) )
+            << Command( ContractRemoveLiftCard, tr( "Remove Adult Lift Card" ), tr( "Adult" ) )
+            << Command( ContractRemoveLiftCard, tr( "Remove Child Lift Card" ), tr( "Child" ) );
 
     if ( Globals::checkPosPrinter() ) {
         Pos::Printer & posp( Globals::getPosPrinter() );
@@ -175,10 +175,11 @@ void MainWindow::doPrintCommandSheet() {
         QList<Command>::const_iterator i;
         for ( i = commands.begin(); i != commands.end(); ++i ) {
             posp << Pos::center << i->m_label;
+            posp << Pos::center;
             if ( i->m_param.isEmpty() ) {
-                posp << Pos::Barcode( QString("CMD%0").arg( i->m_code ) );
+                posp << Pos::Barcode( QString("C%0").arg( i->m_code ) );
             } else {
-                posp << Pos::Barcode( QString("CMD%0:%1").arg( i->m_code ).arg( i->m_param ) );
+                posp << Pos::Barcode( QString("C%0/%1").arg( i->m_code ).arg( i->m_param ).toUpper() );
             }
             posp << Pos::hr;
         }
