@@ -39,21 +39,23 @@ while( <> ) {
             my $column = ucfirst $1;
             $item_stuff{ $next_group } .= "        struct $column {\n";
 
-            my $clean_keys = $2;
-            $clean_keys =~s/\'//g;
-            $clean_keys =~s/\, /,/g;
-            $clean_keys =~s/ /_/g;
-            # print STDERR "clean keys now $clean_keys\n";
-            my @keys = split( /,\s*/, $clean_keys );
-            
-            foreach ( sort @keys ) {
-#                print STDERR "Got key $_\n";
+            my $values = $2;
+            $values =~ s/\'//g;
+            $values =~s/\, /,/g;
+            my @valuesa = split( /,\s*/, $values );
+            print STDERR "valuesa : @valuesa\n"; 
+
+            foreach ( sort @valuesa ) {
+                print STDERR "Got key $_\n";
                 # QT_TRANSLATE_NOOP("Item","in"),
-                $db_strings .= "    $prefix"."QT_TRANSLATE_NOOP(\"$next_group\", \"$_\" )\n";
+                my $value = $_;
+                my $key = $value;
+                $key =~ s/ /_/g;
+                $db_strings .= "    $prefix"."QT_TRANSLATE_NOOP(\"$next_group\", \"$value\" )\n";
                 $prefix = ",";
                 #$ITEM_STUFF .= "            static const QString $_;\n";
-                $item_stuff{ $next_group} .= "            static const QString $_;\n";
-                $consts .= "const QString DB::$next_group"."::$column"."::$_ = \"$_\";\n";
+                $item_stuff{ $next_group} .= "            static const QString $key;\n";
+                $consts .= "const QString DB::$next_group"."::$column"."::$key = \"$value\";\n";
             }
             $db_strings .= "\n";
             $item_stuff{ $next_group } .= "        };\n\n";

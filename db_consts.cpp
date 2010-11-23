@@ -37,11 +37,11 @@ static const char * db_strings[] = {
     ,QT_TRANSLATE_NOOP("Item", "created" )
     ,QT_TRANSLATE_NOOP("Item", "deleted" )
     ,QT_TRANSLATE_NOOP("Item", "discarded" )
-    ,QT_TRANSLATE_NOOP("Item", "handed_out" )
+    ,QT_TRANSLATE_NOOP("Item", "handed out" )
     ,QT_TRANSLATE_NOOP("Item", "lost" )
     ,QT_TRANSLATE_NOOP("Item", "other" )
     ,QT_TRANSLATE_NOOP("Item", "returned" )
-    ,QT_TRANSLATE_NOOP("Item", "sent_for_maintenance" )
+    ,QT_TRANSLATE_NOOP("Item", "sent for maintenance" )
 
 
 };
@@ -67,11 +67,11 @@ const QString DB::Item::Event::booked = "booked";
 const QString DB::Item::Event::created = "created";
 const QString DB::Item::Event::deleted = "deleted";
 const QString DB::Item::Event::discarded = "discarded";
-const QString DB::Item::Event::handed_out = "handed_out";
+const QString DB::Item::Event::handed_out = "handed out";
 const QString DB::Item::Event::lost = "lost";
 const QString DB::Item::Event::other = "other";
 const QString DB::Item::Event::returned = "returned";
-const QString DB::Item::Event::sent_for_maintenance = "sent_for_maintenance";
+const QString DB::Item::Event::sent_for_maintenance = "sent for maintenance";
 
 
 
