@@ -290,3 +290,12 @@ void MainWindow::on_action_Print_Command_Sheet_triggered()
     Logger log("void MainWindow::on_action_Print_Command_Sheet_triggered()");
     doPrintCommandSheet();
 }
+
+void MainWindow::on_action_About_triggered()
+{
+    Logger log("void MainWindow::on_action_About_triggered()");
+    QMessageBox::information( this, tr("About SnowStuffForHire"),
+                              tr( "<p>Version: %0</p><p>Created by Mads Bondo Dydensborg</p>"
+                                  "<p>Mail: mads@dydensborg.dk</p><p>Phone: 29 84 00 42</p>")
+                              .arg( VERSION ) );
+}

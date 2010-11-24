@@ -76,9 +76,23 @@
     </property>
     <addaction name="action_Print_Command_Sheet"/>
    </widget>
+   <widget class="QMenu" name="menu_Contract">
+    <property name="title">
+     <string>&amp;Contract</string>
+    </property>
+    <addaction name="action_Parked_Contracts"/>
+   </widget>
+   <widget class="QMenu" name="menu_Help">
+    <property name="title">
+     <string>&amp;Help</string>
+    </property>
+    <addaction name="action_About"/>
+   </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_Stock"/>
+   <addaction name="menu_Contract"/>
    <addaction name="menu_Tools"/>
+   <addaction name="menu_Help"/>
   </widget>
   <widget class="QStatusBar" name="statusBar">
    <property name="sizeGripEnabled">
@@ -135,6 +149,16 @@
   <action name="action_Print_Command_Sheet">
    <property name="text">
     <string>&amp;Print Command Sheet</string>
+   </property>
+  </action>
+  <action name="action_Parked_Contracts">
+   <property name="text">
+    <string>&amp;Parked Contracts</string>
+   </property>
+  </action>
+  <action name="action_About">
+   <property name="text">
+    <string>&amp;About</string>
    </property>
   </action>
  </widget>

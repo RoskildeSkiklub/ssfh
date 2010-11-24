@@ -83,5 +83,7 @@ DISTFILES = doc/NotesOnSundhedsKort.txt \
 # The version
 VERSION = -0.3.0
 
+DEFINES= VERSION=\\\"0.3.0\\\"
+
 # Resources
 RESOURCES     = SnowStuffForHire.qrc

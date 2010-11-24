@@ -51,6 +51,7 @@ private:
     void showEvent ( QShowEvent * event );
 
 private slots:
+    void on_action_About_triggered();
     void on_action_Print_Command_Sheet_triggered();
     void on_action_Mass_State_Change_triggered();
     void on_actionPrint_Checklist_triggered();
