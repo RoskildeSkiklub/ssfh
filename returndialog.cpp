@@ -160,8 +160,22 @@ void ReturnDialog::return_item(const QString &item_id) {
         log.stream() << "Already have contract with id '" << m_contract.getId();
         // Do nothing, really. A contract is present.
     }
-    // Update the item, and the contractitem
-    m_contract.returnItem( item_id );
+    // Update the item, and the contractitem - this may fail - translate common errors to the user
+    try {
+        m_contract.returnItem( item_id );
+    } catch ( const Exception & e ) {
+        log.stream( info ) << "Got exception from Contract::returnItem : '" << e.toString() << "'";
+        switch ( e.getStatusCode() ) {
+        case Errors::ItemNotPartOfContract: {
+                QMessageBox::critical( this, tr("Item not part of contract" ),
+                                       tr( "The item is not part of this contract. Unable to return it at this point." ) );
+                update();
+                return;
+            }
+        default: throw;
+        }
+    }
+
     update();
     if ( ! m_contract.hasReturnableItems() ) {
         m_contract.close();
