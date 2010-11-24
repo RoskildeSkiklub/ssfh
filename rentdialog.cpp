@@ -21,6 +21,7 @@
 #include "dksundhedskort.h"
 #include "utility.h"
 #include "plaintexteditdialog.h"
+#include "db_consts.h"
 
 using namespace Log;
 
@@ -158,13 +159,14 @@ void RentDialog::closeEvent(QCloseEvent * event) {
             return;
         }
     }
-    if ( is_in_state( "has_item") ) {
-        log.stream( info ) << "Close called, but contract is in has_item state. Asking user what to do";
-        QMessageBox mbox( QMessageBox::Warning, tr( "Contract must be closed or parked"),
-                          tr("The contract must be cancelled or parked in order to close this window.<br>"
+    if ( is_in_state( "has_item") && m_contract.getState() != DB::Contract::State::active ) {
+        log.stream( info ) << "Close called, but dialog is in has_item state and contract is not active. Asking user what to do";
+        QMessageBox mbox( QMessageBox::Warning, tr( "Contract has not been activated"),
+                          tr("The contract must be cancelled, parked or activated in order to close this window.<br>"
                              "Would you like to..."), QMessageBox::Cancel );
         QPushButton * cancelContract = mbox.addButton( tr("Cancel Contract"), QMessageBox::DestructiveRole );
         QPushButton * parkContract = mbox.addButton( tr( "Park Contract"), QMessageBox::ActionRole );
+        QPushButton * activateContract = mbox.addButton( tr( "Activate Contract"), QMessageBox::ActionRole );
         mbox.exec();
         if( QMessageBox::Cancel == mbox.result() ) {
             log.stream( info ) << "User choose to cancel close";
@@ -180,6 +182,12 @@ void RentDialog::closeEvent(QCloseEvent * event) {
         if ( parkContract == mbox.clickedButton() ) {
             log.stream( info ) << "User choose to park the contract";
             m_contract.park();
+            event->accept();
+            return;
+        }
+        if ( activateContract == mbox.clickedButton() ) {
+            log.stream( info ) << "User choose to activate the contract";
+            finish();
             event->accept();
             return;
         }
