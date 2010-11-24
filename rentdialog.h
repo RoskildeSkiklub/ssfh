@@ -50,6 +50,13 @@ public:
     RentDialog(QWidget *parent = 0);
     ~RentDialog();
 
+    /** \brief Open the parked contract
+      * \param contract_id The id of the parked contract
+      *
+      * This method opens the parked contract, and uses it.
+      * It can only be called, if the dialog is in "blank" state. */
+    void useParkedContract( qlonglong contract_id );
+
 public slots:
 
     /** \brief Add an item to the contract

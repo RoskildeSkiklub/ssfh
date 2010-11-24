@@ -137,6 +137,24 @@ RentDialog::~RentDialog()
     delete ui;
 }
 
+void RentDialog::useParkedContract( qlonglong contract_id) {
+    Logger log("RentDialog::useParkedContract(const QString &contract_id)");
+    if ( !is_in_state( "blank" ) ) {
+        throw Exception( Errors::InternalError )
+                << ( log.stream(error) << "Dialog not blank, when useParkedContract was called" );
+    }
+    m_contract = Contract::db_load( contract_id );
+    m_contract.db_unPark();
+    // The hirer is set, or the contract could not be parked
+    emit hirer_set();
+    // If the contract has items - then emit item_added
+    if ( m_contract.hasItems() ) {
+        log.stream() << "Contract has items";
+        emit item_added();
+    }
+    update();
+}
+
 void RentDialog::closeEvent(QCloseEvent * event) {
     Logger log("RentDialog::closeEvent(QCloseEvent *)");
     // If blank, just close

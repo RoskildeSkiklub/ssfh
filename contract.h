@@ -171,6 +171,10 @@ public:
       * \param note The new note on the contract */
     void setNote( const QString & note );
 
+    /** \brief Has the contract got any items
+      * \return true if items registered, false otherwise */
+    bool hasItems() const;
+
     /** \brief Add a payment to the contract
       * \param amount The amount to add to payed
       *
@@ -184,6 +188,13 @@ public:
       * You can only park a contract in the booking state.
       * All (contract)items are written to the db as booked. */
     void park();
+
+    /** \brief Unpark the contract in the database
+      *
+      * This changes the state of the contract back to booking, if parked.
+      * All contract items are also deleted from the database - so, it is back to booking.
+      * TODO: This is a mess, I think. */
+    void db_unPark();
 
     /** \brief Activate the contract
       *
@@ -208,7 +219,7 @@ public:
       * Only works on contracts in 'booking' state... */
     void cancel();
 
-    /** \brief Load a contract, inclusive contractItems from the database
+    /** \brief Load a contract, inclusive contractItems from the database and the hirer
       * \param id The id of the contract
       *
       * This method loads the contract and all contractitems from the database. */
@@ -292,6 +303,11 @@ private:
     /** \brief Checks the contract is in closed state, throws otherwise
       * \param method The name of the method calling this method, used for error reporting */
     void checkInClosedState( const QString & method );
+
+    /** \brief Checks the contract is in parked state, throws otherwise
+      * \param method The name of the method calling this method, used for error reporting */
+    void checkInParkedState( const QString & method );
+
 
     /** \brief Calculates the price of a single item on this contract
       * \param item The item to calculate for

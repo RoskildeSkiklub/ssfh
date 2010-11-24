@@ -203,11 +203,13 @@ void MainWindow::showContractsDialog(const QString &state) const {
     }
     SelectContractDialog scd( state );
     // TODO: React to this stuff here...
-    if ( QDialog::Accepted == scd.exec() ) {
-        TODO( "Display contract in window");
+    if ( QDialog::Accepted == scd.exec() && scd.getContractId() != -1 ) {
+        log.stream() << "Displaying rentDialog";
+        RentDialog rentDialog;
+        rentDialog.useParkedContract( scd.getContractId() );
+        rentDialog.exec();
     }
     updateDbStatusDisplay();
-
 }
 
 // TODO: I am not entirely sure this should go here. For now...

@@ -164,6 +164,12 @@ bool Contract::hasReturnableItems() const {
     return false;
 }
 
+bool Contract::hasItems() const {
+    Logger log("bool Contract::hasItems() const");
+    return !m_contractItems.isEmpty();
+}
+
+
 qlonglong Contract::calculateItemPrice(const Item &item) {
     Logger log("qlonglong Contract::calculateItemPrice(const Item &item)");
     log.stream( warn ) << "TODO: NOT IMPLEMENTED";
@@ -287,6 +293,39 @@ void Contract::park() {
     }
 
 }
+
+void Contract::db_unPark() {
+    Logger log("void Contract::db_unPark()");
+    checkInParkedState( "db_unPark" );
+    // We use a transaction for this.... right?
+    database_transaction( "void Contract::db_unPark()" );
+    QSqlQuery query;
+    try {
+        // First contract items and items
+        QList<ContractItem>::iterator cii;
+        for( cii = m_contractItems.begin(); cii != m_contractItems.end(); ++cii ) {
+            query_check_prepare( query, "delete from contractitems where id=:id");
+            query.bindValue(":id", cii->getId() );
+            query_check_exec( query );
+            cii->setId( -1 );
+            cii->setState( DB::ContractItem::State::booked );
+        }
+        // Then the contract - it just needs updating.
+        m_state = DB::Contract::State::booking;
+        try {
+            db_update();
+        } catch ( ... ) {
+            m_state = DB::Contract::State::parked;
+            throw;
+        }
+        database_commit("void Contract::db_unPark()");
+    }
+    catch( ... ) {
+        database_rollback( "void Contract::db_unPark()" );
+        throw;
+    }
+}
+
 
 void Contract::close() {
     Logger log("void Contract::close()");
@@ -665,6 +704,16 @@ void Contract::checkInBookingState( const QString & method ) {
                 << ( log.stream( error )
                      << QString( "Contract::%0 was called, but contract was not in expected state '%1', but in state '%2'" )
                      .arg( method ).arg( DB::Contract::State::booking ).arg( m_state ) );
+    }
+}
+
+void Contract::checkInParkedState( const QString & method ) {
+    Logger log( "void Contract::checkInParkedState()" );
+    if ( m_state != DB::Contract::State::parked ) {
+        throw Exception( Errors::ContractNotInParkedState )
+                << ( log.stream( error )
+                     << QString( "Contract::%0 was called, but contract was not in expected state '%1', but in state '%2'" )
+                     .arg( method ).arg( DB::Contract::State::parked ).arg( m_state ) );
     }
 }
 

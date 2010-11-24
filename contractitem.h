@@ -42,6 +42,10 @@ public:
       * \return The id of the contract item */
     qlonglong getId() const { return m_id; }
 
+    /** \brief Set the if of the contract item
+      *
+      * \todo Fix this to unpark, something */
+    void setId( qlonglong id ) { m_id = id; }
 
     /** \brief Get a reference to the item
       * \return A reference to the item */
