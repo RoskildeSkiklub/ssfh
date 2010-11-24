@@ -37,6 +37,7 @@ private:
     void showPrintChecklistDialog() const;
     void showMassStateChangeDialog() const;
     void doPrintCommandSheet() const;
+    void showContractsDialog( const QString & state ) const;
 
     /** \brief Pointer to statusbar db label
       *
@@ -51,6 +52,7 @@ private:
     void showEvent ( QShowEvent * event );
 
 private slots:
+    void on_action_Parked_Contracts_triggered();
     void on_action_About_triggered();
     void on_action_Print_Command_Sheet_triggered();
     void on_action_Mass_State_Change_triggered();

@@ -21,7 +21,7 @@ private:
     Ui::ViewHiredItemsDialog *ui;
 
     /** \brief The model that holds the items data */
-    QSqlQueryModel *model;
+    QSqlQueryModel model;
 
 
 

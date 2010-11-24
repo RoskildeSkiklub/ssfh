@@ -19,26 +19,26 @@ ViewHiredItemsDialog::ViewHiredItemsDialog(QWidget *parent) :
     ui->setupUi(this);
 
     // Fix up the query model to select all items that are out
-    model = new QSqlQueryModel;
+    // model = new QSqlQueryModel;
     QSqlQuery query;
     query_check_prepare( query, "select id, type, size, mark, model, year, condition, price, rentalgroup, note "
                          "from items "
                          "where state = :state");
     query.bindValue( ":state", DB::Item::State::out );
     query_check_exec( query );
-    model->setQuery( query );
-    model->setHeaderData( 0, Qt::Horizontal, tr( "Id" ) );
-    model->setHeaderData( 1, Qt::Horizontal, tr( "Type" ) );
-    model->setHeaderData( 2, Qt::Horizontal, tr( "Size" ) );
-    model->setHeaderData( 3, Qt::Horizontal, tr( "Mark" ) );
-    model->setHeaderData( 4, Qt::Horizontal, tr( "Model" ) );
-    model->setHeaderData( 5, Qt::Horizontal, tr( "Year" ) );
-    model->setHeaderData( 6, Qt::Horizontal, tr( "Condition" ) );
-    model->setHeaderData( 7, Qt::Horizontal, tr( "Price" ) );
-    model->setHeaderData( 8, Qt::Horizontal, tr( "Rentalgroup" ) );
-    model->setHeaderData( 9, Qt::Horizontal, tr( "Note" ) );
+    model.setQuery( query );
+    model.setHeaderData( 0, Qt::Horizontal, tr( "Id" ) );
+    model.setHeaderData( 1, Qt::Horizontal, tr( "Type" ) );
+    model.setHeaderData( 2, Qt::Horizontal, tr( "Size" ) );
+    model.setHeaderData( 3, Qt::Horizontal, tr( "Mark" ) );
+    model.setHeaderData( 4, Qt::Horizontal, tr( "Model" ) );
+    model.setHeaderData( 5, Qt::Horizontal, tr( "Year" ) );
+    model.setHeaderData( 6, Qt::Horizontal, tr( "Condition" ) );
+    model.setHeaderData( 7, Qt::Horizontal, tr( "Price" ) );
+    model.setHeaderData( 8, Qt::Horizontal, tr( "Rentalgroup" ) );
+    model.setHeaderData( 9, Qt::Horizontal, tr( "Note" ) );
 
-    ui->item_tableView->setModel( model );
+    ui->item_tableView->setModel( &model );
 
     ui->item_tableView->resizeColumnsToContents();
     // ui->item_tableView->setSortingEnabled( true );
@@ -54,8 +54,8 @@ ViewHiredItemsDialog::~ViewHiredItemsDialog()
 void ViewHiredItemsDialog::on_item_tableView_activated(QModelIndex index) {
     Logger log("void ViewHiredItemsDialog::on_item_tableView_activated(QModelIndex index)");
     // Get id from column 0
-    QModelIndex myIndex = model->index( index.row(), 0 );
-    qlonglong item_id = model->data( myIndex ).toLongLong();
+    QModelIndex myIndex = model.index( index.row(), 0 );
+    qlonglong item_id = model.data( myIndex ).toLongLong();
     // Get the first active contract for this index
     log.stream() << "Got item_id '" << item_id
             << "', trying to locate contract.";

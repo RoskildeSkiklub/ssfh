@@ -28,7 +28,8 @@ SOURCES += main.cpp \
     printchecklistdialog.cpp \
     massstatechangedialog.cpp \
     dbmaintenance.cpp \
-    plaintexteditdialog.cpp
+    plaintexteditdialog.cpp \
+    selectcontractdialog.cpp
 HEADERS += mainwindow.h \
     rentdialog.h \
     stockdialog.h \
@@ -52,7 +53,8 @@ HEADERS += mainwindow.h \
     printchecklistdialog.h \
     massstatechangedialog.h \
     dbmaintenance.h \
-    plaintexteditdialog.h
+    plaintexteditdialog.h \
+    selectcontractdialog.h
 FORMS += mainwindow.ui \
     rentdialog.ui \
     stockdialog.ui \
@@ -62,7 +64,8 @@ FORMS += mainwindow.ui \
     viewhireditemsdialog.ui \
     printchecklistdialog.ui \
     massstatechangedialog.ui \
-    plaintexteditdialog.ui
+    plaintexteditdialog.ui \
+    selectcontractdialog.ui
 TRANSLATIONS = SnowStuffForHire_da_DK.ts
 
 # Extra files to include in dist

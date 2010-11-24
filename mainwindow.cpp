@@ -19,6 +19,7 @@
 #include "viewhireditemsdialog.h"
 #include "printchecklistdialog.h"
 #include "massstatechangedialog.h"
+#include "selectcontractdialog.h"
 
 // App
 #include "log.h"
@@ -193,6 +194,22 @@ void MainWindow::showMassStateChangeDialog() const {
     updateDbStatusDisplay();
 }
 
+void MainWindow::showContractsDialog(const QString &state) const {
+    Logger log("void MainWindow::showContractsDialog(const QString &state) const");
+    log.stream() << "Wants to show contracts of type '" << state << "'";
+    if ( state != DB::Contract::State::parked ) {
+        throw Exception( Errors::InternalError )
+                << (log.stream( error ) << "Can only show contracts with state 'parked'");
+    }
+    SelectContractDialog scd( state );
+    // TODO: React to this stuff here...
+    if ( QDialog::Accepted == scd.exec() ) {
+        TODO( "Display contract in window");
+    }
+    updateDbStatusDisplay();
+
+}
+
 // TODO: I am not entirely sure this should go here. For now...
 using namespace Globals::BarcodeCommands;
 void MainWindow::doPrintCommandSheet() const {
@@ -298,4 +315,10 @@ void MainWindow::on_action_About_triggered()
                               tr( "<p>Version: %0</p><p>Created by Mads Bondo Dydensborg</p>"
                                   "<p>Mail: mads@dydensborg.dk</p><p>Phone: 29 84 00 42</p>")
                               .arg( VERSION ) );
+}
+
+void MainWindow::on_action_Parked_Contracts_triggered()
+{
+    Logger log("void MainWindow::on_action_Parked_Contracts_triggered()");
+    showContractsDialog( DB::Contract::State::parked );
 }

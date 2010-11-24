@@ -78,7 +78,7 @@
    </widget>
    <widget class="QMenu" name="menu_Contract">
     <property name="title">
-     <string>&amp;Contract</string>
+     <string>&amp;Contracts</string>
     </property>
     <addaction name="action_Parked_Contracts"/>
    </widget>
