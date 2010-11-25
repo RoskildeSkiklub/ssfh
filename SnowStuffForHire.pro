@@ -86,10 +86,21 @@ DISTFILES = doc/NotesOnSundhedsKort.txt \
     extras/PertelianLib2-1.09.zip \
     logos/rsh-logo-bw.png
  
+CONFIG += pertelian
+
+# Pertelian support under Linux
+pertelian {
+    DEFINES+=HAVE_PERTELIAN
+    INCLUDEPATH += /usr/local/include
+    LIBS += -L/usr/local/lib -lPertelianLib2
+    message("Adding support for Pertelian from /usr/local")
+}
+
 
 # The version
-VERSION= -0.4.1
-DEFINES= VERSION=\\\"0.4.1\\\"
+TRUEVERSION=0.4.1
+VERSION= -$$TRUEVERSION
+DEFINES+= VERSION=\\\"$$TRUEVERSION\\\"
 
 # Resources
 RESOURCES     = SnowStuffForHire.qrc
