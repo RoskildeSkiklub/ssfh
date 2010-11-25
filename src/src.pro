@@ -4,6 +4,10 @@
 QT += sql
 TARGET = SnowStuffForHire.bin
 TEMPLATE = app
+
+# Setup for Pertelian support
+CONFIG += pertelian
+
 SOURCES += main.cpp \
     mainwindow.cpp \
     rentdialog.cpp \
@@ -85,9 +89,13 @@ DISTFILES = doc/NotesOnSundhedsKort.txt \
     SnowStuffForHire \
     extras/PertelianLib2-1.09.zip \
     logos/rsh-logo-bw.png
- 
-CONFIG += pertelian
 
+# Keep moc and stuff out of the way - if possible
+UI_DIR = uics
+MOC_DIR = mocs
+OBJECTS_DIR = objs
+
+ 
 # Pertelian support under Linux
 pertelian {
     DEFINES+=HAVE_PERTELIAN
@@ -103,4 +111,4 @@ VERSION= -$$TRUEVERSION
 DEFINES+= VERSION=\\\"$$TRUEVERSION\\\"
 
 # Resources
-RESOURCES     = SnowStuffForHire.qrc
+RESOURCES     = ../SnowStuffForHire.qrc

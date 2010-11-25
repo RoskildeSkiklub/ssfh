@@ -26,8 +26,9 @@ KDIALOG=/usr/bin/kdialog
 # Path to faubackup
 FAUBACKUP=/usr/sbin/faubackup
 
-# Path to SnowStuffForHire - assumed to be this directory
-SSFH=./SnowStuffForHire.bin
+# Our basedir
+RP=`realpath $0`
+BASEDIR=`dirname $RP`
 
 ############################################################
 # Helper functions
@@ -45,6 +46,10 @@ function info() {
     echo $DATE $ARGS
 }
 
+cd $BASEDIR || die "Unable to change dir to $BASEDIR"
+
+# Path to SnowStuffForHire - assumed to be this directory
+SSFH=$BASEDIR/SnowStuffForHire.bin
 info Starting SnowStuffForHire
 
 ############################################################
