@@ -73,6 +73,7 @@ DISTFILES = doc/NotesOnSundhedsKort.txt \
     doc/Notes.txt \
     doc/postnr.website \
     doc/postnr.xls \
+    doc/PertelianNote.txt \ 
     schema/Makefile \
     schema/create-db-consts.pl \
     schema/postnr-to-csv.pl \
@@ -81,12 +82,14 @@ DISTFILES = doc/NotesOnSundhedsKort.txt \
     schema/test-data.sql \
     schema/Transactions.txt \
     Makefile.l10n \
-    SnowStuffForHire
+    SnowStuffForHire \
+    extras/PertelianLib2-1.09.zip \
+    logos/rsh-logo-bw.png
+ 
 
 # The version
-VERSION = -0.3.0
-
-DEFINES= VERSION=\\\"0.3.0\\\"
+VERSION= -0.4.1
+DEFINES= VERSION=\\\"0.4.1\\\"
 
 # Resources
 RESOURCES     = SnowStuffForHire.qrc

@@ -1,0 +1,4 @@
+# Pertelian display
+ENV{DEVTYPE}=="usb_device", ACTION=="add", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6001", MODE="660", GROUP="plugdev"
+
+
