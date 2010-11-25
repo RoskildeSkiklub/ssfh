@@ -1,0 +1,22 @@
+# Toplevel pro file
+TEMPLATE = subdirs
+SUBDIRS = src
+
+# Will be doing some dist work later on
+MY_DOCFILES=NotesOnSundhedsKort.txt Notes.txt postnr.website postnr.xls PertelianNote.txt 
+MY_SCHEMAFILES=Makefile create-db-consts.pl postnr-to-csv.pl schema.sql rsh-setup.sql test-data.sql Transactions.txt
+DISTFILES = \
+    $$join( MY_DOCFILES, " ../doc/", "../doc/" ) \
+    $$join( MY_SCHEMAFILES, " ../schema/", "../schema/" ) \
+    Makefile.l10n \
+    src/SnowStuffForHire \
+    extras/PertelianLib2-1.09.zip \
+    logos/rsh-logo-bw.png
+
+dist.target = dist
+dist.commands = echo $$DISTFILES
+QMAKE_EXTRA_TARGETS += dist
+
+
+
+# http://www.3dh.de/3dh.de/2006/12/19/qt-automated-unit-tests-with-qmake/
