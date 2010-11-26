@@ -87,6 +87,7 @@
      <string>&amp;Help</string>
     </property>
     <addaction name="action_About"/>
+    <addaction name="action_Check_Setup"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_Stock"/>
@@ -159,6 +160,14 @@
   <action name="action_About">
    <property name="text">
     <string>&amp;About</string>
+   </property>
+  </action>
+  <action name="action_Check_Setup">
+   <property name="text">
+    <string>&amp;Check Setup</string>
+   </property>
+   <property name="toolTip">
+    <string>Check Setup</string>
    </property>
   </action>
  </widget>

@@ -5,6 +5,8 @@
 // http://www.microchip.com/forums/tm.aspx?m=340892&mpage=2
 // Original author "skaman"
 
+// I have added the public method "isDevicePresent"
+
  #include <QObject>
  #include <QtGlobal>
  
@@ -31,6 +33,11 @@
      void Close ();
      bool Write (char *packet, quint8 size);
      bool Read (char *packet, quint8 size);
+
+     /** \brief Return wheter a given vendor/product combo is present
+      * \param vendorId Id of the vendor
+      * \param productId Id of the product */
+     static bool isDevicePresent( quint16 vendorId, quint16 productId );
  };
  
  #endif // QUSB_H

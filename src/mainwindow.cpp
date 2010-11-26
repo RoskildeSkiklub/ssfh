@@ -20,6 +20,7 @@
 #include "printchecklistdialog.h"
 #include "massstatechangedialog.h"
 #include "selectcontractdialog.h"
+#include "checksetupdialog.h"
 
 // App
 #include "log.h"
@@ -332,4 +333,12 @@ void MainWindow::on_action_Exit_triggered()
                                                     QMessageBox::Yes | QMessageBox::No ) ) {
         close();
     }
+}
+
+void MainWindow::on_action_Check_Setup_triggered()
+{
+    Logger log("void MainWindow::on_action_Check_Setup_triggered()");
+    CheckSetupDialog csd;
+    csd.exec();
+
 }

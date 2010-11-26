@@ -52,6 +52,7 @@ private:
     void showEvent ( QShowEvent * event );
 
 private slots:
+    void on_action_Check_Setup_triggered();
     void on_action_Exit_triggered();
     void on_action_Parked_Contracts_triggered();
     void on_action_About_triggered();

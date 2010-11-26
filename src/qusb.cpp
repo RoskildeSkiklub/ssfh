@@ -4,6 +4,11 @@
 // http://www.microchip.com/forums/tm.aspx?m=340892&mpage=2
 // Original author "skaman"
 
+
+//app
+#include "log.h"
+
+using namespace Log;
  
  QUSB::QUSB()
  {
@@ -38,6 +43,29 @@
      }
  
      qDebug ("Cannot find specified device");
+     return false;
+ }
+
+ bool QUSB::isDevicePresent(quint16 vendorId, quint16 productId) {
+     Logger log("bool QUSB::isDevicePresent(quint16 vendorId, quint16 productId)");
+     log.stream() << "Looking for Vendor '" << vendorId
+             << "', product '" << productId << "'";
+     // TODO: WHEN TO USE USB_INIT???
+     usb_init();
+     struct usb_bus *bus;
+     struct usb_device *dev;
+     usb_find_busses ();
+     usb_find_devices ();
+
+     for (bus = usb_get_busses(); bus; bus = bus->next) {
+         for (dev = bus->devices; dev; dev = dev->next) {
+             log.stream() << "Checking aginst '" << dev->descriptor.idVendor
+                     << "', product '" << dev->descriptor.idProduct << "'";
+             if (dev->descriptor.idVendor == vendorId && dev->descriptor.idProduct == productId) {
+                 return true;
+             }
+         }
+     }
      return false;
  }
  

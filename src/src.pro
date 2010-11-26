@@ -34,7 +34,8 @@ SOURCES += main.cpp \
     dbmaintenance.cpp \
     plaintexteditdialog.cpp \
     selectcontractdialog.cpp \
-    qusb.cpp
+    qusb.cpp \
+    checksetupdialog.cpp
 HEADERS += mainwindow.h \
     rentdialog.h \
     stockdialog.h \
@@ -60,7 +61,8 @@ HEADERS += mainwindow.h \
     dbmaintenance.h \
     plaintexteditdialog.h \
     selectcontractdialog.h \
-    qusb.h
+    qusb.h \
+    checksetupdialog.h
 FORMS += mainwindow.ui \
     rentdialog.ui \
     stockdialog.ui \
@@ -71,7 +73,8 @@ FORMS += mainwindow.ui \
     printchecklistdialog.ui \
     massstatechangedialog.ui \
     plaintexteditdialog.ui \
-    selectcontractdialog.ui
+    selectcontractdialog.ui \
+    checksetupdialog.ui
 TRANSLATIONS = SnowStuffForHire_da_DK.ts
 
 # Keep moc and stuff out of the way - if possible
