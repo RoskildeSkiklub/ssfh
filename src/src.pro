@@ -6,7 +6,7 @@ TARGET = SnowStuffForHire.bin
 TEMPLATE = app
 
 # Setup for Pertelian support
-CONFIG += pertelian
+CONFIG += pertelian usb
 
 SOURCES += main.cpp \
     mainwindow.cpp \
@@ -33,7 +33,8 @@ SOURCES += main.cpp \
     massstatechangedialog.cpp \
     dbmaintenance.cpp \
     plaintexteditdialog.cpp \
-    selectcontractdialog.cpp
+    selectcontractdialog.cpp \
+    qusb.cpp
 HEADERS += mainwindow.h \
     rentdialog.h \
     stockdialog.h \
@@ -58,7 +59,8 @@ HEADERS += mainwindow.h \
     massstatechangedialog.h \
     dbmaintenance.h \
     plaintexteditdialog.h \
-    selectcontractdialog.h
+    selectcontractdialog.h \
+    qusb.h
 FORMS += mainwindow.ui \
     rentdialog.ui \
     stockdialog.ui \
@@ -77,7 +79,14 @@ UI_DIR = uics
 MOC_DIR = mocs
 OBJECTS_DIR = objs
 
- 
+# usb support should work with both Windows and Linux, if you use libusb...
+# Obviously, you need a different linker path.
+usb {
+    DEFINES+=HAVE_USB
+    LIBS += -lusb
+    message( "Adding support for libusb" )
+} 
+
 # Pertelian support under Linux
 pertelian {
     DEFINES+=HAVE_PERTELIAN
