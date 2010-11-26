@@ -324,3 +324,12 @@ void MainWindow::on_action_Parked_Contracts_triggered()
     Logger log("void MainWindow::on_action_Parked_Contracts_triggered()");
     showContractsDialog( DB::Contract::State::parked );
 }
+
+void MainWindow::on_action_Exit_triggered()
+{
+    if ( QMessageBox::Yes == QMessageBox::question( this, tr( "Exit application?"),
+                                                    tr( "Are you sure you wish to exit?"),
+                                                    QMessageBox::Yes | QMessageBox::No ) ) {
+        close();
+    }
+}

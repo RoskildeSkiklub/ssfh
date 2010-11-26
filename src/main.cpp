@@ -167,6 +167,7 @@ int main(int argc, char **argv) {
         MainWindow w;
         log.stream() << "Showing mainwindow";
         w.showMaximized();
+        w.setWindowState(w.windowState() | Qt::WindowFullScreen);
         log.stream() << "Executing application";
         res = app.exec();
         log.stream() << "Application done, shutting down";
