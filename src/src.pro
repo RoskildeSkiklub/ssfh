@@ -1,6 +1,6 @@
-# -------------------------------------------------
-# Project created by QtCreator 2010-05-08T22:29:54
-# -------------------------------------------------
+
+include(../common.pri)
+
 QT += sql
 TARGET = SnowStuffForHire.bin
 TEMPLATE = app
@@ -87,10 +87,8 @@ pertelian {
 }
 
 
-# The version
-TRUEVERSION=0.4.1
-VERSION= -$$TRUEVERSION
-DEFINES+= VERSION=\\\"$$TRUEVERSION\\\"
+# The version passed to the compiles...
+DEFINES+= VERSION=\\\"$$VERSION\\\"
 
 # Resources
 RESOURCES     = ../SnowStuffForHire.qrc
