@@ -7,6 +7,12 @@
 #include "utility.h"
 
 using namespace Log;
+// TODO : Probably move this somewhere else
+const Usb::Id Pertelian( 0x0403, 0x6001 );
+const Usb::Id MagTek( 0x0801, 0x001 );
+const Usb::Id BarcodeScanner( 0x080c, 0x0300 );
+const Usb::Id PosPrinter( 0x067b, 0x2305 );
+
 
 CheckSetupDialog::CheckSetupDialog(QWidget *parent) :
     QDialog(parent),
@@ -16,7 +22,14 @@ CheckSetupDialog::CheckSetupDialog(QWidget *parent) :
     update();
 }
 
-CheckSetupDialog::~CheckSetupDialog()
+CheckSetupDialog::~CheckSetupDialog()struct UsbId {
+    quint16 vendorId;
+    quint16 productId;
+    UsbId( quint16 _vendorId, quint16 _productId )
+        : vendorId( _vendorId ), productId( _productId ) {};
+};
+
+c
 {
     delete ui;
 }
@@ -24,11 +37,13 @@ CheckSetupDialog::~CheckSetupDialog()
 void CheckSetupDialog::update() {
     Logger log("void CheckSetupDialog::update()");
     // TODO: At least const this...
-    if ( QUSB::isDevicePresent( 0x0403, 0x6001 ) ) {
-        ui->output_customerDisplayStatus_label->setText( tr("Present") );
+    if ( Usb::QUSB::isDevicePresent( Pertelian ) ) {
+        ui->output_customerDisplayStatus_label->setText( tr( "Present" ) );
     } else {
         ui->output_customerDisplayStatus_label->setText( tr( "Missing" ) );
     }
+
+
 }
 
 void CheckSetupDialog::on_buttonBox_clicked(QAbstractButton* button)

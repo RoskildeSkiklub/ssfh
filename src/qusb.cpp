@@ -10,6 +10,8 @@
 
 using namespace Log;
  
+namespace Usb {
+
  QUSB::QUSB()
  {
      this->m_IsOpened = false;
@@ -68,6 +70,11 @@ using namespace Log;
      }
      return false;
  }
+ bool QUSB::isDevicePresent(const Id &id) {
+     return isDevicePresent( id.vendorId, id.productId );
+
+ }
+
  
  bool  QUSB::Open (quint16 VendorId, quint16 ProductId)
  {
@@ -147,3 +154,4 @@ using namespace Log;
      usb_close (this->m_UsbDevice);
      this->m_IsOpened = false;
  }
+} // namespace
