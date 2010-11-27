@@ -1,13 +1,18 @@
 For leverance 28/11
 
+- TEST
+- sidste oversættelser.
+
 - Start i fuldskærm (DONE)
 - kiosk ballade - så man kan lukke ting ned/genstarte, mv. (DONE)
-- sæt alle priser til 0
+- sæt alle priser til 0 (DONE)
+- afslut knap i return dialog
 - Fjerne tidsstempler fra afleveringsstidspunkt... 
+- check for REALPATH i snowstuff for hire...
 - opret rsh bruger
-  - autostart applikation
-  - sæt op så knapper mv minder om windows
-  - disable underlige window manager ting
+  - autostart applikation (DONE)
+  - sæt op så knapper mv minder om windows (DONE)
+  - disable underlige window manager ting (DONE)
 - Check tilslutninger er i orden
   - usb check tilslutninger...
   - check barcode scanner

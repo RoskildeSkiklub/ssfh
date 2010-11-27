@@ -173,7 +173,7 @@ bool Contract::hasItems() const {
 qlonglong Contract::calculateItemPrice(const Item &item) {
     Logger log("qlonglong Contract::calculateItemPrice(const Item &item)");
     log.stream( warn ) << "TODO: NOT IMPLEMENTED";
-    return 42;
+    return 0;
 }
 
 qlonglong Contract::getItemsPrice() const {
