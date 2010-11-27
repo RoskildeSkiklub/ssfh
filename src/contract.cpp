@@ -598,8 +598,11 @@ void Contract::printGeneralReceipt( Pos::Printer &posPrinter, ReceiptType receip
             << QDateTime::currentDateTime() << Pos::endl;
     posPrinter << QString( "%0 : " ).arg( tr( "Rental time" ), maxSize )
             << m_startTime << Pos::endl;
+    // TODO: Eventually this will come back.
+    /* posPrinter << QString( "%0 : " ).arg( tr( "Due back" ), maxSize )
+            << m_endTime << Pos::endl; */
     posPrinter << QString( "%0 : " ).arg( tr( "Due back" ), maxSize )
-            << m_endTime << Pos::endl;
+            << m_endTime.date() << Pos::endl;
     posPrinter << Pos::endl;
 
     ////////////////////////////////////////////////////////////////////

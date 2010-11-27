@@ -7,6 +7,7 @@
 #include <QByteArray>
 class QImage;
 class QDateTime;
+class QDate;
 
 // App
 #include "posimage.h"
@@ -103,6 +104,11 @@ public:
       *
       * This formats the time as '2010-11-31 13:44' and outputs it */
     Printer & operator<<( const QDateTime & dt );
+
+    /** \brief Output a QDate
+      *
+      * This formats the date as '2010-11-31' and outputs it */
+    Printer & operator<<( const QDate & date );
 
     /** \brief Output a barcode
       *

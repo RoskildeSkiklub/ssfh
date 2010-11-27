@@ -7,8 +7,8 @@ For leverance 28/11
 - kiosk ballade - så man kan lukke ting ned/genstarte, mv. (DONE)
 - sæt alle priser til 0 (DONE)
 - afslut knap i return dialog
-- Fjerne tidsstempler fra afleveringsstidspunkt... 
-- check for REALPATH i snowstuff for hire...
+- Fjerne tidsstempler fra afleveringsstidspunkt... (DONE)
+- check for REALPATH i snowstuff for hire... (IGNORE FOR NOW)
 - opret rsh bruger
   - autostart applikation (DONE)
   - sæt op så knapper mv minder om windows (DONE)

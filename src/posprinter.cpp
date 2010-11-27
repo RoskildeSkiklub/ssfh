@@ -8,6 +8,7 @@
 // Qt
 #include <QImage>
 #include <QDateTime>
+#include <QDate>
 
 // app
 #include "log.h"
@@ -222,6 +223,11 @@ Printer & Printer::operator <<( const QString & str ) {
 Printer & Printer::operator <<( const QDateTime & dt ) {
     Logger log("Printer & Printer::operator <<( const QDateTime & dt )");
     return this->operator <<( dt.toString( "yyyy-MM-dd hh:mm" ) );
+}
+
+Printer & Printer::operator <<( const QDate & date ) {
+    Logger log("Printer & Printer::operator <<( const QDate & date )");
+    return this->operator <<( date.toString( "yyyy-MM-dd" ) );
 }
 
 Printer & Printer::operator <<( const Barcode & barcode ) {
