@@ -22,14 +22,7 @@ CheckSetupDialog::CheckSetupDialog(QWidget *parent) :
     update();
 }
 
-CheckSetupDialog::~CheckSetupDialog()struct UsbId {
-    quint16 vendorId;
-    quint16 productId;
-    UsbId( quint16 _vendorId, quint16 _productId )
-        : vendorId( _vendorId ), productId( _productId ) {};
-};
-
-c
+CheckSetupDialog::~CheckSetupDialog()
 {
     delete ui;
 }
