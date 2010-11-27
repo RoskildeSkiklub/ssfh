@@ -5,6 +5,9 @@
 # The purpose of the script is to backup the log and database prior
 # and after run, and pass the command parameters to the program.
 
+# Check if we are run in kiosk mode. 
+KIOSK=$1
+
 # Some constants.
 KPTITLE="Snow Stuff For Hire"
 KPTIMEOUT=5
@@ -22,6 +25,9 @@ BACKUPDIR=/store/SnowStuffForHire/backup
 
 # Path to kdialog
 KDIALOG=/usr/bin/kdialog
+
+# Path to kshutdown
+KSHUTDOWN=/usr/bin/kshutdown
 
 # Path to faubackup
 FAUBACKUP=/usr/sbin/faubackup
@@ -57,6 +63,9 @@ info Starting SnowStuffForHire
 if ! test -x $KDIALOG ; then
     die "Kan ikke finde kdialog binær angivet til '$KDIALOG'"
 fi
+if ! test -x $KSHUTDOWN ; then
+    die "Kan ikke finde kshutdown binær angivet til '$KSHUTDOWN'"
+fi
 if ! test -x $FAUBACKUP ; then
     die "Kan ikke finde faubackup binær angivet til '$FAUBACKUP'"
 fi
@@ -75,20 +84,65 @@ fi
 
 info All checks passed, performing backup
 
+
 ############################################################
-# Take a backup before starting. This should be quick.
-$KDIALOG --title "$KPTITLE" --passivepopup "$KPBACKUPSTART" $KPTIMEOUT
-$FAUBACKUP "$DATADIR" "$BACKUPDIR" || die "Kunne ikke lave backup af data inden start af SnowStuffForHire"
-$KDIALOG --title "$KPTITLE" --passivepopup "$KPBACKUPEND" $KPTIMEOUT
+# Repeat forever - exist if not in kioskmode
+while true ; do 
 
-info Backup OK, starting binary
-$SSFH $DATABASE $LOGFILE &> $OUTFILE
-
-info Binary terminated with exit code $? - doing post backup
-$KDIALOG --title "$KPTITLE" --passivepopup "$KPBACKUPSTART" $KPTIMEOUT
-$FAUBACKUP "$DATADIR" "$BACKUPDIR" || die "Kunne ikke lave backup af data efter start af SnowStuffForHire"
-$KDIALOG --title "$KPTITLE" --passivepopup "$KPBACKUPEND" $KPTIMEOUT
-info Postbackup done, exiting
-
- 
-
+    # Take a backup before starting. This should be quick.
+    $KDIALOG --title "$KPTITLE" --passivepopup "$KPBACKUPSTART" $KPTIMEOUT
+    $FAUBACKUP "$DATADIR" "$BACKUPDIR" || die "Kunne ikke lave backup af data inden start af SnowStuffForHire"
+    $KDIALOG --title "$KPTITLE" --passivepopup "$KPBACKUPEND" $KPTIMEOUT
+    
+    info Backup OK, starting binary
+    $SSFH $DATABASE $LOGFILE &> $OUTFILE
+    
+    info Binary terminated with exit code $? - doing post backup
+    $KDIALOG --title "$KPTITLE" --passivepopup "$KPBACKUPSTART" $KPTIMEOUT
+    $FAUBACKUP "$DATADIR" "$BACKUPDIR" || die "Kunne ikke lave backup af data efter start af SnowStuffForHire"
+    $KDIALOG --title "$KPTITLE" --passivepopup "$KPBACKUPEND" $KPTIMEOUT
+    info Postbackup done
+    
+    if test "x$KIOSK" != "x" ; then
+        info In kiosk mode, asking user what to do
+        # In kiosk mode, repeat with options.
+        RESULT=""
+        while true ; do  
+            RESULT=`$KDIALOG --title "Foretag valg fra nedenstående menu" \
+                --menu "Hvad ønsker du at gøre?" \
+                "restart"  "Genstart udlejningssystem" \
+                "shutdown" "Sluk computer (luk ned)" \
+                "reboot"   "Genstart computer" \
+                --default "Genstart udlejningssystem" `
+            if test $? == 0 ; then
+                break
+            else 
+                info "User cancelled. Asking again..."
+            fi
+        done
+        # User has choosen something
+        info "User choose $RESULT"
+        case $RESULT in
+            restart)
+                info Restarting SnowStuffForHire
+                ;;
+            shutdown)
+                info Shutting down system
+                echo $KSHUTDOWN --shutdown 
+                exit 0
+                ;;
+            reboot)
+                info Restarting system
+                echo $KSHUTDOWN --reboot
+                exit 0
+                ;;
+            *)
+                die "Internal error, RESULT is $RESULT"
+                ;;
+        esac
+    else
+        # Not in kiosk mode, just exit
+        info "Not in kiosk mode, exiting"
+        exit 0
+    fi
+done # Forever loop
