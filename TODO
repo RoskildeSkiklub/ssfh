@@ -6,7 +6,8 @@ For leverance 28/11
 - Start i fuldskærm (DONE)
 - kiosk ballade - så man kan lukke ting ned/genstarte, mv. (DONE)
 - sæt alle priser til 0 (DONE)
-- afslut knap i return dialog
+- afslut knap i return dialog (DONE)
+- OK knap i "udlejede genstande"
 - Fjerne tidsstempler fra afleveringsstidspunkt... (DONE)
 - check for REALPATH i snowstuff for hire... (IGNORE FOR NOW)
 - opret rsh bruger

@@ -6,6 +6,7 @@
 #include <QSqlDatabase>
 #include <QSet>
 #include <QAbstractState>
+#include <QCloseEvent>
 
 // app
 #include "globals.h"
@@ -203,8 +204,39 @@ ReturnDialog::~ReturnDialog()
     delete ui;
 }
 
+void ReturnDialog::closeEvent(QCloseEvent * event) {
+    Logger log("void ReturnDialog::closeEvent(QCloseEvent *)");
+    // If contract is closed, or "blank", just close. Otherwise, ask.
+    if ( is_in_state( "blank" ) ) {
+        event->accept();
+        return;
+    }
+    if ( m_contract.getState() == DB::Contract::State::closed ) {
+        event->accept();
+        return;
+    }
+    // Not blank, not closed, lets ask
+    if ( QMessageBox::Yes
+         == QMessageBox::question( this,
+                                   tr( "Are you sure you want to close?"),
+                                   tr( "Contract is not closed, and may have returnable items. Are you sure you wish to close?" ),
+                                   QMessageBox::Yes | QMessageBox::No ) ) {
+        event->accept();
+        return;
+    } else {
+        event->ignore();
+        return;
+    }
+}
+
 
 void ReturnDialog::on_input_returnItem_pushButton_clicked() {
     Logger log("void ReturnDialog::on_input_returnItem_pushButton_clicked()");
     return_item( ui->input_item_lineEdit->text() );
+}
+
+void ReturnDialog::on_input_done_pushButton_clicked()
+{
+    Logger log("void ReturnDialog::on_input_done_pushButton_clicked(");
+    close();
 }
