@@ -78,3 +78,9 @@ void ViewHiredItemsDialog::on_item_tableView_activated(QModelIndex index) {
         ui->ouput_contract_textBrowser->setHtml( tr( "No contract found" ) );
     }
 }
+
+void ViewHiredItemsDialog::on_pushButton_clicked()
+{
+    Logger log("void ViewHiredItemsDialog::on_pushButton_clicked()");
+    close();
+}

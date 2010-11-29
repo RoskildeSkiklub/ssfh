@@ -26,6 +26,7 @@ private:
 
 
 private slots:
+    void on_pushButton_clicked();
     void on_item_tableView_activated(QModelIndex index);
 };
 
