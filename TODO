@@ -1,3 +1,7 @@
+ - Bedre feedback, når man har skannet, kontra ikke skannet.
+ - Der er noget med noget xrandr på den der toshiba laptop.
+
+
 For leverance 28/11
 
 - TEST
@@ -7,7 +11,7 @@ For leverance 28/11
 - kiosk ballade - så man kan lukke ting ned/genstarte, mv. (DONE)
 - sæt alle priser til 0 (DONE)
 - afslut knap i return dialog (DONE)
-- OK knap i "udlejede genstande"
+- OK knap i "udlejede genstande" (DONE)
 - Fjerne tidsstempler fra afleveringsstidspunkt... (DONE)
 - check for REALPATH i snowstuff for hire... (IGNORE FOR NOW)
 - opret rsh bruger
