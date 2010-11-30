@@ -37,8 +37,7 @@ private:
     QString collected; // The currently collected string;
     QTimer timer; // Used to timeout non-matching typing
     QObject * last_obj; // Pointer to last obj that generated a key event.
-    bool ignore_next_keyevent; // Set to true, when we post events ourselves.
-
+    QString next_text_ignore; // Set to something, when we wish to ignore.
 
     void postCollected(); // Post collected info. Called when no match.
 

@@ -24,8 +24,11 @@ using namespace Log;
 
 Interceptor::Interceptor()
     :  barcode_exp( "ABCD([\\dA-Z ]+)\r" ),
-    magswipe_exp( DKSundhedskort::getRegExp() ),
-    collecting( false ), timer( this ), ignore_next_keyevent( false ) {
+     magswipe_exp( DKSundhedskort::getRegExp() ),
+//    magswipe_exp( QString::fromUtf8( "(?:%(.+)|\x03c\x086(.+)|%(.+)_\x03c\x086)(.+))_\\r") ),
+    // magswipe_exp( QString::fromUtf8( "%(.+)_\x03c\x086)(.+)_\r") ),
+    // magswipe_exp( QString::fromUtf8( "%(.+)_\x03c\x086)(.+)_\r") ),
+    collecting( false ), timer( this ) {
     barcode_exp.setCaseSensitivity( Qt::CaseInsensitive ); // Needed, because user may press caps-lock....
     magswipe_exp.setCaseSensitivity( Qt::CaseInsensitive ); // Needed, because user may press caps-lock....
 
@@ -48,9 +51,11 @@ Interceptor::Interceptor()
 
 void Interceptor::postCollected() {
     Logger log( "Interceptor::postCollected()" );
+
+    log.stream() << "Collected is '" << collected << "'";
     // Post the string to the widget that got the last keypress. Best we can do.
     if ( last_obj != 0 ) {
-        ignore_next_keyevent = true;
+        next_text_ignore = collected.left(1);
         log.stream() << "Posting '" << collected.left( 1 ) << "'";
         QEvent * nev = new QKeyEvent ( QEvent::KeyPress, 0, Qt::NoModifier, collected.left( 1 ) );
         QApplication::postEvent( last_obj, nev );
@@ -63,6 +68,7 @@ void Interceptor::postCollected() {
     } else {
         log.stream( warn ) << "last_obj was 0 - no posting taking place, input is probably lost. Collected was '" << collected << "'";
     }
+    collected = "";
 }
 
 void Interceptor::timeout() {
@@ -70,8 +76,8 @@ void Interceptor::timeout() {
     if ( collecting ) {
         log.stream() << "Giving up collecting because of timeout. Collected string is : '"
                 << collected.toLocal8Bit().toPercentEncoding().constData() << "'";
-        postCollected();
         collecting = false;
+        postCollected();
     }
 }
 
@@ -82,18 +88,19 @@ bool Interceptor::eventFilter( QObject *obj, QEvent *ev ) {
 
     // The log is only constructed when certain it is key event - otherwise, we get too much noise in the log.
     Logger log( "bool Interceptor::eventFilter(QObject *obj, QEvent *ev)" );
-    if ( ignore_next_keyevent ) {
-        log.stream() << "Ignoring this keyevent, because of ignore_next_keyevent";
-        ignore_next_keyevent = false;
-        return false;
-    }
 
     QKeyEvent * kev = dynamic_cast<QKeyEvent *>( ev );
     if ( !kev ) {
         log.stream( warn ) << "Got keypress event, but unable to dynamic_cast to QKeyEvent. Not good. Have to ignore it.";
         return false; // We only handle key events
     }
-    log.stream() << "Intercepting key: '" << kev->key() << "', text is '" << kev->text().toLocal8Bit().toPercentEncoding().constData() << "'";
+    log.stream() << "Intercepting key: '" << kev->key() << "', text is '" << kev->text().toLocal8Bit( ).toPercentEncoding( ).constData( ) << "'";
+    if ( !next_text_ignore.isEmpty() && next_text_ignore == kev->text() ) {
+        log.stream() << "Ignoring this keyevent, because of next_text_ignore match";
+        return false;
+    } else {
+        next_text_ignore = "";
+    }
 
     last_obj = obj; // Set up for possibly post of collected.
     // If not collecting, see if we can, if collecting, see if we can stop.
@@ -206,6 +213,7 @@ void Interceptor::emitBarcodeScan() const {
 
 void Interceptor::emitMagSwipe() const {
     Logger log( "void Interceptor::emitMagSwipe() const" );
+    log.stream() << "EMITTING MAGSWIPE";
     PROTECT_BLOCK(
             emit magSwipe( DKSundhedskort( magswipe_exp ) );
     );
