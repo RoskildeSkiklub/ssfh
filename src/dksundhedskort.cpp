@@ -82,14 +82,3 @@ QString DKSundhedskort::fixUpDanishLetters( const QString & input ) const {
     return res;
 }
 
-QString DKSundhedskort::capitalizeWords(const QString &input) const {
-    QString res = input.toLower();
-    bool prevWasWhiteSpace = true;
-    for( int i = 0; i < input.size(); ++i ) {
-        if ( prevWasWhiteSpace ) {
-            res[i] = res.at( i ).toUpper();
-        }
-        prevWasWhiteSpace = res.at( i ).isSpace();
-    }
-    return res;
-}

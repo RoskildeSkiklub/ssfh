@@ -120,3 +120,16 @@ QStringList get_current_states( const QStateMachine & stateMachine ) {
     }
     return res;
 }
+
+QString capitalizeWords(const QString &input) {
+    QString res = input.toLower();
+    bool prevWasWhiteSpace = true;
+    for( int i = 0; i < input.size(); ++i ) {
+        if ( prevWasWhiteSpace ) {
+            res[i] = res.at( i ).toUpper();
+        }
+        prevWasWhiteSpace = res.at( i ).isSpace();
+    }
+    return res;
+}
+

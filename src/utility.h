@@ -7,6 +7,9 @@ class QStateMachine;
 
 #include <QStringList>
 
+////////////////////////////////////////////////////////////
+// DATABASE UTILITY FUNCTIONS
+
 /** \brief Prepare a query, check that the result is OK
   * \param query The query to prepare
   * \param queryString The queryString to prepare
@@ -45,6 +48,8 @@ void database_commit( const QString & where );
   * Rollbacks a transaction, logs errors/ throws if unable to rollback */
 void database_rollback( const QString & where );
 
+//////////////////////////////////////////////////////////////
+// VARIOUS STUFF
 
 /** \brief Show a todo dialog and log a message.
   * \param where Where the message is
@@ -54,12 +59,20 @@ void todo( const QString & where, const QString & msg );
 /** \brief Macro to insert a todo call with function name */
 #define TODO( m ) todo( __PRETTY_FUNCTION__, m );
 
-/** \brief Get list of names of current states
+/** \brief Get list of names of current states from a statemachine
   * \param stateMachine The statemachine instance to get the list from
   * \return QStringList with the names in
   *
   * This method extracts the object names from all states on the "configuration"
   * of the state machine and returns them in a list. It also logs them. */
 QStringList get_current_states( const QStateMachine & stateMachine );
+
+/** \brief Capitalize the first letter in each word
+  * \param input The string to change
+  * \return The string with each word capitalized first letter
+  *
+  * This changes e.g. MADS BONDO to Mads Bondo. */
+QString capitalizeWords( const QString & input );
+
 
 #endif // UTILITY_H

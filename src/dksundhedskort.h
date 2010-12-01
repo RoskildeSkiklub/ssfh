@@ -33,17 +33,8 @@ private:
       *
       * The danish letters are encoded according to iso 7811-2, but
       * the card reader/xwindows does not get them right. This
-      * tries to dix them up */
+      * tries to fix them up */
     QString fixUpDanishLetters( const QString & input ) const;
-
-    /** \brief Capitalize the first letter in each word
-      * \param input The string to change
-      * \return The string with each word capitalized first letter
-      *
-      * This changes e.g. MADS BONDO to Mads Bondo. The card reader can only
-      * return capital letters. */
-    QString capitalizeWords( const QString & input ) const;
-
 };
 
 #endif // DKSUNDHEDSKORT_H
