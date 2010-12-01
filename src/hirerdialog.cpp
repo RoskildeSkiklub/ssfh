@@ -23,6 +23,10 @@ using namespace Log;
   *
   * This dialog can be used for several different operations.
   *
+  * NOTE: 2010-12-01: I have changed the codes, such that the "Use" button
+  * does an implicit add, if needed. This is much easier to understand/use.
+  * The docs below may be a bit outdated.
+  *
   * Select a hirer:
   * The user can select a hirer by clicking on the list of hirers in the system.
   *
@@ -47,7 +51,7 @@ using namespace Log;
   *   +Select => hirer_selected
 
   * no_hirer: No hirer has been selected - edit fields may contain data.
-  *   active_buttons: Search, Reset, Add
+  *   active_buttons: Search, Reset, Add, Add/Use
   *   // +Search => no_hirer
   *   +Input  => no_hirer
   *   +Select => hirer_selected
@@ -55,7 +59,7 @@ using namespace Log;
   *   +Add    => hirer_selected
 
   * hirer_selected: The input fields match a hirer, and the hirer has been selected.
-  *   active buttons: Search, Reset, Use
+  *   active buttons: Search, Reset, Add, Add/Use
   *   // +Search => hirer_selected
   *   +Input  => hirer_changed
   *   +Select => hirer_selected
@@ -63,7 +67,7 @@ using namespace Log;
   *   +Use    => stop_with_hirer
 
   * hirer_changed : A hirer has been selected, but one or more input fields have been changed
-  *   active_buttons: Search, Reset, Add, Update
+  *   active_buttons: Search, Reset, Add, Update, Add/Use
   *   // +Search => hirer_changed
   *   +Input  => hirer_changed
   *   +Select => hirer_selected
@@ -152,7 +156,7 @@ HirerDialog::HirerDialog(QWidget *parent) :
     no_hirer->assignProperty( ui->pushButton_clear, "enabled", true );
     no_hirer->assignProperty( ui->pushButton_add, "enabled", true );
     no_hirer->assignProperty( ui->pushButton_update, "enabled", false );
-    no_hirer->assignProperty( ui->pushButton_use, "enabled", false );
+    no_hirer->assignProperty( ui->pushButton_use, "enabled", true );
     no_hirer->addTransition( this, SIGNAL( select_hirer() ), hirer_selected );
     no_hirer->addTransition( ui->pushButton_clear, SIGNAL( clicked() ), blank );
     // No direct connection to this button; no_hirer->addTransition( ui->pushButton_add, SIGNAL(clicked()), hirer_selected );
@@ -168,7 +172,7 @@ HirerDialog::HirerDialog(QWidget *parent) :
     hirer_changed->assignProperty( ui->pushButton_clear, "enabled", true );
     hirer_changed->assignProperty( ui->pushButton_add, "enabled", true );
     hirer_changed->assignProperty( ui->pushButton_update, "enabled", true );
-    hirer_changed->assignProperty( ui->pushButton_use, "enabled", false );
+    hirer_changed->assignProperty( ui->pushButton_use, "enabled", true );
     hirer_changed->addTransition( this, SIGNAL( select_hirer() ), hirer_selected );
     hirer_changed->addTransition( ui->pushButton_clear, SIGNAL( clicked() ), blank );
     // Not directly to this button; hirer_changed->addTransition( ui->pushButton_add, SIGNAL(clicked()), hirer_selected );
@@ -179,8 +183,8 @@ HirerDialog::HirerDialog(QWidget *parent) :
     state_machine.start();
     QCoreApplication::processEvents();
 
-    // Connect the use button - which is only available when a hirer is selected - to the accept slot
-    connect( ui->pushButton_use, SIGNAL( clicked()), this, SLOT( accept()) );
+    // Connect the use button - which is only available when a hirer is selected (or add is available) - to the accept slot
+    // connect( ui->pushButton_use, SIGNAL( clicked()), this, SLOT( accept()) );
 
     // Accept CreditCard scan events.
     connect( Globals::interceptor, SIGNAL(magSwipe(CreditCard)),
@@ -383,4 +387,16 @@ void HirerDialog::on_checkBox_autoLookup_stateChanged(int newState ) {
     if ( Qt::Checked == newState ) {
         updateQueryModel();
     }
+}
+
+void HirerDialog::on_pushButton_use_clicked()
+{
+    Logger log("void HirerDialog::on_pushButton_use_clicked()");
+    // If this is no_hirer or hirer_changed, add first.
+    // No code to check it, so check state of add button...
+    if ( ui->pushButton_add->isEnabled() ) {
+        log.stream() << "Adding hirer - could perhaps have been updating... ";
+        on_pushButton_add_clicked();
+    }
+    accept();
 }

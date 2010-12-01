@@ -71,6 +71,7 @@ private:
     void loadHirer( qlonglong id );
 
 private slots:
+    void on_pushButton_use_clicked();
     void on_checkBox_autoLookup_stateChanged(int );
     void on_pushButton_update_clicked();
     void on_pushButton_add_clicked();
