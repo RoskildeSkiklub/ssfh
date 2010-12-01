@@ -24,10 +24,12 @@ using namespace Log;
 
 Interceptor::Interceptor()
     :  barcode_exp( "ABCD([\\dA-Z ]+)\r" ),
-     magswipe_exp( DKSundhedskort::getRegExp() ),
-//    magswipe_exp( QString::fromUtf8( "(?:%(.+)|\x03c\x086(.+)|%(.+)_\x03c\x086)(.+))_\\r") ),
-    // magswipe_exp( QString::fromUtf8( "%(.+)_\x03c\x086)(.+)_\r") ),
-    // magswipe_exp( QString::fromUtf8( "%(.+)_\x03c\x086)(.+)_\r") ),
+    // The magsswipt markers are  - unfortunately - translated by the keyboard input system.
+    // In danish (utf8), that is:
+    // \x025 (%) = track 1
+    // \x0c3\x086 (danish ligatur ae) = track 2. This is suspectible to caps lock.
+    // \x060 (`) = track 3.
+    magswipe_exp( QString::fromUtf8( "(?:\x025|\x0c3\x086|\x060).+_\r") ),
     collecting( false ), timer( this ) {
     barcode_exp.setCaseSensitivity( Qt::CaseInsensitive ); // Needed, because user may press caps-lock....
     magswipe_exp.setCaseSensitivity( Qt::CaseInsensitive ); // Needed, because user may press caps-lock....
@@ -192,6 +194,7 @@ void Interceptor::emitBarcodeScan() const {
     }
     QString code = barcode_exp.cap( 1 );
     // Check if this is a command or an id
+    // TODO: IGNORE CASE!!!
     if ( code.startsWith( "C" ) ) {
         log.stream() << "Thinking '" << code << "' is a command scan";
         QRegExp cmdexp( "C(\\d+) {0,1}([A-Z]*)");
@@ -214,8 +217,15 @@ void Interceptor::emitBarcodeScan() const {
 void Interceptor::emitMagSwipe() const {
     Logger log( "void Interceptor::emitMagSwipe() const" );
     log.stream() << "EMITTING MAGSWIPE";
+    log.stream() << "Text matched: '" << magswipe_exp.cap(0) << "'";
+    log.stream() << "Text matched in % encoding: '" << magswipe_exp.cap(0).toLocal8Bit().toPercentEncoding() << "'";
+
+    log.stream() << "Number of captures: " << magswipe_exp.captureCount();
+    for( int i = 1 ; i < magswipe_exp.captureCount(); ++i ) {
+        log.stream() << "Capture " << i << " = '" << magswipe_exp.cap( i ) << "'";
+    }
     PROTECT_BLOCK(
-            emit magSwipe( DKSundhedskort( magswipe_exp ) );
+            // emit magSwipe( DKSundhedskort( magswipe_exp ) );
     );
 }
 
