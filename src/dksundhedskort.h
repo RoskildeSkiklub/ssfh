@@ -8,15 +8,12 @@
 
 class DKSundhedskort {
 public:
-    /** \brief Construct from a matching regexp
-      * \param regexp Regexp matching the static regexp */
-    DKSundhedskort( const QRegExp & regexp );
-
-    /** \brief Return a regexp suitable for matching a mag card swipe
-      * \returns A regexp suitable for matching a mag card swipe */
-    static QRegExp getRegExp() {
-        return regexp;
-    }
+    /** \brief Construct from two tracks
+      * \param track1 Data in track1
+      * \param track2 Data in track2
+      *
+      * Will throw, if no match */
+    DKSundhedskort( const QString & track1, const QString & track2 );
 
     QString name;
     QString surname;
@@ -28,8 +25,6 @@ public:
     QString ssn;
 
 private:
-    static QRegExp regexp;
-
     // TODO: Would be great with some unit tests on these functions.
 
     /** \brief Fixes up Danish Letters in the sundhedskort

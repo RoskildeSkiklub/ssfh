@@ -42,12 +42,16 @@ MainWindow::MainWindow(QWidget *parent) :
     // Connect to barcode command event
     connect( Globals::interceptor, SIGNAL(barcodeCommandScan(Globals::BarcodeCommands::Command)),
              this, SLOT(on_barcodeCommandScan(Globals::BarcodeCommands::Command)) );
+    // And to failure to scan
+    connect( Globals::interceptor, SIGNAL(magSwipeFailure()),
+             this, SLOT(on_magSwipeFailure()) );
 
 
     // Set up the db label widget in the statusbard
     status_db_label = new QLabel(this);
     statusBar()->addWidget( status_db_label );
     // updateDbStatusDisplay();
+
 }
 
 MainWindow::~MainWindow()
@@ -90,6 +94,12 @@ void MainWindow::on_barcodeCommandScan(const Globals::BarcodeCommands::Command &
 
 }
 
+void MainWindow::on_magSwipeFailure() {
+    Logger log("void MainWindow::on_magSwipeFailure()");
+    QMessageBox::warning( this, tr( "Card reader failure"),
+                          tr( "Failure reading magnetic card data. "
+                              "Either the card could not be read, or the card was of an unknown type." ) );
+}
 
 void MainWindow::updateDbStatusDisplay() const {
     Logger log("void MainWindow::updateDbStatusDisplay()");

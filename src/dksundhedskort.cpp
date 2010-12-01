@@ -12,18 +12,21 @@
 #include "utility.h"
 using namespace Log;
 
-// (surname&name)(address)...(zip)...(ssn)
-QRegExp DKSundhedskort::regexp( QString::fromUtf8( "%(.{34})(.{34})\\d{3}(\\d{4})_\x0c3\x086\\d{8}(\\d{10})\\d{19}_\r" ) );
 
-DKSundhedskort::DKSundhedskort( const QRegExp & regexp ) {
-    Logger log( "DKSundhedskort::DKSundhedskort( const QRegExp & regexp )" );
+DKSundhedskort::DKSundhedskort( const QString & track1, const QString & track2 ) {
+    Logger log( "DKSundhedskort::DKSundhedskort( const QString & track1, const QString & track2 )" );
     // Must match - get the cap value, convert to qulonglong
-    if ( 4 != regexp.captureCount() ) {
-        throw Exception( Errors::MagswipeNoMatch )
-                << ( log.stream( error ) << "Unknown magswipe: Wrong number of captures in regexp: "
-                    << regexp.captureCount() );
+    QRegExp DKRE_track1( QString::fromUtf8( "(.{34})(.{34})\\d{3}(\\d{4})" ) );
+    QRegExp DKRE_track2( QString::fromUtf8( "\\d{8}(\\d{10})\\d{19}" ) );
+
+    if ( ! ( DKRE_track1.exactMatch( track1 )
+        && DKRE_track2.exactMatch( track2 ) ) ) {
+        log.stream( warn ) << "Missing match on at least one track, throwing";
+        throw Exception( Errors::DKSundhedskortNoMatch )
+                << ( log.stream( error ) << "Unable to match DKSundhedskort to tracks '"
+                     << track1 << "' and/or '" << track2  << "'" );
     }
-    QStringList surname_n_name( regexp.cap( 1 ).trimmed().split( "&" ) );
+    QStringList surname_n_name( DKRE_track1.cap( 1 ).trimmed().split( "&" ) );
     if ( surname_n_name.size() != 2 ) {
         throw Exception( Errors::MagswipeNoMatch )
                 << ( log.stream( error ) << "Wrong number of fields in name data: "
@@ -31,9 +34,9 @@ DKSundhedskort::DKSundhedskort( const QRegExp & regexp ) {
     }
     surname = capitalizeWords( fixUpDanishLetters( surname_n_name.at( 0 ) ) );
     name    = capitalizeWords( fixUpDanishLetters( surname_n_name.at( 1 ) ) );
-    address = capitalizeWords( fixUpDanishLetters( regexp.cap( 2 ).trimmed() ) );
-    zip     = regexp.cap( 3 ).trimmed();
-    ssn     = regexp.cap( 4 ).trimmed();
+    address = capitalizeWords( fixUpDanishLetters( DKRE_track1.cap( 2 ).trimmed() ) );
+    zip     = DKRE_track1.cap( 3 ).trimmed();
+    ssn     = DKRE_track2.cap( 1 ).trimmed();
 
     // Lookup city, ignore lookup errors
     city = "";

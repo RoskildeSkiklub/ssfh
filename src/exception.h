@@ -50,6 +50,7 @@ namespace Errors {
         DbMaintenanceForceStateOnIllegalState = 7000,
 
         MagswipeNoMatch = 10000,
+        DKSundhedskortNoMatch = 10001,
     };
 };
 

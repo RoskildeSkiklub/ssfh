@@ -48,6 +48,10 @@ private:
     void emitBarcodeScan() const;
 
     void emitMagSwipe() const;
+    void emitMagSwipe( const QRegExp & regExp,
+                          bool track1,
+                          bool track2,
+                          bool track3 ) const;
 
     void barcodeScan( const QString & code ) const;
 
@@ -75,6 +79,9 @@ signals:
       *
       * This signals that a danish security card was read */
     void magSwipe( const DKSundhedskort & dks ) const;
+
+    /** \brief Indicates a failure to read a track, or failure to understand the format. */
+    void magSwipeFailure() const;
 
 };
 

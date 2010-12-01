@@ -19,6 +19,19 @@
 
 using namespace Log;
 
+// The magsswipt markers are  - unfortunately - translated by the keyboard input system.
+// In danish (utf8), that is:
+// \x025 (%) = track 1
+// \x0c3\x086 (danish ligatur ae) = track 2. This is suspectible to caps lock.
+// \x060 (`) = track 3.
+
+const QString mag_track1start = QString::fromUtf8( "\x025" );
+const QString mag_track2start = QString::fromUtf8( "\x0c3\x086" );
+const QString mag_track3start = QString::fromUtf8( "\x060" );
+const QString mag_trackEnd = QString("_");
+const QString mag_end = QString( "\r" );
+
+
 //TODO: Depending on how the magnetic card reader works, this can be refactored into
 // some sort of generic matcher/translate to signal thingy. For now, YAGNI.
 
@@ -29,7 +42,12 @@ Interceptor::Interceptor()
     // \x025 (%) = track 1
     // \x0c3\x086 (danish ligatur ae) = track 2. This is suspectible to caps lock.
     // \x060 (`) = track 3.
-    magswipe_exp( QString::fromUtf8( "(?:\x025|\x0c3\x086|\x060).+_\r") ),
+    magswipe_exp( QString( "(?:%0|%1|%2).+%3%4" )
+                  .arg( mag_track1start ).arg( mag_track2start ).arg( mag_track3start )
+                  .arg( mag_trackEnd ).arg( mag_end ) ),
+
+
+            // QString::fromUtf8( "(?:\x025|\x0c3\x086|\x060).+_\r") ),
     collecting( false ), timer( this ) {
     barcode_exp.setCaseSensitivity( Qt::CaseInsensitive ); // Needed, because user may press caps-lock....
     magswipe_exp.setCaseSensitivity( Qt::CaseInsensitive ); // Needed, because user may press caps-lock....
@@ -214,19 +232,92 @@ void Interceptor::emitBarcodeScan() const {
     }
 }
 
+void Interceptor::emitMagSwipe(const QRegExp &regExp, bool track1, bool track2, bool track3) const {
+    Logger log("void Interceptor::tryEmitMagSwipe(const QRegExp &regExp) const");
+    // It is assumed that the caller has confirmed match on the regexp, and that it matches the tracks.
+    QString track1value;
+    QString track2value;
+    QString track3value;
+    int captures = regExp.captureCount();
+    int nextCapture = 1;
+
+    if ( track1 && nextCapture <= captures ) {
+        track1value = regExp.cap( nextCapture );
+        nextCapture += 1;
+    }
+    if ( track2 && nextCapture <= captures ) {
+        track2value = regExp.cap( nextCapture );
+        nextCapture += 1;
+    }
+    if ( track3 && nextCapture <= captures ) {
+        track3value = regExp.cap( nextCapture );
+        nextCapture += 1;
+    }
+    log.stream() << "Number of captures : " << captures;
+    log.stream() << "Track1 : '" << track1value << "'";
+    log.stream() << "Track2 : '" << track2value << "'";
+    log.stream() << "Track3 : '" << track3value << "'";
+    if ( track1value.toUpper() == "E"
+         || track2value.toUpper() == "E"
+         || track3value.toUpper() == "E" ) {
+        log.stream( warn ) << "Failed to read or more tracks";
+        emit magSwipeFailure();
+        return;
+    }
+    // Figure out if this is a DK Sundhedskort.
+    if ( track1 && track2 && !track3 ) {
+        log.stream() << "Checking 2 track (1,2) card";
+        try {
+            emit magSwipe( DKSundhedskort( track1value, track2value ) );
+            return;
+        } catch ( ... ) {
+            log.stream( warn ) << "Probably not a DKSundhedskort";
+        }
+        emit magSwipeFailure();
+        return;
+    }
+
+    // Reaching here is an error
+    log.stream( warn ) << "Totalmatch, but no card match found.";
+    emit magSwipeFailure();
+}
+
 void Interceptor::emitMagSwipe() const {
     Logger log( "void Interceptor::emitMagSwipe() const" );
     log.stream() << "EMITTING MAGSWIPE";
-    log.stream() << "Text matched: '" << magswipe_exp.cap(0) << "'";
-    log.stream() << "Text matched in % encoding: '" << magswipe_exp.cap(0).toLocal8Bit().toPercentEncoding() << "'";
+    QString totalMatch = magswipe_exp.cap( 0 );
+    log.stream() << "Text matched: '" << totalMatch << "'";
+    log.stream() << "Text matched in % encoding: '" << totalMatch.toLocal8Bit().toPercentEncoding() << "'";
 
-    log.stream() << "Number of captures: " << magswipe_exp.captureCount();
-    for( int i = 1 ; i < magswipe_exp.captureCount(); ++i ) {
-        log.stream() << "Capture " << i << " = '" << magswipe_exp.cap( i ) << "'";
+    // Split up in tracks. Try to match all three tracks at once...
+    // Note: I could not figure out how to do this cleverly.... :-(
+
+    // Have to start with the most specific, that is, all three tracks.
+    // When it fails badly, it will return data in all tracks...
+    // Track 1, 2 and 3
+    QRegExp all( QString( "%0(.+)%4%1(.+)%4%2(.+)%4%5" )
+                 .arg( mag_track1start ).arg( mag_track2start ).arg( mag_track3start )
+                 .arg( mag_trackEnd ).arg( mag_end ) );
+    all.setCaseSensitivity( Qt::CaseInsensitive );
+    if ( all.exactMatch( totalMatch ) ) {
+        log.stream() << "Match on track 1, 2, 3";
+        emitMagSwipe( all, true, true, true );
+        return;
     }
-    PROTECT_BLOCK(
-            // emit magSwipe( DKSundhedskort( magswipe_exp ) );
-    );
+
+    // Track 1 and 2
+    all.setPattern( QString( "%0(.+)%3%1(.+)%3%4" )
+                    .arg( mag_track1start ).arg( mag_track2start )
+                    .arg( mag_trackEnd ).arg( mag_end ) );
+    if ( all.exactMatch( totalMatch ) ) {
+        log.stream() << "Match on track 1, 2 ";
+        emitMagSwipe( all, true, true, false );
+        return;
+    }
+
+    // No match, complain
+    log.stream( warn ) << "Unable to understand card data '" << totalMatch << "'";
+    emit magSwipeFailure();
 }
 
 

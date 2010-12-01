@@ -66,6 +66,9 @@ private slots:
     void on_input_return_pushButton_clicked();
     void on_input_rent_pushButton_clicked();
 
+    /** \brief Display a warning dialog */
+    void on_magSwipeFailure();
+
 public slots:
     void on_barcodeCommandScan( const Globals::BarcodeCommands::Command & command );
 };
