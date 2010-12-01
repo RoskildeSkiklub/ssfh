@@ -79,6 +79,9 @@ QString DKSundhedskort::fixUpDanishLetters( const QString & input ) const {
     // It is the same both with and without caps lock.
     res.replace( QString::fromUtf8( "\x027" ), QString::fromUtf8( "\x0c3\x098" ) );
 
+    // I have never actually seen an aring, but I think it is ¨, that is d168/0xA8
+    res.replace( QString::fromUtf8( "\x0a8" ), QString::fromUtf8( "\x0c3\x085" ) );
+
     return res;
 }
 
