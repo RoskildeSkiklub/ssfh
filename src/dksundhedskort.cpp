@@ -16,8 +16,8 @@ using namespace Log;
 DKSundhedskort::DKSundhedskort( const QString & track1, const QString & track2 ) {
     Logger log( "DKSundhedskort::DKSundhedskort( const QString & track1, const QString & track2 )" );
     // Must match - get the cap value, convert to qulonglong
-    QRegExp DKRE_track1( QString::fromUtf8( "(.{34})(.{34})\\d{3}(\\d{4})" ) );
-    QRegExp DKRE_track2( QString::fromUtf8( "\\d{8}(\\d{10})\\d{19}" ) );
+    QRegExp DKRE_track1( "(.{34})(.{34})\\d{3}(\\d{4})" );
+    QRegExp DKRE_track2( "\\d{8}(\\d{10})\\d{19}" );
 
     if ( ! ( DKRE_track1.exactMatch( track1 )
         && DKRE_track2.exactMatch( track2 ) ) ) {

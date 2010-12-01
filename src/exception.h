@@ -51,6 +51,7 @@ namespace Errors {
 
         MagswipeNoMatch = 10000,
         DKSundhedskortNoMatch = 10001,
+        CreditCardNoMatch = 10002,
     };
 };
 

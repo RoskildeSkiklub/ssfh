@@ -35,7 +35,8 @@ SOURCES += main.cpp \
     plaintexteditdialog.cpp \
     selectcontractdialog.cpp \
     qusb.cpp \
-    checksetupdialog.cpp
+    checksetupdialog.cpp \
+    creditcard.cpp
 HEADERS += mainwindow.h \
     rentdialog.h \
     stockdialog.h \
@@ -62,7 +63,8 @@ HEADERS += mainwindow.h \
     plaintexteditdialog.h \
     selectcontractdialog.h \
     qusb.h \
-    checksetupdialog.h
+    checksetupdialog.h \
+    creditcard.h
 FORMS += mainwindow.ui \
     rentdialog.ui \
     stockdialog.ui \

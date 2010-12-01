@@ -11,6 +11,7 @@
 
 class QEvent;
 class DKSundhedskort;
+class CreditCard;
 namespace Globals {
     namespace BarcodeCommands {
         class Command;
@@ -79,6 +80,13 @@ signals:
       *
       * This signals that a danish security card was read */
     void magSwipe( const DKSundhedskort & dks ) const;
+
+    /** \brief A magnetic CreditCard was read with the magtek reader
+      * \param creditCard The creditcard read
+      *
+      * This signals that a danish security card was read */
+    void magSwipe( const CreditCard & creditCard ) const;
+
 
     /** \brief Indicates a failure to read a track, or failure to understand the format. */
     void magSwipeFailure() const;

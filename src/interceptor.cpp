@@ -14,8 +14,10 @@
 // App
 #include "log.h"
 #include "dksundhedskort.h"
+#include "creditcard.h"
 #include "exception.h"
 #include "globals.h"
+
 
 using namespace Log;
 
@@ -267,11 +269,19 @@ void Interceptor::emitMagSwipe(const QRegExp &regExp, bool track1, bool track2, 
     // Figure out if this is a DK Sundhedskort.
     if ( track1 && track2 && !track3 ) {
         log.stream() << "Checking 2 track (1,2) card";
+        log.stream() << "Mabbe it is a DKSundhedskort";
         try {
             emit magSwipe( DKSundhedskort( track1value, track2value ) );
             return;
         } catch ( ... ) {
             log.stream( warn ) << "Probably not a DKSundhedskort";
+        }
+        log.stream() << "Mabbe it is a CreditCard";
+        try {
+            emit magSwipe( CreditCard( track1value, track2value ) );
+            return;
+        } catch ( ... ) {
+            log.stream( warn ) << "Probably not a CreditCard";
         }
         emit magSwipeFailure();
         return;
