@@ -198,6 +198,9 @@ HirerDialog::HirerDialog(QWidget *parent) :
     // Accept CreditCard scan events.
     connect( Globals::interceptor, SIGNAL(magSwipe(CreditCard)),
              this, SLOT(on_CreditCard_magSwipe(CreditCard)) );
+    // And, scans of ssn
+    connect( Globals::interceptor, SIGNAL(barcodeSSNScan(QString)),
+             this, SLOT(on_barcodeSSNScan(QString)));
 }
 
 HirerDialog::~HirerDialog()
@@ -255,6 +258,15 @@ void HirerDialog::on_CreditCard_magSwipe(const CreditCard &creditCard) {
     // Just to make sure the dialog is updated...
     on_note_field_changed();
 
+}
+
+void HirerDialog::on_barcodeSSNScan(const QString &ssn) {
+    Logger log("void HirerDialog::on_barcodeSSNScan(const QString &ssn)");
+    ui->lineEdit_SSN->setText( ssn );
+    ui->plainTextEdit_note->setPlainText( ui->plainTextEdit_note->toPlainText()
+                                          + tr("(SSN registered.)") );
+    // Make sure the dialog is updated.
+    on_note_field_changed();
 }
 
 // This method updates the query based on the values in the input fields, expect the value in the note field

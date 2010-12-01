@@ -84,6 +84,7 @@ private slots:
 
 public slots:
     void on_CreditCard_magSwipe( const CreditCard & creditCard );
+    void on_barcodeSSNScan( const QString & ssn );
 
 signals:
     void input_field_edited();

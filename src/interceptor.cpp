@@ -206,6 +206,10 @@ bool Interceptor::eventFilter( QObject *obj, QEvent *ev ) {
 
 void Interceptor::emitBarcodeScan() const {
     Logger log( "void Interceptor::emitBarcodeScan() const" );
+
+    // This emits one of three possibilities, either a command,
+    // an SSN scan (10 digits) or an item scan (everything else).
+
     // Must match - get the cap value, convert to qulonglong
     if ( 1 != barcode_exp.captureCount() ) {
         log.stream( error ) << "Wrong number of captures in barcode_exp: "
@@ -228,10 +232,20 @@ void Interceptor::emitBarcodeScan() const {
         }
         log.stream() << "Emitting barcodeCommandScan( { m_code: '" << cmd.m_code << "', m_param: '" << cmd.m_param << "' } )";
         emit barcodeCommandScan( cmd );
-    } else {
-        log.stream() << "Emitting barcodeItemScan( '" << code << "' )";
-        emit barcodeItemScan( code );
+        return;
     }
+
+    // Now, could this be a SNN scan?
+    QRegExp ssn_re( "\\d{10}"); // This could be configurable...
+    if ( ssn_re.exactMatch( code ) ) {
+        log.stream() << "Emitting barcodeSSNScan( '" << code << "' )";
+        emit barcodeSSNScan( code );
+        return;
+    }
+
+    // Nope, assuming an item scan.
+    log.stream() << "Emitting barcodeItemScan( '" << code << "' )";
+    emit barcodeItemScan( code );
 }
 
 void Interceptor::emitMagSwipe(const QRegExp &regExp, bool track1, bool track2, bool track3) const {

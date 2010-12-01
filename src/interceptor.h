@@ -69,6 +69,12 @@ signals:
       * This signal indicates that an item was scanned */
     void barcodeItemScan( const QString & id ) const;
 
+    /** \brief A SSN was scanned with the barcode reader
+      * \param ssn The code of the scanned SSN
+      *
+      * This signal indicates that a SSN was scanned */
+    void barcodeSSNScan( const QString & ssn ) const;
+
     /** \brief A command was scanned with the barcode reader
       * \param command The command that was scanned
       *
