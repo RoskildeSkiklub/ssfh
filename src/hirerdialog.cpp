@@ -13,6 +13,8 @@
 #include "exception.h"
 #include "utility.h"
 #include "hirer.h"
+#include "globals.h"
+#include "creditcard.h"
 
 using namespace Log;
 
@@ -142,10 +144,12 @@ HirerDialog::HirerDialog(QWidget *parent) :
     state_machine.addState( hirer_changed );
 
     // Debug state changes - FIXME: Remove
+    /*
     blank->assignProperty( ui->label_7, "text", "blank");
     no_hirer->assignProperty( ui->label_7, "text", "no_hirer");
     hirer_selected->assignProperty( ui->label_7, "text", "hirer_selected");
     hirer_changed->assignProperty( ui->label_7, "text", "hirer_changed");
+    */
 
     // BLANK
     blank->assignProperty( ui->pushButton_clear, "enabled", false );
@@ -190,6 +194,10 @@ HirerDialog::HirerDialog(QWidget *parent) :
 
     // Connect the use button - which is only available when a hirer is selected - to the accept slot
     connect( ui->pushButton_use, SIGNAL( clicked()), this, SLOT( accept()) );
+
+    // Accept CreditCard scan events.
+    connect( Globals::interceptor, SIGNAL(magSwipe(CreditCard)),
+             this, SLOT(on_CreditCard_magSwipe(CreditCard)) );
 }
 
 HirerDialog::~HirerDialog()
@@ -235,6 +243,18 @@ void HirerDialog::changeEvent(QEvent *e)
     default:
         break;
     }
+}
+
+void HirerDialog::on_CreditCard_magSwipe(const CreditCard &creditCard) {
+    Logger log("void HirerDialog::on_CreditCard_magSwipe(const CreditCard &creditCard)");
+    ui->lineEdit_firstName->setText( ui->lineEdit_firstName->text() + creditCard.name );
+    ui->lineEdit_lastName->setText( ui->lineEdit_lastName->text() + creditCard.surname );
+    ui->lineEdit_SSN->setText( ui->lineEdit_SSN->text() + creditCard.cardnumber );
+    ui->plainTextEdit_note->setPlainText( ui->plainTextEdit_note->toPlainText()
+                                          + tr("(Credit card number registered.)") );
+    // Just to make sure the dialog is updated...
+    on_note_field_changed();
+
 }
 
 // This method updates the query based on the values in the input fields, expect the value in the note field

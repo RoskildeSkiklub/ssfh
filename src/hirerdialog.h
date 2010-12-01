@@ -5,7 +5,10 @@
   * \brief This defines a dialog that can be used to locate, create, edit and/or select a hirer.
   *
   * This dialog probably does too much currently. It can be used to locate a hirer, to create/add a hirer,
-  * to update the values for a given hirer, and finally to select a hirer, that the client can use. */
+  * to update the values for a given hirer, and finally to select a hirer, that the client can use.
+  *
+  * It also reacts to a CreditCard signal, and updates the values with the information passed in that, storing
+  * the card number as an ssn ... */
 
 #include <QDialog>
 #include <QSqlQueryModel>
@@ -17,6 +20,7 @@
 // App
 #include "contract.h"
 #include "hirer.h"
+#include "interceptor.h"
 
 namespace Ui {
     class HirerDialog;
@@ -77,6 +81,9 @@ private slots:
     // My stuff.
     void on_input_field_edited( QString value );
     void on_note_field_changed();
+
+public slots:
+    void on_CreditCard_magSwipe( const CreditCard & creditCard );
 
 signals:
     void input_field_edited();

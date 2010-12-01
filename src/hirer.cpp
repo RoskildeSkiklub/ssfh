@@ -177,10 +177,15 @@ void Hirer::db_update() {
 }
 
 QString Hirer::toHtml() const {
-    QString res = QString( "%6<em>%1 %2</em><br/>%3<br/>%4  %5" )
+    QString res = QString( "%6<em>%1 %2</em><br/>%3<br/>%4  %5%7" )
                   .arg( m_firstName ).arg( m_lastName ).arg( m_streetAddress ).arg( m_zip ).arg( m_city );
     if ( !m_memberId.isEmpty() ) {
         res = res.arg( tr( "MemberId: " ) + m_memberId + "<br/>" );
+    } else {
+        res = res.arg("");
+    }
+    if ( !m_note.isEmpty() ) {
+        res = res.arg( m_note + "<br/>" );
     } else {
         res = res.arg("");
     }

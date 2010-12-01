@@ -616,6 +616,9 @@ void Contract::printGeneralReceipt( Pos::Printer &posPrinter, ReceiptType receip
     posPrinter << m_hirer.m_firstName << " " << m_hirer.m_lastName << Pos::endl;
     posPrinter << m_hirer.m_streetAddress << Pos::endl;
     posPrinter << m_hirer.m_zip << "  " << m_hirer.m_city << Pos::endl;
+    if ( !m_hirer.m_note.isEmpty() ) {
+        posPrinter << m_hirer.m_note << Pos::endl;
+    }
     posPrinter << Pos::endl;
 
     ////////////////////////////////////////////////////////////////////
