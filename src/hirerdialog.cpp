@@ -86,23 +86,10 @@ HirerDialog::HirerDialog(QWidget *parent) :
     Logger log( "HirerDialog::HirerDialog(QWidget *parent)");
     ui->setupUi(this);
 
-    // Set up the form to have a splitter. This could probably be done better.
-    top_widget = new QWidget( this );
-    top_widget->setLayout( ui->layout_top );
+    // Adjust the splitter. This could probably be done better.
+    ui->splitter->setStretchFactor( 0, 1 );
+    ui->splitter->setStretchFactor( 1, 10 );
 
-    splitter = new QSplitter( this );
-    splitter->setOrientation( Qt::Vertical );
-
-    splitter->addWidget( top_widget );
-    splitter->addWidget( ui->tableView_hirers );
-
-    splitter->setStretchFactor( 0, 1 );
-    splitter->setStretchFactor( 1, 10 );
-
-    top_grid_layout = new QGridLayout( this );
-    top_grid_layout->addWidget( splitter, 0, 0 );
-
-    setLayout( top_grid_layout );
 
     // Fix up the query model to provide all hirers when we are first crated.
     model = new QSqlQueryModel;
