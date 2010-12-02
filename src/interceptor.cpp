@@ -218,11 +218,10 @@ void Interceptor::emitBarcodeScan() const {
     }
     QString code = barcode_exp.cap( 1 );
     // Check if this is a command or an id
-    // TODO: IGNORE CASE!!!
-    if ( code.startsWith( "C" ) ) {
+    if ( code.toUpper().startsWith( "C" ) ) {
         log.stream() << "Thinking '" << code << "' is a command scan";
         QRegExp cmdexp( "C(\\d+) {0,1}([A-Z]*)");
-        if ( ! cmdexp.exactMatch( code ) ) {
+        if ( ! cmdexp.exactMatch( code.toUpper() ) ) {
             log.stream( error ) << "No exact command match on '" << code << "'. Not emitting barcodeScan";
             return;
         }
