@@ -3,6 +3,7 @@
 // Qt
 #include <QSqlQuery>
 #include <QVariant>
+#include <QMap>
 
 // App
 #include "log.h"
@@ -507,18 +508,28 @@ QString Contract::toCommonHtml( bool isRental ) const {
         return res;
     }
     res += "<table width=\"100%\">\n";
-    if ( isRental ) {
-        QList<ContractItem>::const_iterator i;
-        for ( i = m_contractItems.begin(); i != m_contractItems.end(); ++i ) {
+    QMap<QString,int> count_types;
+    QList<ContractItem>::const_iterator i;
+    for ( i = m_contractItems.begin(); i != m_contractItems.end(); ++i ) {
+        if ( isRental ) {
             res += i->toRentalHtml();
-        }
-    } else {
-        QList<ContractItem>::const_iterator i;
-        for ( i = m_contractItems.begin(); i != m_contractItems.end(); ++i ) {
+        }  else {
             res += i->toReturnHtml();
+        }
+        if ( ! count_types.contains( i->getItem().getType() ) ) {
+            count_types.insert( i->getItem().getType(), 1 );
+        } else {
+            count_types[i->getItem().getType()] += 1;
         }
     }
     res += "</table>\n";
+
+    // List total count'n stuff
+    res += "<h4>" + tr( "Count of types in contract") + "</h4>";
+    QMap<QString,int>::const_iterator mi;
+    for ( mi = count_types.begin(); mi != count_types.end(); ++mi ) {
+        res += QString( "%0: %1<br/>" ).arg( mi.key() ).arg( mi.value() );
+    }
 
     // Total price
     res += "<h3>" + tr( "Totals" ) + "</h3>";
@@ -639,6 +650,7 @@ void Contract::printGeneralReceipt( Pos::Printer &posPrinter, ReceiptType receip
     // Items.
     // On agreement and rental receipt, cost is listed, on return, state of item
     posPrinter << Pos::bold << tr( "Items:" ) << Pos::hr;
+    QMap<QString,int> count_types;
     QList<ContractItem>::const_iterator i;
     for ( i = m_contractItems.begin(); i != m_contractItems.end(); ++i ) {
         const ContractItem & cii = *i;
@@ -660,8 +672,21 @@ void Contract::printGeneralReceipt( Pos::Printer &posPrinter, ReceiptType receip
                           posPrinter.getReceiptWidth() - 3 - idesc.size() ) << Pos::endl;
         }
         posPrinter << "   " << cii.getItem().toReceiptString() << Pos::endl;
+        // Track total count
+        if ( ! count_types.contains( i->getItem().getType() ) ) {
+            count_types.insert( i->getItem().getType(), 1 );
+        } else {
+            count_types[i->getItem().getType()] += 1;
+        }
     }
     posPrinter << Pos::hr;
+    // Dump a total count
+    QMap<QString,int>::const_iterator mi;
+    for ( mi = count_types.begin(); mi != count_types.end(); ++mi ) {
+        posPrinter << tr( "Count " )
+                << QString( "%0: %1" ).arg( mi.key() ).arg( mi.value() )
+                << Pos::endl;
+    }
     posPrinter.setFontSize( 1, 2 );
     // The sum of the items is printed, except for returns, where it is the state of the contract
     // TODO: Discount and stuff is missing from this.
