@@ -1,0 +1,28 @@
+2010-12-02  Mads Bondo Dydensborg  <mads@dydensborg.dk>
+
+	* Barcode reading
+	Ignore case in command scans
+
+	* Feedback
+	Added audio feedback during normal hire/return operations
+
+2010-12-01  Mads Bondo Dydensborg  <mads@dydensborg.dk>
+
+	* Variuos: 
+	Fixed close button in view hired items dialog
+
+	* Magnetic swipe
+	Fixed loop in postCollected from interceptor
+	Improved error handling in magnetic card swipe
+	Can now use Credit Cards for (limited) ID
+	Can now scan a Danish SSN for (limited) ID
+	Hopefully handles danish letter aring now in mag swipes
+
+	* Hirer dialog
+	Single button for add and use
+
+
+2010-11-27  Mads Bondo Dydensborg  <mads@dydensborg.dk>
+
+	* Release
+	Version 0.5.0 based on svn rev. 463
