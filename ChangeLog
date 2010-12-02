@@ -6,6 +6,16 @@
 	* Feedback
 	Added audio feedback during normal hire/return operations
 
+	* Return
+	Added ability to return all items in a contract at once
+	Total count of items added to display and receipts
+
+	* Hire
+	Added button to force return of item, when hiring it out
+
+	* MainWindow
+	Seperate line for contract information.
+
 2010-12-01  Mads Bondo Dydensborg  <mads@dydensborg.dk>
 
 	* Variuos: 
