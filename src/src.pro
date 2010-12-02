@@ -1,7 +1,7 @@
 
 include(../common.pri)
 
-QT += sql
+QT += sql phonon
 TARGET = SnowStuffForHire.bin
 TEMPLATE = app
 
@@ -36,7 +36,8 @@ SOURCES += main.cpp \
     selectcontractdialog.cpp \
     qusb.cpp \
     checksetupdialog.cpp \
-    creditcard.cpp
+    creditcard.cpp \
+    feedbackobject.cpp
 HEADERS += mainwindow.h \
     rentdialog.h \
     stockdialog.h \
@@ -64,7 +65,8 @@ HEADERS += mainwindow.h \
     selectcontractdialog.h \
     qusb.h \
     checksetupdialog.h \
-    creditcard.h
+    creditcard.h \
+    feedbackobject.h
 FORMS += mainwindow.ui \
     rentdialog.ui \
     stockdialog.ui \

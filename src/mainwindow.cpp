@@ -7,7 +7,6 @@
 #include <QMap>
 #include <QString>
 #include <QMessageBox>
-
 #include <QFileDialog>
 
 // App ui
@@ -51,7 +50,6 @@ MainWindow::MainWindow(QWidget *parent) :
     status_db_label = new QLabel(this);
     statusBar()->addWidget( status_db_label );
     // updateDbStatusDisplay();
-
 }
 
 MainWindow::~MainWindow()

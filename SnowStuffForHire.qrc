@@ -1,5 +1,9 @@
-<!DOCTYPE RCC><RCC version="1.0">
- <qresource>
-     <file>logos/rsh-logo-bw.png</file>
- </qresource>
- </RCC>
+<RCC>
+    <qresource prefix="/">
+        <file>logos/rsh-logo-bw.png</file>
+        <file>sounds/item_added.wav</file>
+        <file>sounds/hirer_set.wav</file>
+        <file>sounds/critical_error.wav</file>
+        <file>sounds/error.wav</file>
+    </qresource>
+</RCC>

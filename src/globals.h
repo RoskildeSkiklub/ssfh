@@ -7,12 +7,16 @@
 // Qt
 #include <QString>
 
+// app
 #include "interceptor.h"
 #include "posprinter.h"
+#include "feedbackobject.h"
 
 namespace Globals {
 
     extern Interceptor * interceptor;
+    // So it can be set up from main
+    // TODO: Fix this, its broken.
     extern Pos::Printer * posPrinter;
 
     /** \brief Return reference to the global PosPrinter instance
@@ -24,6 +28,9 @@ namespace Globals {
       * This checks the printer is connected/ready. If not, it displays a dialog box,
       * asking the user if they want to try again, or ignore */
     bool checkPosPrinter();
+
+    /** \brief Return a pointer to the global (audio) feedback instance */
+    FeedbackObject * getFeedbackObject();
 
     /** \brief Enum with commands from the barcode scanner */
     namespace BarcodeCommands {

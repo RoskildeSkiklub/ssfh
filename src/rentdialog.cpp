@@ -130,6 +130,10 @@ RentDialog::RentDialog(QWidget *parent) :
     // Make sure the UI is set correctly to start with
     showMaximized();
     update();
+
+    // Set up feedback
+    connect( this, SIGNAL( item_added()), Globals::getFeedbackObject(), SLOT(itemAdded()) );
+    connect( this, SIGNAL( hirer_set()), Globals::getFeedbackObject(), SLOT(hirerSet()) );
 }
 
 RentDialog::~RentDialog()

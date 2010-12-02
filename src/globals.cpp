@@ -7,12 +7,23 @@
 #include "log.h"
 #include "exception.h"
 
+// TODO: Make interface and stuff consistent...
 Interceptor * Globals::interceptor;
 Pos::Printer * Globals::posPrinter;
+FeedbackObject * feedbackObject;
+
 
 using namespace Log;
 
 namespace Globals  {
+    FeedbackObject * getFeedbackObject() {
+        Logger log("FeedbackObject * getFeedbackObject()");
+        if ( ! feedbackObject ) {
+            feedbackObject = new FeedbackObject();
+        }
+        return feedbackObject;
+    }
+
     Pos::Printer & getPosPrinter() {
         Logger log("PosPrinter & getPosPrinter()");
         if ( ! posPrinter ) {

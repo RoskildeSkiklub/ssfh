@@ -70,6 +70,10 @@ ReturnDialog::ReturnDialog(QWidget *parent) :
     showMaximized();
     update();
 
+    // Provide audio feedback when returning items
+    connect(this, SIGNAL(item_returned()),
+            Globals::getFeedbackObject(), SLOT(itemReturned()));
+
 }
 
 void ReturnDialog::update() {
@@ -176,7 +180,7 @@ void ReturnDialog::return_item(const QString &item_id) {
         default: throw;
         }
     }
-
+    emit item_returned();
     update();
     if ( ! m_contract.hasReturnableItems() ) {
         m_contract.close();
