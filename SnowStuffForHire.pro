@@ -16,6 +16,7 @@ DISTFILES = \
     src/SnowStuffForHire src/src.pro \
     extras/PertelianLib2-1.09.zip \
     logos/rsh-logo-bw.png \
+    ChangeLog
 
 dist.target = dist
 dist.commands = ./make-dist.sh $$VERSION $$DISTFILES src/*.h src/*.cpp src/*.ui src/*.ts
