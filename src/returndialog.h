@@ -67,6 +67,7 @@ signals:
     void contract_closed(); // Emitted when a contract has been fully closed
 
 private slots:
+    void on_input_returnAll_pushButton_clicked();
     void on_input_done_pushButton_clicked();
     void on_input_returnItem_pushButton_clicked();
 

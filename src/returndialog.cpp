@@ -55,9 +55,12 @@ ReturnDialog::ReturnDialog(QWidget *parent) :
     m_state_machine.addState( blank );
     m_state_machine.addState( has_contract );
 
-    // No property assignments yet, always enabled.
+
+    blank->assignProperty( ui->input_returnAll_pushButton, "enabled", false );
     blank->addTransition( this, SIGNAL( contract_found()), has_contract );
     blank->addTransition( this, SIGNAL( item_returned()), has_contract );
+
+    has_contract->assignProperty( ui->input_returnAll_pushButton, "enabled", true );
 
     //TODO: Back to blank, or something?
     // Set initial state and start
@@ -243,4 +246,38 @@ void ReturnDialog::on_input_done_pushButton_clicked()
 {
     Logger log("void ReturnDialog::on_input_done_pushButton_clicked(");
     close();
+}
+
+void ReturnDialog::on_input_returnAll_pushButton_clicked()
+{
+    Logger log("void ReturnDialog::on_input_returnAll_pushButton_clicked()");
+    if (  is_in_state( "has_contract" ) &&  QMessageBox::Yes
+          == QMessageBox::question( this,
+                                    tr("Are you sure you want to return all items"),
+                                    tr( "Are you sure you want to return all items at once, without returning individual items?" ),
+                                    QMessageBox::Yes | QMessageBox::No ) ) {
+        log.stream() << "Returning all items";
+        m_contract.returnAll();
+        update();
+        if ( ! m_contract.hasReturnableItems() ) {
+            m_contract.close();
+            if ( Globals::checkPosPrinter() ) {
+                Pos::Printer & posp( Globals::getPosPrinter() );
+                posp.startReceipt();
+                m_contract.printReturn( posp );
+                posp.endReceipt();
+                QMessageBox::information( this, tr("Contract closed"),
+                                          tr( "All items returned. Printing receipt." ) );
+            } else {
+                QMessageBox::information( this, tr( "Contract closed" ),
+                                          tr( "All items returned. Unable to print receipt." ) );
+            }
+            close();
+        } else {
+            throw Exception( Errors::InternalError)
+                    << ( log.stream( error )
+                         << "Returned all items, but contract still has returnable items"
+                         );
+        }
+    }
 }

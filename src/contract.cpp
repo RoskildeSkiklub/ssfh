@@ -150,6 +150,20 @@ void Contract::returnItem(const QString &item_id) {
 
 }
 
+void Contract::returnAll() {
+    Logger log("bool Contract::returnAll()");
+    QList<ContractItem>::const_iterator cii;
+    // TODO: I am not entirely sure this is stable..
+    for ( cii = m_contractItems.begin(); cii != m_contractItems.end(); ++cii ) {
+        if ( cii->getItem().getState() == DB::Item::State::out ) {
+            log.stream() << "Item with id '" << cii->getItem().getId()
+                    << "' is returnable. Trying to return it";
+            returnItem( cii->getItem().getId() );
+        }
+    }
+    log.stream() << "All done";
+}
+
 bool Contract::hasReturnableItems() const {
     Logger log("bool Contract::hasReturnableItems() const");
     QList<ContractItem>::const_iterator cii;

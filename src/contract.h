@@ -100,6 +100,12 @@ public:
       * If the item is not actually out, it is silently ignored, but a warning is logged */
     void returnItem( const QString & item_id );
 
+    /** \brief Return all items that are not yet returned
+      *
+      * This method returns all remaining items on the contract
+      * It is like calling returnItem for all items that are "out" */
+    void returnAll();
+
     /** \brief Remove an item from the contract
       * \param item_id Id of the item to remove
       *
