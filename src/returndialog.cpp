@@ -254,7 +254,7 @@ void ReturnDialog::on_input_returnAll_pushButton_clicked()
     if (  is_in_state( "has_contract" ) &&  QMessageBox::Yes
           == QMessageBox::question( this,
                                     tr("Are you sure you want to return all items"),
-                                    tr( "Are you sure you want to return all items at once, without returning individual items?" ),
+                                    tr( "Are you sure you want to return all items on this contract at once, without returning individual items?" ),
                                     QMessageBox::Yes | QMessageBox::No ) ) {
         log.stream() << "Returning all items";
         m_contract.returnAll();

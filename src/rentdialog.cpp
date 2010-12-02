@@ -22,6 +22,7 @@
 #include "utility.h"
 #include "plaintexteditdialog.h"
 #include "db_consts.h"
+#include "dbmaintenance.h"
 
 using namespace Log;
 
@@ -335,11 +336,21 @@ bool RentDialog::try_add_item(const QString &item_id) {
             return false;
         }
         case Errors::ItemUnavailable: {
-            QMessageBox::warning( this, tr( "The item is unavailable"),
-                                  tr( "The item with id '%0' is already registered on another contract. Unable to add to contract.").arg(item_id) );
-            // TODO: REALLY should be able to mark returned, and add to this contract. Real life trumps electronic.
-            return false;
-        }
+                if ( QMessageBox::Yes
+                     == QMessageBox::question( this, tr( "The item is unavailable"),
+                                               tr( "The item with id '%0' is not marked as available in the system. It may be marked as part of another active contract, lost, discarded or similar. Would you like to cancel that status, and add it to this contract anyway?" ).arg( item_id),
+                                               QMessageBox::Yes | QMessageBox::No ) ) {
+                    log.stream() << "User wants to add item to this contract";
+                    DbMaintenance dbmain;
+                    dbmain.itemForceState( item_id, DB::Item::State::in );
+                    log.stream() << "Item marked as in, trying to add to contract";
+                    // Try with no test
+                    m_contract.addItem( item_id );
+                    log.stream() << "Item successfully added. User will be happy. Hopefully...";
+                    return true;
+                }
+                return false;
+            }
         default: throw;
         }
     }

@@ -168,10 +168,12 @@ void Contract::returnAll() {
 bool Contract::hasReturnableItems() const {
     Logger log("bool Contract::hasReturnableItems() const");
     QList<ContractItem>::const_iterator cii;
+    // Note, only the state of the contractitem can be checked, because of swaps, overrides, etc...
     for ( cii = m_contractItems.begin(); cii != m_contractItems.end(); ++cii ) {
-        if ( cii->getItem().getState() == DB::Item::State::out ) {
+        if ( cii->getState() == DB::ContractItem::State::out ) {
             log.stream() << "Item with id '" << cii->getItem().getId()
-                    << "' is returnable. Returning true.";
+                    << "' is marked returnable in ContractItem '"
+                    << cii->getId() << "'. Returning true.";
             return true;
         }
     }
