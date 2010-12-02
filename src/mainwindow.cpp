@@ -123,7 +123,7 @@ void MainWindow::updateDbStatusDisplay() const {
                 .arg( query.value( 1 ).toLongLong() );
     }
     if ( !cres.isEmpty() ) {
-        cres = tr( "<b>contracts:</b>") + cres + " ";
+        cres = tr( "<b>contracts:</b>") + cres + "<br/>";
     }
     // Items
     query_check_prepare( query, "select type, rentalgroup, state, count(*) "
