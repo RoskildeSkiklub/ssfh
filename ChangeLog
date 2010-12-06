@@ -1,5 +1,13 @@
+2010-12-06  Mads Bondo Dydensborg  <mads@dydensborg.dk>
+
+	* GUI
+	Return/Rent: Enter returns/add item.
+
 2010-12-02  Mads Bondo Dydensborg  <mads@dydensborg.dk>
 
+	* Release
+	Version 0.6.0 equal svn rev. 486
+	
 	* Barcode reading
 	Ignore case in command scans
 

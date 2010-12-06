@@ -49,6 +49,9 @@
      <property name="text">
       <string>&amp;Return item</string>
      </property>
+     <property name="default">
+      <bool>true</bool>
+     </property>
     </widget>
    </item>
    <item row="3" column="1">
@@ -80,6 +83,13 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>input_item_lineEdit</tabstop>
+  <tabstop>input_returnItem_pushButton</tabstop>
+  <tabstop>input_returnAll_pushButton</tabstop>
+  <tabstop>input_done_pushButton</tabstop>
+  <tabstop>output_contract_textBrowser</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
