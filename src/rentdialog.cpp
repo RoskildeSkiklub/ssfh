@@ -91,19 +91,22 @@ RentDialog::RentDialog(QWidget *parent) :
     blank->assignProperty( ui->input_hirer_pushButton, "enabled", true );
     blank->assignProperty( ui->input_park_pushButton, "enabled", false );
     blank->assignProperty( ui->input_item_lineEdit, "enabled", false );
-    blank->assignProperty( ui->input_rentalgroup_pushButton, "enabled", false );
+    ////// blank->assignProperty( ui->input_rentalgroup_pushButton, "enabled", false );
     blank->assignProperty( ui->input_editNote_pushButton, "enabled", false );
     // From blank to has_hirer if hirer_set
     blank->addTransition( this, SIGNAL( hirer_set() ), has_hirer );
 
     // HAS_HIRER
+    // TODO: This does not work. Set focus to the item input field
+    // has_hirer->assignProperty( ui->input_item_lineEdit, "focus", Qt::OtherFocusReason );
+    // Enable/Disable buttons...
     has_hirer->assignProperty( ui->input_addItem_pushButton, "enabled", !ui->input_item_lineEdit->text().isEmpty() );
     has_hirer->assignProperty( ui->input_duration_pushButton, "enabled", true );
     has_hirer->assignProperty( ui->input_finish_pushButton, "enabled", false );
     has_hirer->assignProperty( ui->input_hirer_pushButton, "enabled", false );
     has_hirer->assignProperty( ui->input_park_pushButton, "enabled", true );
     has_hirer->assignProperty( ui->input_item_lineEdit, "enabled", true );
-    has_hirer->assignProperty( ui->input_rentalgroup_pushButton, "enabled", false );
+    /////// has_hirer->assignProperty( ui->input_rentalgroup_pushButton, "enabled", false );
     has_hirer->assignProperty( ui->input_editNote_pushButton, "enabled", false );
     // From has_hirer to has_item on item_added
     has_hirer->addTransition( this, SIGNAL( item_added() ), has_item );
@@ -117,7 +120,7 @@ RentDialog::RentDialog(QWidget *parent) :
     has_item->assignProperty( ui->input_hirer_pushButton, "enabled", false );
     has_item->assignProperty( ui->input_park_pushButton, "enabled", true );
     has_item->assignProperty( ui->input_item_lineEdit, "enabled", true );
-    has_item->assignProperty( ui->input_rentalgroup_pushButton, "enabled", true );
+    ///////has_item->assignProperty( ui->input_rentalgroup_pushButton, "enabled", true );
     has_item->assignProperty( ui->input_editNote_pushButton, "enabled", true );
     // TODO: From has_item to no_hirer on item_added ===> BLANK...
     has_item->addTransition( this, SIGNAL( contract_blanked()), blank );
@@ -127,6 +130,11 @@ RentDialog::RentDialog(QWidget *parent) :
     m_state_machine.setInitialState( blank );
     m_state_machine.start();
     QCoreApplication::processEvents();
+
+    // TODO: Hide stuff that is not at all active.
+    ui->adult_children_frame->setVisible( false );
+    ui->input_isMember_checkBox->setVisible( false );
+    ui->input_duration_pushButton->setVisible( false );
 
     // Make sure the UI is set correctly to start with
     showMaximized();
