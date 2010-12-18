@@ -39,6 +39,10 @@ public:
     explicit SwapDialog(QWidget *parent = 0);
     ~SwapDialog();
 
+signals:
+    void item_returned();
+    void item_added();
+
 public slots:
     void scan_item( const QString & item_id );
 

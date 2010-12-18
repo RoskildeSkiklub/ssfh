@@ -12,6 +12,7 @@
 #include "item.h"
 #include "db_consts.h"
 #include "utility.h"
+#include "globals.h"
 
 using namespace Log;
 
@@ -22,6 +23,14 @@ SwapDialog::SwapDialog(QWidget *parent) :
     ui->setupUi(this);
     // Disable accept/ok button
     ui->buttonBox->button( QDialogButtonBox::Ok )->setEnabled( false );
+    // Get the signals from the scan input events.
+    connect( Globals::interceptor, SIGNAL(barcodeItemScan(QString)),
+             this, SLOT(scan_item(QString) ) );
+    // Provide audio feedback when returning/adding items
+    connect(this, SIGNAL(item_returned()),
+            Globals::getFeedbackObject(), SLOT(itemReturned()));
+    connect(this, SIGNAL(item_added()),
+            Globals::getFeedbackObject(), SLOT(itemAdded()));
 }
 
 SwapDialog::~SwapDialog()
@@ -38,11 +47,13 @@ void SwapDialog::scan_item(const QString &item_id) {
         // Insert into rentItem and do the swap.
         ui->input_rentItem_lineEdit->setText( item_id );
         rentItemSet();
+        emit item_added();
     } else {
         log.stream() << "returnItem is writeable, inputting stuff into returnItem";
         // Into returnItem, and try to return
         ui->input_returnItem_lineEdit->setText( item_id );
         returnItemSet();
+        emit item_returned();
     }
 }
 
@@ -140,6 +151,20 @@ void SwapDialog::rentItemSet() {
     }
     m_contract.swapItems( ui->input_returnItem_lineEdit->text(),
                           ui->input_rentItem_lineEdit->text() );
+    // Print the contract.
+    if ( Globals::checkPosPrinter() ) {
+        Pos::Printer & posp( Globals::getPosPrinter() );
+        posp.startReceipt();
+        m_contract.printReturn( posp );
+        posp.endReceipt();
+        QMessageBox::information( this, tr("Items swapped"),
+                                  tr( "Items swapped. Printing receipt." ) );
+    } else {
+        QMessageBox::information( this, tr( "Items swapped" ),
+                                  tr( "Items swapped. Unable to print receipt." ) );
+    }
+    // Close the window
+    close();
 }
 
 void SwapDialog::on_input_lookup_pushButton_clicked()
