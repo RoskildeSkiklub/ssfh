@@ -20,6 +20,7 @@
 #include "massstatechangedialog.h"
 #include "selectcontractdialog.h"
 #include "checksetupdialog.h"
+#include "swapdialog.h"
 
 // App
 #include "log.h"
@@ -160,6 +161,14 @@ void MainWindow::showRentDialog() const {
     log.stream() << "Displaying rentDialog";
     RentDialog rentDialog;
     rentDialog.exec();
+    updateDbStatusDisplay();
+}
+
+void MainWindow::showSwapDialog() const {
+    Logger log( "void MainWindow::showSwapDialog() const" );
+    log.stream() << "Displaying swapDialog";
+    SwapDialog swapDialog;
+    swapDialog.exec();
     updateDbStatusDisplay();
 }
 
@@ -349,4 +358,10 @@ void MainWindow::on_action_Check_Setup_triggered()
     CheckSetupDialog csd;
     csd.exec();
 
+}
+
+void MainWindow::on_input_swap_pushButton_clicked()
+{
+    Logger log("void MainWindow::on_input_swap_pushButton_clicked()");
+    showSwapDialog();
 }

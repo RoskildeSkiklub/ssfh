@@ -38,6 +38,7 @@ private:
     void showMassStateChangeDialog() const;
     void doPrintCommandSheet() const;
     void showContractsDialog( const QString & state ) const;
+    void showSwapDialog() const;
 
     /** \brief Pointer to statusbar db label
       *
@@ -52,6 +53,7 @@ private:
     void showEvent ( QShowEvent * event );
 
 private slots:
+    void on_input_swap_pushButton_clicked();
     void on_action_Check_Setup_triggered();
     void on_action_Exit_triggered();
     void on_action_Parked_Contracts_triggered();
