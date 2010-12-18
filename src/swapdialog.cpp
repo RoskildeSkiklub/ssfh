@@ -20,6 +20,8 @@ SwapDialog::SwapDialog(QWidget *parent) :
     ui(new Ui::SwapDialog)
 {
     ui->setupUi(this);
+    // Disable accept/ok button
+    ui->buttonBox->button( QDialogButtonBox::Ok )->setEnabled( false );
 }
 
 SwapDialog::~SwapDialog()
@@ -29,8 +31,19 @@ SwapDialog::~SwapDialog()
 
 void SwapDialog::scan_item(const QString &item_id) {
     Logger log("SwapDialog::scan_item(const QString &item_id)");
+    // Use readonly status of returnItem to determine where we are...
 
-
+    if ( ui->input_returnItem_lineEdit->isReadOnly() ) {
+        log.stream() << "returnItem is readonly, inputting stuff into rentItem";
+        // Insert into rentItem and do the swap.
+        ui->input_rentItem_lineEdit->setText( item_id );
+        rentItemSet();
+    } else {
+        log.stream() << "returnItem is writeable, inputting stuff into returnItem";
+        // Into returnItem, and try to return
+        ui->input_returnItem_lineEdit->setText( item_id );
+        returnItemSet();
+    }
 }
 
 bool SwapDialog::locateContract( QString item_id ) {
@@ -114,6 +127,19 @@ void SwapDialog::returnItemSet() {
         ui->input_returnItem_lineEdit->setReadOnly( true );
         ui->input_lookup_pushButton->setEnabled( false );
     }
+    ui->buttonBox->button( QDialogButtonBox::Ok )->setEnabled( ui->input_returnItem_lineEdit->isReadOnly() && !ui->input_rentItem_lineEdit->text().isEmpty() );
+}
+
+void SwapDialog::rentItemSet() {
+    Logger log("void SwapDialog::rentItemSet()");
+    ui->buttonBox->button( QDialogButtonBox::Ok )->setEnabled( ui->input_returnItem_lineEdit->isReadOnly() && !ui->input_rentItem_lineEdit->text().isEmpty() );
+    if ( m_contract.getId() < 0 ) {
+        throw Exception( Errors::InternalError )
+                << ( log.stream( error )
+                     << "Error: Wanting to swap in SwapDialog::rentItemSet, but no contract set... can't complete swap operation");
+    }
+    m_contract.swapItems( ui->input_returnItem_lineEdit->text(),
+                          ui->input_rentItem_lineEdit->text() );
 }
 
 void SwapDialog::on_input_lookup_pushButton_clicked()
@@ -126,4 +152,25 @@ void SwapDialog::on_input_returnItem_lineEdit_textChanged(QString value )
 {
     Logger log("void SwapDialog::on_input_returnItem_lineEdit_textChanged(QString )");
     ui->input_lookup_pushButton->setEnabled( !value.isEmpty() );
+}
+
+void SwapDialog::on_buttonBox_accepted()
+{
+    // QMessageBox::information(this, "Accepted", "Jeg er accepted");
+}
+
+void SwapDialog::on_input_rentItem_lineEdit_textChanged(QString value )
+{
+    Logger log("void SwapDialog::on_input_rentItem_lineEdit_textChanged(QString )");
+
+    ui->buttonBox->button( QDialogButtonBox::Ok )->setEnabled( ui->input_returnItem_lineEdit->isReadOnly() && !ui->input_rentItem_lineEdit->text().isEmpty() );
+}
+
+void SwapDialog::on_buttonBox_clicked(QAbstractButton* button)
+{
+    Logger log("void SwapDialog::on_buttonBox_clicked(QAbstractButton* button)");
+    if ( button == ui->buttonBox->button( QDialogButtonBox::Ok ) ) {
+        log.stream() << "Ok clicked";
+        rentItemSet();
+    }
 }

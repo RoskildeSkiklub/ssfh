@@ -151,6 +151,65 @@ void Contract::returnItem(const QString &item_id) {
 
 }
 
+void Contract::swapItems(const QString &return_id, const QString rent_id) {
+    Logger log("void Contract::swapItems(const QString &return_id, const QString rent_id)");
+    checkInActiveState( "swapItems" );
+    log.stream( info ) << "Trying to return item with id '"
+            << return_id << "' and rent item with id '"
+            << rent_id << "' on contract with id '" << m_id << "'";
+    // Book the rented item first. The user must fix this, if it fails.
+    // TODO: Would be nice to have generic way to fix this.
+    // This is not really nice. I think, temporarely set it in booking state
+    // in order to add the new item
+
+    m_state = DB::Contract::State::booking;
+    try {
+        log.stream() << "Adding item with id '" << rent_id
+                << "' to contract";
+        addItem( rent_id );
+        // The last contractItem has not been written to the database, so
+        // find it, then write it....
+        QList<ContractItem>::iterator cii;
+        log.stream() << "Item added, write back to database";
+        for( cii = m_contractItems.begin(); cii != m_contractItems.end(); ++cii ) {
+            log.stream() <<  "Creating contractitem for new item with id '"
+                    << rent_id << "'";
+            if ( cii->getItem().getId() == rent_id ) {
+                cii->getItem().db_setToOut();
+                cii->setState( DB::ContractItem::State::out );
+                cii->db_insert();
+                break;
+            }
+        }
+    }
+    // Finally... sort of.
+    catch( ... ) {
+        log.stream( error ) << "There was an error while adding item with '"
+                << rent_id << "'' to contract with id '" << m_id
+                << "', so aborting, setting contract state back to active";
+        m_state = DB::Contract::State::active;
+        throw;
+    }
+    m_state = DB::Contract::State::active;
+    log.stream() << "Item have been added, state updated in database";
+    log.stream() << "Now returning item with id '" << return_id << "'";
+    // The new item is now added, now we can return the first one.
+    try {
+        returnItem( return_id );
+    }
+    catch( ... ) {
+        log.stream( error ) << "There was an error returning item with id '"
+                << return_id << "'. Returning rent_id insted, item with id '"
+                << rent_id << "'";
+        returnItem( rent_id );
+        throw;
+    }
+    log.stream( info ) << "Returned item with id '"
+            << return_id << "' and rented item with id '"
+            << rent_id << "' on contract with id '" << m_id << "'";
+    //TODO: When prices work, probably fix something with prices here...
+}
+
 void Contract::returnAll() {
     Logger log("bool Contract::returnAll()");
     QList<ContractItem>::const_iterator cii;

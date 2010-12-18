@@ -4,6 +4,7 @@
 // Qt
 #include <QDialog>
 #include <QString>
+class QAbstractButton;
 
 // app
 #include "contract.h"
@@ -45,8 +46,14 @@ private:
     Ui::SwapDialog *ui;
 
 private slots:
+    void on_buttonBox_clicked(QAbstractButton* button);
+    void on_input_rentItem_lineEdit_textChanged(QString );
+    void on_buttonBox_accepted();
     void on_input_returnItem_lineEdit_textChanged(QString );
     void on_input_lookup_pushButton_clicked();
+
+
+
 };
 
 #endif // SWAPDIALOG_H

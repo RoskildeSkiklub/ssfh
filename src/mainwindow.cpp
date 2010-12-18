@@ -70,7 +70,7 @@ void MainWindow::changeEvent(QEvent *e)
     }
 }
 
-void MainWindow::showEvent(QShowEvent *event) {
+void MainWindow::showEvent(QShowEvent *) {
     Logger log("void MainWindow::showEvent(QShowEvent *event)");
     updateDbStatusDisplay();
 }

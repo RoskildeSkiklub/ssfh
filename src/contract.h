@@ -113,6 +113,13 @@ public:
       * and marked as 'in'. All prices are recalculated */
     void removeItem( const QString & item_id );
 
+    /** \brief Swap one item for another
+      * \param return_id Id of item to return
+      * \param rent_id Id of item to rent
+      *
+      * This swaps one item for another, without changing anything else on the contract. */
+    void swapItems( const QString & return_id, const QString rent_id );
+
     /** \brief Change the rental group of an item
       * \param item_id Id of the item to change
       * \param rentalGroup The new rental group to change to
