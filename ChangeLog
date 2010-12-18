@@ -1,3 +1,11 @@
+2010-12-18  Mads Bondo Dydensborg  <mads@dydensborg.dk>
+
+        * Release
+	Version 0.6.1 is equal to svn rev. 492
+
+	* Swap
+	Added swap dialog. Quite untested
+
 2010-12-06  Mads Bondo Dydensborg  <mads@dydensborg.dk>
 
 	* GUI
@@ -7,7 +15,7 @@
 
 	* Release
 	Version 0.6.0 equal svn rev. 486
-	
+
 	* Barcode reading
 	Ignore case in command scans
 
