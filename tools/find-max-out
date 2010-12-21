@@ -1,0 +1,122 @@
+#!/usr/bin/python
+
+# Script to find the max for a given set of item bins for a given day
+
+db_version = "46"
+
+import sys, os, getopt, math
+from pysqlite2 import dbapi2 as sqlite3
+
+def debug( text, stop=False ):
+    pass
+
+def usage():
+    print "Usage: " + sys.argv[0] + " [--help|--debug] <database> <yyyy-mm-dd>"
+    sys.exit( 0 )
+
+# Get the options
+try:
+    options, freeoptions = getopt.getopt( sys.argv[1:],
+                                    "hd", [ "help", "debug" ] )
+except getopt.GetoptError:
+    usage()
+    sys.exit( 2 )
+
+
+for opt, arg in options:
+    if opt in ( '-h', '--help' ):
+        usage()
+        sys.exit()
+    elif opt in ( '-d', '--debug' ):
+        #This way, the debuging code is less intrusive. If someone knows a better way, let me know
+        def debug( text, stop=False ):
+            print text
+            if stop:
+                sys.exit( 2 )
+        debug( 'Debug mode activated' )
+        # setup_logging( "dbclist.log" )
+    else:
+        print >>sys.stderr, "Error: Unable to understand: '" + opt + "' and arg '" + arg + "'";
+
+# Setup freeoptions
+if len( freeoptions ) < 2:
+    usage()
+    sys.exit( 1 )
+
+database = freeoptions[0]
+date     = freeoptions[1]
+debug( "database = " + database );
+debug( "date     = " + date );
+
+if not os.path.exists( database ):
+    print >>sys.stderr, "Error: Unable to access database '" + database + "'"
+    sys.exit( 1 )
+
+# Open the database, search, iterate
+conn = sqlite3.connect( database );
+
+# Check the version of the database...
+cursor = conn.cursor()
+cursor.execute( "select value from configuration where key='db_version'" )
+version_ok = False
+for row in cursor:
+    debug( "Found database version to be '" + row[0] + "'" )
+    version_ok = (row[0] == db_version)
+if not version_ok:
+    print >>sys.stderr, "Error: Unsupported database version, expected version '" + db_version + "'"
+    sys.exit( 1 )
+
+# Get the actual data
+cursor.execute( """
+select time, type, event, abs(size) 
+  from itemevents, items 
+  where item_id = items.id 
+  and ( event = 'handed out' or event = 'returned' )
+  and time like '""" + date + """T%'
+  order by time""" )
+
+# Data is keyed on type, then on bins. Bins for ski 
+# data = { "ski" : { }, "st oe vler" : {} }
+data = {}
+for row in cursor:
+    time = row[0]
+    type = row[1]
+    event = row[2]
+    size = row[3]
+    if not data.has_key( type ):
+        debug( "Adding type " + type + " to data hash" )
+        data[type] = {}
+    if type == "ski":
+        # Put skis in bins of 10
+        size = int( math.floor( size / 10 ) * 10 )
+    # debug( "size = " + str( size ) )
+    if ( size == 43.5 ) :
+        debug( "size = 43.5 time = " + str( time ) + ", event = " + str( event ) )
+
+    if not data[type].has_key( size ):
+        debug( "Adding size " + str( size ) + " to data for type " + type )
+        data[type][size] = { "cur" : 0, "akk" : 0, "max" : 0 }
+    if event == "handed out":
+        data[type][size]["cur"] += 1
+        data[type][size]["akk"] += 1
+        if data[type][size]["cur"] > data[type][size]["max"]:
+            data[type][size]["max"] = data[type][size]["cur"]
+    else:
+        data[type][size]["cur"] -= 1
+    
+    
+# Dump the data
+dkeys = data.keys()
+dkeys.sort()
+for type in dkeys:
+    tmax = 0
+    takk = 0
+    print "Dumping max out for type = " + type
+    print "size;max;akk"
+    dsizes = data[type].keys()
+    dsizes.sort()
+    for size in dsizes:
+        print str( size ) + ";" + str( data[type][size]["max"] ) + ";" + str( data[type][size]["akk"] )
+        tmax += data[type][size]["max"]
+        takk += data[type][size]["akk"]
+    print "tmax : " + str( tmax ) + ", takk : " + str( takk )
