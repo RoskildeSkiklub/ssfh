@@ -7,7 +7,7 @@
 #include <QCoreApplication>
 
 // App
-#include <log.h>
+#include "log.h"
 
 namespace Errors {
     enum {

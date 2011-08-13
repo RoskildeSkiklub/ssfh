@@ -1,0 +1,19 @@
+#ifndef ITEMTEST_H
+#define ITEMTEST_H
+
+#include "AutoTest.h"
+#include <QObject>
+
+class ItemTest : public QObject
+{
+    Q_OBJECT
+private slots:
+    void initTestCase();
+    void constructDefault();
+    void test2();
+    void cleanupTestCase();
+};
+
+DECLARE_TEST(ItemTest)
+
+#endif // ITEMTEST_H
