@@ -10,15 +10,17 @@ void ItemTest::initTestCase()
 void ItemTest::constructDefault()
 {
     Item item = Item();
-    // QVERIFY(item.getId)
-
-
-    QVERIFY(1 + 1 == 2);
+    QCOMPARE( item.getId(), QString("") );
+    QCOMPARE( item.getRentalGroup(), QString("") );
+    QCOMPARE( item.getState(), QString("") );
+    QCOMPARE( item.getType(), QString("") );
 }
+
+
 
 void ItemTest::test2()
 {
-    QVERIFY(1 == 0);
+    // QVERIFY(1 == 0);
 }
 
 void ItemTest::cleanupTestCase()
