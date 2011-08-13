@@ -10,6 +10,7 @@ class ItemTest : public QObject
 private slots:
     void initTestCase();
     void constructDefault();
+    void constructWithArguments();
     void test2();
     void cleanupTestCase();
 };
