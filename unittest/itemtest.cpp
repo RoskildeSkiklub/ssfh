@@ -12,6 +12,7 @@ void ItemTest::initTestCase()
 
 void ItemTest::constructDefault()
 {
+    UnitTestDB::closeDB();
     Item item = Item();
     QCOMPARE( item.getId(), QString("") );
     QCOMPARE( item.getRentalGroup(), QString("") );
@@ -20,6 +21,7 @@ void ItemTest::constructDefault()
 }
 
 void ItemTest::constructWithArguments() {
+    UnitTestDB::closeDB();
     QVERIFY2( UnitTestDB::resetDB(), "Unable to open test database" );
     Item item1 = Item( "id1", "type1", "size1", "mark1", "model1", "year1", "cond1", 1, "rent1", "note1" );
     QCOMPARE( item1.getId(), QString( "id1" ) );

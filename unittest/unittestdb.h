@@ -9,6 +9,11 @@ public:
     /**
       * Resets the test database */
     static bool resetDB();
+
+    /**
+      * Makes sure the database is closed */
+    static void closeDB();
+
 };
 
 #endif // UNITTESTDB_H

@@ -7,6 +7,16 @@
 UnitTestDB::UnitTestDB()
 {
 }
+void UnitTestDB::closeDB() {
+    Log::Logger log( "void UnitTestDB::closeDB()" );
+    if ( QSqlDatabase::database().isOpen() ) {
+        log.stream() << "Database is open, closing it";
+        QSqlDatabase::database().close();
+    } else {
+        log.stream() << "Database not open";
+    }
+}
+
 bool UnitTestDB::resetDB() {
     Log::Logger log( "bool UnitTestDB::resetDB()" );
     // Also need to setup the database
