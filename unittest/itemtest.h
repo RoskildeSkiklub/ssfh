@@ -11,7 +11,7 @@ private slots:
     void initTestCase();
     void constructDefault();
     void constructWithArguments();
-    void test2();
+    void insert();
     void cleanupTestCase();
 };
 
