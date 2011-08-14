@@ -2,7 +2,7 @@
 include(common.pri)
 
 TEMPLATE = subdirs
-SUBDIRS = src unittest
+SUBDIRS = src unittest doc
 
 # Will be doing some dist work later on
 MY_DOCFILES=NotesOnSundhedsKort.txt Notes.txt postnr.website postnr.xls PertelianNote.txt PosPrinter.txt pertelian-display.rules
