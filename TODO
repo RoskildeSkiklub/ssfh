@@ -1,3 +1,13 @@
+TODO AUGUST 2011:
+
+- Fikse returnAll problem.
+- Fikse alle andre fejl der giver røde bokse i brugergrænsefladen (grep showing default_critical MessageBox)
+- Forbedre log fil:
+  + eliminere errors der ikke er errors
+  + eliminere warns der ikke er warns
+  + Contract skal skrive sit id ud noget oftere.
+  + lodrette streger?
+
 MAN KAN IKKE:
 I Swap: leje genstand a, bytte den for genstand b, og så leje genstand a på den samme kontrakt igen... det kan det bare ikke finde ud af lige nu....
 
