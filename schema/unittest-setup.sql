@@ -1,7 +1,5 @@
--- Setting various rules for Roskilde Skiklub Hedeland. 
+-- Setting various rules for the unittests
 -- These are price ranges, stuff like that.
--- Note, that these are set up in Danish, using the Danish lanuage.
--- Encoding of this file should be utf8.
 
 -- ----------------------------------------------------------------------
 -- RENTAL GROUPS

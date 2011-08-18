@@ -25,7 +25,7 @@ unittest-db:	postnr.utf8.csv
 	@test -f $(UNITTESTDB) && rm $(UNITTESTDB) ; true
 	cat schema.sql | sqlite3 -init - $(UNITTESTDB) 
 	echo ".genfkey --exec" | sqlite3 $(UNITTESTDB)
-	cat unittest-setup.sql | sqlite3 $(UNITTESTDB)
+	cat unittest-setup.sql unittest-data.sql | sqlite3 $(UNITTESTDB)
 	( echo .separator "\t" ; echo ".import postnr.utf8.csv zipcity" ) | sqlite3 $(UNITTESTDB)
 
 db_consts.cpp:	schema.sql
