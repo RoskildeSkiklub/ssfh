@@ -87,7 +87,7 @@ void ContractTest::regression_returnAll() {
         QCOMPARE( contract2.getState(), DB::Contract::State::booking );
         Hirer hirer2( 2 );
         contract2.setHirer( hirer2 );
-        contract2.addItem( "1" );
+        contract2.addItem( "1" ); // **
         contract2.addItem( "4" );
         contract2.addItem( "5" );
         contract2.activate();
@@ -95,7 +95,11 @@ void ContractTest::regression_returnAll() {
         QCOMPARE( contract2.getId(), (long long) 2 );
     }
 
-    // We need to reload the stuff from disk, because... stuff going on in contract1, has influenced stuff in contract2.
+    // We need to reload the contracts from the db, because
+    // they influence eachother, and only "talks" to eachother through the
+    // db. First time is marked with **. If contract1 was used without reloading
+    // item 1 in it, would still be marked out, and we would not be
+    // able to provoke the error. Likewise with the returnAll on contract2.
 
     {
         // Reload contract 1, and return all
@@ -112,5 +116,5 @@ void ContractTest::regression_returnAll() {
         QCOMPARE( contract2.hasReturnableItems(), false );
     }
 
-    QVERIFY2( false, "Incomplete unit test" );
+    QVERIFY2( false, "Just to make sure it keeps failing - remove when check is OK." );
 }
