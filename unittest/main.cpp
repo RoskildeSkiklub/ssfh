@@ -22,9 +22,11 @@ int main(int argc, char *argv[])
     Log::Logger log( "int main(int argc, char *argv[])" );
 
     // Check that the unittest db setup stuff works.
-    if ( ! UnitTestDB::resetDB() ) {
+    if ( ! UnitTestDB::resetDB("main") ) {
         return -42;
     }
+    // And, all tests that needs the database, must mark it so
+    UnitTestDB::closeDB();
 
 
 

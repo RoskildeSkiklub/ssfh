@@ -10,8 +10,11 @@ class ContractTest : public QObject
 private slots:
     // void initTestCase();
     void constructDefault();
-    void constructWithArguments();
+    void activate();
     void insert();
+
+    void regression_returnAll();
+
     // void cleanupTestCase();
 
 };

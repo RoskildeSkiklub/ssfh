@@ -12,32 +12,42 @@ void UnitTestDB::closeDB() {
     if ( QSqlDatabase::database().isOpen() ) {
         log.stream() << "Database is open, closing it";
         QSqlDatabase::database().close();
+        // And, remove it
+        QSqlDatabase::removeDatabase(QSqlDatabase::database().connectionName());
+        if ( ! isClosedDB() ) {
+            log.stream() << "ERROR: DATABASE NOT CLOSED, EVEN AFTER REMOVE";
+        } else {
+            log.stream() << "Database closed and removed";
+        }
     } else {
         log.stream() << "Database not open";
     }
 }
 
-bool UnitTestDB::resetDB() {
+bool UnitTestDB::isClosedDB() {
+    Log::Logger log("void UnitTestDB::isClosedDB()" );
+    return ! QSqlDatabase::database().isOpen();
+}
+
+
+
+
+bool UnitTestDB::resetDB( const QString &testId ) {
     Log::Logger log( "bool UnitTestDB::resetDB()" );
     // Also need to setup the database
     // May need to move this out to something else
     QString org_databasefile = "../schema/unittest.db";
-    QString databasefile = "unittest.db";
+    QString databasefile = QString( "unittest." ) + testId + QString( ".db" );
 
     // If the database is already open, close it
-    QSqlDatabase db;
-    if ( QSqlDatabase::database().isOpen() ) {
-        log.stream() << "Database is open, closing it";
-        QSqlDatabase::database().close();
-        db = QSqlDatabase::database();
-    } else {
-        db = QSqlDatabase::addDatabase("QSQLITE");
-        if ( ! db.isValid() ) {
-            log.stream( Log::fatal ) << "Unable to load QSQLITE database driver";
-            //QMessageBox::critical( NULL, QObject::tr( "Unable to load QSQLITE database driver" ), QObject::tr( "Unable to load QSQLITE database driver. Aborting." )  );
-            return false;
-        }
+    closeDB();
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    if ( ! db.isValid() ) {
+        log.stream( Log::fatal ) << "Unable to load QSQLITE database driver";
+        //QMessageBox::critical( NULL, QObject::tr( "Unable to load QSQLITE database driver" ), QObject::tr( "Unable to load QSQLITE database driver. Aborting." )  );
+        return false;
     }
+
     // Copy from unittest directory
     QFile fromFile( org_databasefile );
     if( ! fromFile.exists() ) {
@@ -71,5 +81,4 @@ bool UnitTestDB::resetDB() {
     }
     log.stream() << "Database successfully opened";
     return true;
-
 }

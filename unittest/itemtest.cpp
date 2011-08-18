@@ -18,11 +18,11 @@ void ItemTest::constructDefault()
     QCOMPARE( item.getRentalGroup(), QString("") );
     QCOMPARE( item.getState(), QString("") );
     QCOMPARE( item.getType(), QString("") );
+    QVERIFY2( UnitTestDB::isClosedDB(), "Database not closed after test" );
 }
 
 void ItemTest::constructWithArguments() {
     UnitTestDB::closeDB();
-    QVERIFY2( UnitTestDB::resetDB(), "Unable to open test database" );
     Item item1 = Item( "id1", "type1", "size1", "mark1", "model1", "year1", "cond1", 1, "rent1", "note1" );
     QCOMPARE( item1.getId(), QString( "id1" ) );
     QCOMPARE( item1.getRentalGroup(), QString("rent1") );
@@ -35,11 +35,13 @@ void ItemTest::constructWithArguments() {
     QCOMPARE( item2.getState(), QString("in") ); // Default constructor sets to in
     QCOMPARE( item2.getType(), QString("type2") );
 
+    QVERIFY2( UnitTestDB::isClosedDB(), "Database not closed after test" );
 }
 
 
 void ItemTest::insert()
 {
+    QVERIFY2( UnitTestDB::resetDB( "ItemTest_insert" ), "Unable to open test database" );
     // The test database contains some type definitions of type and rentalgroup
     // First, check that a valid item can be inserted
     Item item1 = Item( "id1", "ski", "size1", "mark1", "model1", "year1", "cond1", 1, "child", "note1" );
