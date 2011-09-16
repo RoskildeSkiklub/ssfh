@@ -187,7 +187,7 @@ void PrintChecklistDialog::updateSortDisplay() {
     Logger log("void PrintChecklistDialog::updateSortDisplay()");
     QString res = "";
     if ( sortList.count() == 0 ) {
-        res = tr( "<Nothing>" );
+        res = tr( "<id>" );
     } else {
         QString prefix ="";
         for( int i = 0; i < sortList.count(); ++i) {
