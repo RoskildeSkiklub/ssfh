@@ -111,15 +111,19 @@ void AddNewItemDialog::add_item(const QString &item_id) {
 
 void AddNewItemDialog::doAddItem(QString id) {
     Logger log( "void AddNewItemDialog::doAddItem(QString id)" );
+    // TODO: May not need this?
     PROTECT_BLOCK(
     log.stream() << "Item id is " << id;
     log.stream() << "Item id in % encoding: '"
             << id.toLocal8Bit().toPercentEncoding() << "'";
-    bool ok;
-    long price = ui->input_price_lineEdit->text().toLong(&ok);
-    if ( ! ok ) {
-        log.stream( error ) << "Error converting price '" << ui->input_price_lineEdit->text() << "' to long. Using value of 0";
-        price = 0;
+    long price = 0;
+    if ( !ui->input_price_lineEdit->text().isEmpty() ) {
+        bool ok;
+        price = ui->input_price_lineEdit->text().toLong(&ok);
+        if ( ! ok ) {
+            log.stream( warn ) << "Error converting price '" << ui->input_price_lineEdit->text() << "' to long. Using value of 0";
+            price = 0;
+        }
     }
     // Use id from call here - as it can be provided by barcode scanner...
     Item new_item( id, ui->input_type_comboBox->currentText(), ui->input_size_lineEdit->text(),
