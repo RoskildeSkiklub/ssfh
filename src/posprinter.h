@@ -122,7 +122,7 @@ public:
     qlonglong getReceiptWidth() const;
 
     /** \brief Set font
-      * \param Font, one of 0, 1 or 2
+      * \param font one of 0, 1 or 2
       *
       * This sets the font to use by the printer. This is not an io manipulator. The
       * settings are permanent. Font 0 is the largest font, font 1 is the smallest */
