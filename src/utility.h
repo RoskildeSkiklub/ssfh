@@ -51,13 +51,13 @@ void database_rollback( const QString & where );
 //////////////////////////////////////////////////////////////
 // VARIOUS STUFF
 
-/** \brief Show a todo dialog and log a message.
+/** \brief Show a todo dialog and log a message with level debug.
   * \param where Where the message is
   * \param msg The message of the todo */
-void todo( const QString & where, const QString & msg );
+void todofunc( const QString & where, const QString & msg );
 
 /** \brief Macro to insert a todo call with function name */
-#define TODO( m ) todo( __PRETTY_FUNCTION__, m );
+#define TODO( m ) todofunc( __PRETTY_FUNCTION__, m );
 
 /** \brief Get list of names of current states from a statemachine
   * \param stateMachine The statemachine instance to get the list from

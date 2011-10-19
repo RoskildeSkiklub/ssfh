@@ -248,7 +248,7 @@ bool Contract::hasItems() const {
 
 qlonglong Contract::calculateItemPrice(const Item &item) {
     Logger log("qlonglong Contract::calculateItemPrice(const Item &item)");
-    log.stream( warn ) << "TODO: NOT IMPLEMENTED";
+    log.stream( todo ) << "TODO: Contract::calculateItemPrice NOT IMPLEMENTED";
     return 0;
 }
 
@@ -310,6 +310,8 @@ qlonglong Contract::getTotalPrice() const {
 void Contract::activate() {
     Logger log("void Contract::activate()");
     checkInBookingState( "activate" );
+
+    // TODO: UnitTest: Check that valid substate...
 
     // TODO: Check payment.
 

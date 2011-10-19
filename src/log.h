@@ -16,6 +16,7 @@ namespace Log {
     enum Level {
         trace,
         debug,
+        todo,
         info,
         warn,
         error,

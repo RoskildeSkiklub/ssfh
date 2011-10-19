@@ -275,7 +275,7 @@ void Interceptor::emitMagSwipe(const QRegExp &regExp, bool track1, bool track2, 
     if ( track1value.toUpper() == "E"
          || track2value.toUpper() == "E"
          || track3value.toUpper() == "E" ) {
-        log.stream( warn ) << "Failed to read or more tracks";
+        log.stream( warn ) << "Failed to read one or more tracks during a magswipe";
         emit magSwipeFailure();
         return;
     }
@@ -287,20 +287,21 @@ void Interceptor::emitMagSwipe(const QRegExp &regExp, bool track1, bool track2, 
             emit magSwipe( DKSundhedskort( track1value, track2value ) );
             return;
         } catch ( ... ) {
-            log.stream( warn ) << "Probably not a DKSundhedskort";
+            log.stream( debug ) << "Probably not a DKSundhedskort";
         }
         log.stream() << "Mabbe it is a CreditCard";
         try {
             emit magSwipe( CreditCard( track1value, track2value ) );
             return;
         } catch ( ... ) {
-            log.stream( warn ) << "Probably not a CreditCard";
+            log.stream( debug ) << "Probably not a CreditCard";
         }
+        log.stream( warn ) << "Found two tracks on mag card, but did not match any known card layout.";
         emit magSwipeFailure();
         return;
     }
 
-    // Reaching here is an error
+    // Reaching here is an error, but we only log a warning, as we clealy do not understand all cards...
     log.stream( warn ) << "Totalmatch, but no card match found.";
     emit magSwipeFailure();
 }

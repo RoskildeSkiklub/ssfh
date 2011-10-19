@@ -215,6 +215,9 @@ public:
       * contract. The state must be booking, and if there are outstanding payments,
       * an exception is thrown.
       *
+      * Note, that it makes no sense to activate a contract with no hirer or items.
+      * (Eventually a duration will be required too)
+      *
       * The contract, and all contract items are written to the database.
       * The status of all items are also written, updated to be "out"*/
     void activate();
@@ -249,21 +252,21 @@ public:
     QString toReturnHtml() const;
 
     /** \brief Print rental agreement to a PosPrinter
-      * \param printer The pos printer instance to use
+      * \param posPrinter The pos printer instance to use
       *
       * Call this method, when renting out the items, after done.
       * The contract must be active, when this method is called */
     void printRental( Pos::Printer & posPrinter );
 
     /** \brief Print rental receipt to a PosPrinter
-      * \param printer The pos printer instance to use
+      * \param posPrinter The pos printer instance to use
       *
       * Call this method in order to produce a receipt for the customer after rental.
       * The contract must be active, when this method is called */
     void printReceipt( Pos::Printer & posPrinter );
 
     /** \brief Print return receipt to a PosPrinter
-      * \param printer The pos printer instance to use
+      * \param posPrinter The pos printer instance to use
       *
       * Call this method, when all items have been returned, and the contract have been closed.
       * The contract must be closed, when this method is called */

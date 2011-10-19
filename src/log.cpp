@@ -20,6 +20,7 @@ namespace Log {
         switch( level ) {
         case trace: return "trace";
         case debug: return "debug";
+        case todo: return "todo ";
         case info: return "info ";
         case warn: return "warn ";
         case error: return "error";

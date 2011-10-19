@@ -41,5 +41,5 @@ void CheckSetupDialog::update() {
 
 void CheckSetupDialog::on_buttonBox_clicked(QAbstractButton* button)
 {
-    TODO("Figure out retry.")
+    TODO("Figure out retry.");
 }
