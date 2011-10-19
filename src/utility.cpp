@@ -59,8 +59,9 @@ void query_check_first( QSqlQuery & query ) {
     Logger log( "void query_check_first()" );
     if ( ! query.first() ) {
         // Todo, fix this up.
+        //! \todo Quick fix to get it out of log, change error => debug - we get this a lot when looking up hirers
         throw Exception( Errors::DBResultError )
-            << ( log.stream( error ) << "Error moving to first record of query '"
+            << ( log.stream( debug ) << "Error moving to first record of query '"
                  << query.lastQuery()
                  << "'' : '" << query.lastError().text() << "'" );
     }

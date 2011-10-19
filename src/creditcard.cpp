@@ -18,7 +18,7 @@ CreditCard::CreditCard(const QString &track1, const QString &track2 )  {
     if ( ! track1_re.exactMatch( track1 ) ) {
         log.stream( warn ) << "Missing match on at least one track, throwing";
         throw Exception( Errors::CreditCardNoMatch )
-                << ( log.stream( error ) << "Unable to match CreditCard to tracks '"
+                << ( log.stream( warn ) << "Unable to match CreditCard to tracks '"
                      << track1 << "' and/or '" << track2  << "'" );
     }
     surname = capitalizeWords( track1_re.cap( 2 ).trimmed() );

@@ -23,7 +23,7 @@ DKSundhedskort::DKSundhedskort( const QString & track1, const QString & track2 )
         && DKRE_track2.exactMatch( track2 ) ) ) {
         log.stream( warn ) << "Missing match on at least one track, throwing";
         throw Exception( Errors::DKSundhedskortNoMatch )
-                << ( log.stream( error ) << "Unable to match DKSundhedskort to tracks '"
+                << ( log.stream( warn ) << "Unable to match DKSundhedskort to tracks '"
                      << track1 << "' and/or '" << track2  << "'" );
     }
     QStringList surname_n_name( DKRE_track1.cap( 1 ).trimmed().split( "&" ) );

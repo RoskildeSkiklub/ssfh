@@ -227,7 +227,18 @@ void RentDialog::closeEvent(QCloseEvent * event) {
         event->accept();
         return;
     }
-    log.stream(error) << "Internal error in RentDialog::closeEvent, missing handler for dialog state";
+    //! \todo: This is a problem - we get this a lot, and we should not, I reckon.
+    QString sstate = "unknown";
+    if ( is_in_state( "blank") ) {
+        sstate = "blank";
+    }
+    if ( is_in_state( "has_hirer") ) {
+        sstate = "has_hirer";
+    }
+    if ( is_in_state ( "has_item" ) ) {
+        sstate = "has_item";
+    }
+    log.stream(error) << "Internal error in RentDialog::closeEvent, missing handler for dialog state: " << sstate;
     event->accept();
     return;
 }
@@ -335,11 +346,14 @@ bool RentDialog::try_add_item(const QString &item_id) {
         switch ( e.getStatusCode() ) {
         case Errors::ItemAlreadyPartOfContract: {
             //TODO: ask the user if remove...
+            log.stream( info ) << "Item already part of the contract, silently ignoring it";
+            log.stream( todo ) << "The item is already part of the contract. Perhaps ask the user if it needs to be removed.";
             return false; // Perhaps something else, need to check if no more items, stuff like that.
         }
         case Errors::ItemDoesNotExist: {
             QMessageBox::warning( this, tr( "Item not registered in database" ),
                                   tr( "Item with id '%0' was not found in database. Unable to add to contract.").arg(item_id) );
+            log.stream( todo ) << "May want to be able to add a new item here. See tinyPM user story #13";
             // TODO: Should we be able to add the new item here?
             return false;
         }
