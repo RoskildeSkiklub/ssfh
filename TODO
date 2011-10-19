@@ -1,16 +1,42 @@
 TODO AUGUST 2011:
 
-- Fikse returnAll problem.
+- Fikse returnAll problem. ( <<< VIGTIGT )
 - Fikse alle andre fejl der giver røde bokse i brugergrænsefladen (grep showing default_critical MessageBox)
 - Forbedre log fil:
   + eliminere errors der ikke er errors
   + eliminere warns der ikke er warns
   + Contract skal skrive sit id ud noget oftere.
   + lodrette streger?
+- Kun printe een bon (Er det mon gjort?)
+- Dokumentation
+- Prisudregninger ( <<< VIGTIGT )
+
+- omdøbning/ommærkning af items
+
+- Statistik når man står på pladsen
+  - ur/åbningstider
+  - statusbar fikses
+- Rapporter
+  - skal være datoafgrænsede
+
+GUI
+- Der er noget med at finde rapporter frem osv, hvis man står med noget.
+  Der mangler en masse af sådan noget, kan jeg finde en kontrakt igen.
+
+MAILS
+- Der er nogle mails fra ham der Jesper.
+
+- Jeg kunne snildt formulere det som user stories. 
+
+STATUS:
+- Der skal være noget funktionalitet til status
+  - mærkning/itemevents
+  - item historie - hvad er der sket, hvem lejede sidst
+  - 
 
 MAN KAN IKKE:
 I Swap: leje genstand a, bytte den for genstand b, og så leje genstand a på den samme kontrakt igen... det kan det bare ikke finde ud af lige nu....
-
+DET SKAL FIKSES
 
  - Bedre feedback, når man har skannet, kontra ikke skannet.
  - Der er noget med noget xrandr på den der toshiba laptop.
