@@ -92,7 +92,7 @@ namespace Log {
     public:
         Logger( const QString & location ) : m_location( location ) {
             m_creationTime = Log::begin( trace );
-            Log::getTextStream() << "Entering: " << m_location;
+            Log::getTextStream() << ", Entering: " << m_location;
             Log::end();
             Log::in();
         }
@@ -103,7 +103,7 @@ namespace Log {
             // Calculate difference
             qlonglong dms = m_creationTime.secsTo( endTime ) * 1000;
             dms += endTime.time().msec() - m_creationTime.time().msec();
-            Log::getTextStream() << "Leaving: " << m_location << ". ms: " << dms;
+            Log::getTextStream() << "` Leaving: " << m_location << ". ms: " << dms;
             Log::end();
         }
 

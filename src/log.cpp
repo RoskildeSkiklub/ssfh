@@ -2,6 +2,7 @@
 
 // Qt
 #include <QDateTime>
+#include <QStringList>
 
 // app
 #include "exception.h"
@@ -27,11 +28,20 @@ namespace Log {
         }
     }
 
+    QString buildIndent( int indent ) {
+        QStringList res;
+        while ( indent > 0 ) {
+            res << "| ";
+            --indent;
+        }
+        return res.join( "" );
+    }
+
     QDateTime Log::begin( Level level ) {
         QDateTime now( QDateTime::currentDateTime() );
         getTextStream() << now.toString( Qt::ISODate ) << now.time().toString( ".zzz" )
                 << " : " << levelToString( level )
-                << " : " << QString( indent, ' ' ) << QString( indent, ' ' );
+                << " : " << buildIndent( indent );
         return now;
     }
 
