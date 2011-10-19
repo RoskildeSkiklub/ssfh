@@ -9,6 +9,7 @@
 #include "log.h"
 
 using namespace Log;
+
 #ifdef HAVE_USB 
 namespace Usb {
 
