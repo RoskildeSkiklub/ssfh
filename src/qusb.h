@@ -11,8 +11,10 @@
 #include <QtGlobal>
  
 // libUsb. I think
+#ifdef HAVE_USB
 #include <usb.h>
- 
+#endif 
+
 namespace Usb {
     struct Id {
         quint16 vendorId;
@@ -21,8 +23,8 @@ namespace Usb {
             : vendorId( _vendorId ), productId( _productId ) {};
     };
 
-
- class QUSB : public QObject
+#ifdef HAVE_USB
+class QUSB : public QObject
  {
  private:
      const static int        INTERFACE = 0;
@@ -50,9 +52,22 @@ namespace Usb {
      static bool isDevicePresent( quint16 vendorId, quint16 productId );
      /** \overload */
      static bool isDevicePresent( const Id & id );
-
  };
+
+#else
+    class QUSB {
+    public:
+        static bool isDevicePresent( quint16 vendorId, quint16 productId ) {
+            // Make c++ don't warn
+            vendorId = vendorId; productId = productId;
+            return false;
+        }
+        static bool isDevicePresent( const Id & id ) {
+            return isDevicePresent( id.vendorId, id.productId );
+        }
+    };
+#endif // HAVE_USB
 
 } //namespace
  
- #endif // QUSB_H
+#endif // QUSB_H

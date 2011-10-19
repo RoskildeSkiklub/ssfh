@@ -5,9 +5,6 @@ QT += sql phonon
 TARGET = SnowStuffForHire.bin
 TEMPLATE = app
 
-# Setup for Pertelian support
-CONFIG += pertelian usb
-
 SOURCES += main.cpp \
     mainwindow.cpp \
     rentdialog.cpp \
@@ -89,14 +86,35 @@ UI_DIR = uics
 MOC_DIR = mocs
 OBJECTS_DIR = objs
 
-# usb support should work with both Windows and Linux, if you use libusb...
-# Obviously, you need a different linker path.
-usb {
-    DEFINES+=HAVE_USB
-    LIBS += -lusb
-    message( "Adding support for libusb" )
-} 
+################################################################################
+# USB SUPPORT
+# I would like to be able to, at some point, check the setup.
+# This involves enumerating the USB devices connected to the system.
+# Under Linux, we can check for the libusb package.
 
+
+# Support for usb (libusb, even under Windows?) is always
+# needed, in order to support device enumeration/detection.
+# Note, the code may not actually compile under Windows because of this...
+unix {
+    message( "Under Linux/Unix. Checking if libusb have been installed using pkgconfig." )
+    CONFIG += link_pkgconfig
+    PKGCONFIG += libusb
+    DEFINES += HAVE_USB
+    message( "Adding support for libusb" )
+}
+
+# At some point this may be a better solution. (Change to libusb, of course)
+#packagesExist(glib-2.0) {
+#    DEFINES += HAS_GLIB
+#    PKGCONFIG += glib-2.0
+#}
+
+
+################################################################################
+# Setup for Pertelian support (display)
+# mbd: 2011-10-19, postponing this somewhat.
+# CONFIG += pertelian
 # Pertelian support under Linux
 pertelian {
     DEFINES+=HAVE_PERTELIAN
@@ -106,6 +124,17 @@ pertelian {
 }
 
 
+# usb support should work with both Windows and Linux, if you use libusb...
+# Obviously, you need a different linker path under Windows...
+# Perhaps this could use PKGCONFIG under Linux... 
+#usb {
+#    DEFINES+=HAVE_USB
+#    LIBS += -lusb
+#    message( "Adding support for libusb" )
+#} 
+
+
+################################################################################
 # The version passed to the compiles...
 DEFINES+= VERSION=\\\"$$VERSION\\\"
 

@@ -9,7 +9,7 @@
 #include "log.h"
 
 using namespace Log;
- 
+#ifdef HAVE_USB 
 namespace Usb {
 
  QUSB::QUSB()
@@ -155,3 +155,4 @@ namespace Usb {
      this->m_IsOpened = false;
  }
 } // namespace
+#endif
