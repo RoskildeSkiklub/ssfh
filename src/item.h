@@ -16,9 +16,14 @@ public:
     Item( QString id, QString type, QString size, QString mark, QString model, QString year,
           QString condition, long price, QString rentalgroup, QString note );
 
-    //! \todo Document properly
-    // Construct an item instance from an id. Mark as booked in the database.
-    static Item locate_and_book_in_db( const QString & id );
+    /** \brief Lookup an item, and book it, if free.
+      * \param contract_id Id of booking contract, used for logging
+      * \return An in memory representation of an item. Booked in the database.
+      *
+      * This loads the item and books it.
+      * If not available for booking, it throws (ItemUnavailable).
+      * The contractId is used for logging, nothing else. */
+    static Item locate_and_book_in_db( const QString & id, qlonglong contract_id );
 
     //! \todo Document
     /** \brief Locate and load an item from the database
@@ -61,24 +66,26 @@ public:
     QString getState() const;
 
     /** \brief Update the state of this item in the database to "out"
+      * \param reason The reason for the setting, provided by client, and loggede to the db.
       *
       * This updates the state in the database, and also updates the in-memory state
       * The state may not already be out */
-    void db_setToOut();
+    void db_setToOut( const QString & reason );
 
     /** \brief Update the state of this item in the database to "in"
       *
       * This updates the state in the database, and also updates the in-memory state */
-    void db_setToIn();
+    void db_setToIn( const QString & reason );
 
     /** \brief Update only the state of the item.
       * \param state The new state
+      * \param reason The reason for the state change.
       *
       * This method updates only the state in the database, and in
       * the in memory representation.
       * It will throw, if the state is not known or illegal for this method.
       * 'out' and 'booked' are illegal for this method. */
-    void db_forceState( const QString & state );
+    void db_forceState( const QString & state, const QString & reason );
 private:
     QString m_id;
     QString m_type;
@@ -97,7 +104,7 @@ private:
 
     /** \brief Apply a db event line
       * \param event The type of event
-      * \param note Optional note */
+      * \param note Note. May be the empty string */
     void addEventLine( const QString & event,
                        const QString & note ) const;
 

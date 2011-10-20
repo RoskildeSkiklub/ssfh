@@ -94,7 +94,7 @@ void Contract::addItem( const QString &item_id ) {
 
     // Try and load an item.
     // TODO: Database transaction - I guess so...
-    Item item = Item::locate_and_book_in_db( item_id );
+    Item item = Item::locate_and_book_in_db( item_id, m_id );
 
     // TODO: Handle exceptions. Or transaction handle it.
     qlonglong itemPrice = calculateItemPrice( item );
@@ -146,7 +146,8 @@ void Contract::returnItem(const QString &item_id) {
     // If anything fails, we reload the item.
     log.stream() << "Returning item with id '"
             << cii->getItem().getId() << "', for contract with id '" << m_id << "'";;
-    cii->getItem().db_setToIn();
+    cii->getItem().db_setToIn(
+                QString( "Return on contract: '%1'. Contract::returnItem").arg( m_id ) );
     log.stream() << "Updating contractItem with id '"
             << cii->getId() << "', for contract with id '" << m_id << "'";;
     cii->db_update_state( DB::ContractItem::State::returned );
@@ -178,7 +179,9 @@ void Contract::swapItems(const QString &return_id, const QString rent_id) {
             log.stream() <<  "Creating contractitem for new item with id '"
                     << rent_id << "', for contract with id '" << m_id << "'";
             if ( cii->getItem().getId() == rent_id ) {
-                cii->getItem().db_setToOut();
+                cii->getItem().db_setToOut(
+                            QString( "Rent out by contract: '%1', Contract::swapItems. Return: '%2', rent: '%3'" )
+                            .arg( m_id ).arg( return_id ).arg( rent_id ) );
                 cii->setState( DB::ContractItem::State::out );
                 cii->db_insert();
                 break;
@@ -330,7 +333,9 @@ void Contract::activate() {
         // First contract items and items
         QList<ContractItem>::iterator cii;
         for( cii = m_contractItems.begin(); cii != m_contractItems.end(); ++cii ) {
-            cii->getItem().db_setToOut();
+            cii->getItem().db_setToOut(
+                        QString( "Activate on contract '%1'. Contract::activate")
+                        .arg( m_id ) );
             cii->setState( DB::ContractItem::State::out );
             cii->db_insert();
         }
@@ -454,7 +459,8 @@ void Contract::cancel() {
                         << DB::Item::State::booked << "', but it was '"
                         << cii->getItem().getState() << "'";
             }
-            cii->getItem().db_setToIn();
+            cii->getItem().db_setToIn(
+                        QString( "Cancel on contract '%1'. Contract::cancel").arg( m_id ) );
             // If the contractItem has been inserted into the database, delete it
             log.stream() << "Deleting ContractItem with id '" << cii->getId() << "'";
             if ( cii->getId() != -1 ) {

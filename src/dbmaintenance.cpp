@@ -32,7 +32,7 @@ Item DbMaintenance::itemForceState(const QString &item_id, const QString &state)
     }
     // Force the state change of any items
     Item item( Item::db_load( item_id ) );
-    item.db_forceState( state );
+    item.db_forceState( state, "DbMaintenance::itemForceState" );
     // Update any contracts that points at this item.
     // Note, that for all, it is "returned", that is the new state.
     //
