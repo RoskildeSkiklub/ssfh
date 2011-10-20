@@ -1,0 +1,27 @@
+SnowStuffForHire uses a simple log system, that is mostly useful for
+debugging errors and bugs in the system.
+
+You must provide a name of a logfile to the binary, when started.
+ssfh will then trunctate this file, and write logging statements to
+it. 
+
+Log lines consists of three columns, seperated by " : "
+
+The first column is a timestamp, in ISO8601 (in localtime).
+
+Second column is a level, one of trace, debug, todo, info, warn, error
+and fatal.
+
+* trace is used for function entering and exit
+* debug is used for debug messages, there are quite a lot
+* todo is used for todo messages
+* info is information about what goes on in the system in a higher
+  level. (Currently very few, too much have become debug, I am afraid).
+* warn is warnings about stuff that you might want to look into
+* errors is errors that was unexpected, and that the system have some
+  trouble handling.
+* fatal is for fatal stuff, like out of memory, stuff like that.
+
+The system tries to log information about item ids and contract ids,
+as these are vital to postmortem a bug in the field.
+
