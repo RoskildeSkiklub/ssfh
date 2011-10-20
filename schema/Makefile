@@ -16,7 +16,6 @@ postnr.utf8.csv:	postnr.utf8
 reset-db:	postnr.utf8.csv
 	@test -f $(DB) && rm $(DB) ; true
 	cat schema.sql | sqlite3 -init - $(DB) 
-	echo ".genfkey --exec" | sqlite3 $(DB)
 	cat rsh-setup.sql | sqlite3 $(DB)
 	( echo .separator "\t" ; echo ".import postnr.utf8.csv zipcity" ) | sqlite3 $(DB)
 	cat test-data.sql | sqlite3 $(DB)
@@ -24,7 +23,6 @@ reset-db:	postnr.utf8.csv
 unittest-db:	postnr.utf8.csv
 	@test -f $(UNITTESTDB) && rm $(UNITTESTDB) ; true
 	cat schema.sql | sqlite3 -init - $(UNITTESTDB) 
-	echo ".genfkey --exec" | sqlite3 $(UNITTESTDB)
 	cat unittest-setup.sql unittest-data.sql | sqlite3 $(UNITTESTDB)
 	( echo .separator "\t" ; echo ".import postnr.utf8.csv zipcity" ) | sqlite3 $(UNITTESTDB)
 

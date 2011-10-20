@@ -9,7 +9,7 @@ create table configuration(
   value text
 );
 -- DB VERSION: REMEMBER TO UPDATE, WHEN CHANGING ANYTHING
-insert into configuration values( 'db_version', '46' );
+insert into configuration values( 'db_version', '47' );
 
 -- ----------------------------------------------------------------------
 -- RENTAL GROUPS

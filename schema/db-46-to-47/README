@@ -1,0 +1,7 @@
+The only change is that we now require at least sqlite 3.6.9, which supports
+pragma foreign_key;
+pragma foreign_key = on;
+
+To update, we need to remove all triggers, and update the database version.
+
+
