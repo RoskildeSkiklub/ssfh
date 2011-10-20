@@ -35,6 +35,7 @@ Contract::Contract()
 // HIRER MANIPULATION
 bool Contract::setHirer(const Hirer &hirer) {
     Logger log("void Contract::setHirer(const Hirer &hirer)");
+    log.stream() << "Contract with id '" << m_id << "'";
     checkInBookingState( "setHirer" );
 
     if ( ! hirer.isValid() ) {
@@ -61,6 +62,7 @@ Hirer & Contract::getHirer() {
 
 void Contract::setDuration(const QDateTime &start, const QDateTime &end) {
     Logger log("void Contract::setDuration(const QDateTime &start, const QDateTime &end)");
+    log.stream() << "Contract with id '" << m_id << "'";
     checkInBookingState( "setDuration" );
     throw "Contract::setDuration not implemented";
 }
@@ -70,7 +72,7 @@ void Contract::setDuration(const QDateTime &start, const QDateTime &end) {
 
 void Contract::addItem( const QString &item_id ) {
     Logger log( "void Contract::add_item( const QString &item_id )" );
-    log.stream() << "Trying to add item '" << item_id << "'' to contract";
+    log.stream() << "Trying to add item '" << item_id << "'' to contract with id '" << m_id << "'";
     checkInBookingState( "addItem" );
 
     // If item is already in our list, don't bother.
@@ -80,11 +82,11 @@ void Contract::addItem( const QString &item_id ) {
         if ( i->getItem().getId() == item_id ) {
             throw Exception( Errors::ItemAlreadyPartOfContract )
                     << ( log.stream( error ) << "Item '" << item_id
-                         << "'' is already registered on the contract." );
+                         << "'' is already registered on the contract with id '" << m_id << "'" );
         }
     }
 
-    // If the contract has id -1, then create it in the database, and reread the number
+    // If the contract with id -1, then create it in the database, and reread the number
     if ( m_id == -1 ) {
         log.stream( info ) << "Contract is not yet created in the database. Creating it";
         db_insert();
@@ -101,16 +103,17 @@ void Contract::addItem( const QString &item_id ) {
     ContractItem ci( m_id, item, item.getRentalGroup(), itemPrice, "" );
     m_contractItems.append( ci );
 
-    log.stream() << "Added item: " << item.toHtml();
-    // TODO: Signal contract changed...
+    log.stream() << "Added item: " << item.toHtml() << " to contract with id '" << m_id << "'";
+    //! \todo Signal contract changed
+    log.stream( todo ) << "TODO: Signal change for contract with id '" << m_id << "'";
 }
 
 void Contract::returnItem(const QString &item_id) {
     Logger log("void Contract::returnItem(const QString &item_id)");
-    checkInActiveState( "returnItem" );
     log.stream() << "Trying to return item with id '"
             << item_id << "', on contract with id '"
             << m_id << "'";
+    checkInActiveState( "returnItem" );
     // Check the item belongs to this contract
     QList<ContractItem>::iterator cii;
     bool foundit = false;
@@ -123,29 +126,29 @@ void Contract::returnItem(const QString &item_id) {
     if ( ! foundit ) {
         throw Exception( Errors::ItemNotPartOfContract )
                 << ( log.stream( error ) << "Item '" << item_id
-                     << "'' is not registered on the contract." );
+                     << "'' is not registered on the contract with id '" << m_id << "'" );
 
     }
     // Contract active, item part of it. Return it, or ignore if not out
     if ( cii->getState() != DB::ContractItem::State::out ) {
-        log.stream( warn ) << "Expected state of ContractItem to be '"
+        log.stream( warn ) << "Expected state of ContractItem with id '" << cii->getId() << "' to be '"
                 << DB::ContractItem::State::out << "', but it was '"
-                << cii->getState() << "'";
+                << cii->getState() << "', for contract with id '" << m_id << "'";
     }
 
     if ( cii->getItem().getState() != DB::Item::State::out ) {
-        log.stream( warn ) << "Expected state of Item to be '"
+        log.stream( warn ) << "Expected state of Item with id '" << cii->getItem().getId() << "' to be '"
                 << DB::Item::State::out << "', but it was '"
-                << cii->getItem().getState() << "'";
+                << cii->getItem().getState() << "', for contract with id '" << m_id << "'";
 
     }
     // The approach is to update the Item first, then the ContractItem.
     // If anything fails, we reload the item.
     log.stream() << "Returning item with id '"
-            << cii->getItem().getId() << "'";
+            << cii->getItem().getId() << "', for contract with id '" << m_id << "'";;
     cii->getItem().db_setToIn();
     log.stream() << "Updating contractItem with id '"
-            << cii->getId() << "'";
+            << cii->getId() << "', for contract with id '" << m_id << "'";;
     cii->db_update_state( DB::ContractItem::State::returned );
     // update();
 
@@ -153,10 +156,10 @@ void Contract::returnItem(const QString &item_id) {
 
 void Contract::swapItems(const QString &return_id, const QString rent_id) {
     Logger log("void Contract::swapItems(const QString &return_id, const QString rent_id)");
-    checkInActiveState( "swapItems" );
     log.stream( info ) << "Trying to return item with id '"
             << return_id << "' and rent item with id '"
             << rent_id << "' on contract with id '" << m_id << "'";
+    checkInActiveState( "swapItems" );
     // Book the rented item first. The user must fix this, if it fails.
     // TODO: Would be nice to have generic way to fix this.
     // This is not really nice. I think, temporarely set it in booking state
@@ -165,7 +168,7 @@ void Contract::swapItems(const QString &return_id, const QString rent_id) {
     m_state = DB::Contract::State::booking;
     try {
         log.stream() << "Adding item with id '" << rent_id
-                << "' to contract";
+                << "' to contract with id '" << m_id << "'";;
         addItem( rent_id );
         // The last contractItem has not been written to the database, so
         // find it, then write it....
@@ -173,7 +176,7 @@ void Contract::swapItems(const QString &return_id, const QString rent_id) {
         log.stream() << "Item added, write back to database";
         for( cii = m_contractItems.begin(); cii != m_contractItems.end(); ++cii ) {
             log.stream() <<  "Creating contractitem for new item with id '"
-                    << rent_id << "'";
+                    << rent_id << "', for contract with id '" << m_id << "'";
             if ( cii->getItem().getId() == rent_id ) {
                 cii->getItem().db_setToOut();
                 cii->setState( DB::ContractItem::State::out );
@@ -192,15 +195,15 @@ void Contract::swapItems(const QString &return_id, const QString rent_id) {
     }
     m_state = DB::Contract::State::active;
     log.stream() << "Item have been added, state updated in database";
-    log.stream() << "Now returning item with id '" << return_id << "'";
+    log.stream() << "Now returning item with id '" << return_id << "', for contract with id '" << m_id << "'";
     // The new item is now added, now we can return the first one.
     try {
         returnItem( return_id );
     }
     catch( ... ) {
         log.stream( error ) << "There was an error returning item with id '"
-                << return_id << "'. Returning rent_id insted, item with id '"
-                << rent_id << "'";
+                << return_id << "'. Returning rent_id instead, item with id '"
+                << rent_id << "', for contract with id '" << m_id << "'";;
         returnItem( rent_id );
         throw;
     }
@@ -212,12 +215,13 @@ void Contract::swapItems(const QString &return_id, const QString rent_id) {
 
 void Contract::returnAll() {
     Logger log("bool Contract::returnAll()");
+    log.stream() << "Contract with id '" << m_id << "'";
     QList<ContractItem>::const_iterator cii;
     // TODO: I am not entirely sure this is stable..
     for ( cii = m_contractItems.begin(); cii != m_contractItems.end(); ++cii ) {
         if ( cii->getItem().getState() == DB::Item::State::out ) {
             log.stream() << "Item with id '" << cii->getItem().getId()
-                    << "' is returnable. Trying to return it";
+                    << "' is returnable. Trying to return it, for contract with id '" << m_id << "'";
             returnItem( cii->getItem().getId() );
         }
     }
@@ -226,34 +230,38 @@ void Contract::returnAll() {
 
 bool Contract::hasReturnableItems() const {
     Logger log("bool Contract::hasReturnableItems() const");
+    log.stream() << "Contract with id '" << m_id << "'";
     QList<ContractItem>::const_iterator cii;
     // Note, only the state of the contractitem can be checked, because of swaps, overrides, etc...
     for ( cii = m_contractItems.begin(); cii != m_contractItems.end(); ++cii ) {
         if ( cii->getState() == DB::ContractItem::State::out ) {
             log.stream() << "Item with id '" << cii->getItem().getId()
                     << "' is marked returnable in ContractItem '"
-                    << cii->getId() << "'. Returning true.";
+                    << cii->getId() << "', for contract with id '" << m_id << "'. Returning true.";
             return true;
         }
     }
-    log.stream() << "No items found, returning false.";
+    log.stream() << "No items found, returning false, for contract with id '" << m_id << "'";
     return false;
 }
 
 bool Contract::hasItems() const {
     Logger log("bool Contract::hasItems() const");
+    log.stream() << "Contract with id '" << m_id << "'";
     return !m_contractItems.isEmpty();
 }
 
 
 qlonglong Contract::calculateItemPrice(const Item &item) {
     Logger log("qlonglong Contract::calculateItemPrice(const Item &item)");
+    log.stream() << "Contract with id '" << m_id << "'";
     log.stream( todo ) << "TODO: Contract::calculateItemPrice NOT IMPLEMENTED";
     return 0;
 }
 
 qlonglong Contract::getItemsPrice() const {
     Logger log("qlonglong Contract::getItemsPrice() const");
+    log.stream() << "Contract with id '" << m_id << "'";
     qlonglong sum = 0;
     QList<ContractItem>::const_iterator i;
     for( i = m_contractItems.begin(); i != m_contractItems.end(); ++i) {
@@ -309,6 +317,7 @@ qlonglong Contract::getTotalPrice() const {
 
 void Contract::activate() {
     Logger log("void Contract::activate()");
+    log.stream() << "Contract with id '" << m_id << "'";
     checkInBookingState( "activate" );
 
     // TODO: UnitTest: Check that valid substate...
@@ -339,10 +348,11 @@ void Contract::activate() {
         database_rollback( "void Contract::activate()" );
         throw;
     }
-
+    log.stream() << "Contract with id '" << m_id << "' has been activated";
 }
 void Contract::park() {
     Logger log("void Contract::park()");
+    log.stream() << "Contract with id '" << m_id << "'";
     checkInBookingState( "park" );
 
     // We use a transaction for this.... right?
@@ -369,11 +379,13 @@ void Contract::park() {
         database_rollback( "void Contract::park()" );
         throw;
     }
+    log.stream() << "Contract with id '" << m_id << "' has been parked";
 
 }
 
 void Contract::db_unPark() {
     Logger log("void Contract::db_unPark()");
+    log.stream() << "Contract with id '" << m_id << "'";
     checkInParkedState( "db_unPark" );
     // We use a transaction for this.... right?
     database_transaction( "void Contract::db_unPark()" );
@@ -402,16 +414,18 @@ void Contract::db_unPark() {
         database_rollback( "void Contract::db_unPark()" );
         throw;
     }
+    log.stream() << "Contract with id '" << m_id << "' has been unparked";
 }
 
 
 void Contract::close() {
     Logger log("void Contract::close()");
+    log.stream() << "Contract with id '" << m_id << "'";
     checkInActiveState("Contract::close()");
     if ( hasReturnableItems() ) {
         throw Exception( Errors::ContractStillHasReturnableItems )
                 << ( log.stream( error )
-                     << "Unable to close contract, because there are still returnable items." );
+                     << "Unable to close contract with id '" << m_id << "' because there are still returnable items." );
     }
     m_state = DB::Contract::State::closed;
     try {
@@ -420,10 +434,12 @@ void Contract::close() {
         m_state = DB::Contract::State::active;
         throw;
     }
+    log.stream() << "Contract with id '" << m_id << "' has been closed";
 }
 
 void Contract::cancel() {
     Logger log("void Contract::cancel()");
+    log.stream() << "Contract with id '" << m_id << "'";
     checkInBookingState( "Contract::cancel()");
 
     if ( m_id != -1 ) {
@@ -458,9 +474,9 @@ void Contract::cancel() {
         query_check_exec( query );
         // Assigning to this is never pretty...
         *this = Contract();
-        log.stream( info ) << "Contract has been cancelled";
+        log.stream( info ) << "Contract with id '" << m_id << "' has been cancelled";
     } else {
-        log.stream() << "Contract has not been created in the database";
+        log.stream() << "Contract with id '" << m_id << "' has not been created in the database";
     }
 }
 
@@ -517,12 +533,13 @@ Contract Contract::db_load(qlonglong id) {
         contract.m_contractItems.append( ContractItem::db_load( query.value( 0 ).toLongLong() ) );
     }
     // Done!
-    log.stream() << "Contract loaded from database: " << contract.toString();
+    log.stream() << "Contract with id '" << contract.m_id << "' loaded from database: " << contract.toString();
     return contract;
 }
 
 QString Contract::toString() const {
     Logger log("QString Contract::toString()");
+    log.stream() << "Contract with id '" << m_id << "'";
     return QString( "id: '%0', hirer_id: '%1', creationTime: '%2', startTime: '%3', "
                     "endTime: '%4'', discount: '%5', price: '%6', payed: '%7', state: '%8', "
                     "note: '%9'" )
@@ -547,6 +564,7 @@ QString Contract::toReturnHtml( ) const {
 
 QString Contract::toCommonHtml( bool isRental ) const {
     Logger log("QString Contract::toCommonHtml( bool isRental ) const");
+    log.stream() << "Contract with id '" << m_id << "'";
     QString HEAD = "<head><style type=\"text/css\">"
                    ".total {font-weight:bold;font-size:x-large;}"
                    "</style>"
@@ -618,24 +636,25 @@ QString Contract::toCommonHtml( bool isRental ) const {
     }
 
     return res + "</body>";
-
-
 };
 
 void Contract::printRental(Pos::Printer &posPrinter) {
     Logger log("void Contract::printRental(Pos::Printer &posPrinter)");
+    log.stream() << "Contract with id '" << m_id << "'";
     checkInActiveState( "void Contract::printRental" );
     printGeneralReceipt( posPrinter, RentalAgreement );
  }
 
 void Contract::printReceipt(Pos::Printer &posPrinter) {
     Logger log("void Contract::printReceipt(Pos::Printer &posPrinter)");
+    log.stream() << "Contract with id '" << m_id << "'";
     checkInActiveState( "void Contract::printReceipt" );
     printGeneralReceipt( posPrinter, RentalReceipt );
 }
 
 void Contract::printReturn(Pos::Printer &posPrinter) {
     Logger log("void Contract::printReturn(Pos::Printer &posPrinter)");
+    log.stream() << "Contract with id '" << m_id << "'";
     checkInClosedState( "void Contract::printReturn" );
     printGeneralReceipt( posPrinter, ReturnReceipt );
 }
@@ -643,6 +662,7 @@ void Contract::printReturn(Pos::Printer &posPrinter) {
 
 void Contract::printGeneralReceipt( Pos::Printer &posPrinter, ReceiptType receiptType ) {
     Logger log("printGeneralReceipt( Pos::Printer &posPrinter, ReceiptType receiptType )" );
+    log.stream() << "Contract with id '" << m_id << "'";
     // TODO: Would be better, if the text and stuff was not hardcoded...
     // TODO: Name of rental agency, really should go into configuration, obviously.
 
@@ -810,8 +830,8 @@ void Contract::checkInBookingState( const QString & method ) {
     if ( m_state != DB::Contract::State::booking ) {
         throw Exception( Errors::ContractNotInBookingState )
                 << ( log.stream( error )
-                     << QString( "Contract::%0 was called, but contract was not in expected state '%1', but in state '%2'" )
-                     .arg( method ).arg( DB::Contract::State::booking ).arg( m_state ) );
+                     << QString( "Contract::%0 was called, but contract with id '%1' was not in expected state '%2', but in state '%3'" )
+                     .arg( method ).arg( m_id ).arg( DB::Contract::State::booking ).arg( m_state ) );
     }
 }
 
@@ -820,8 +840,8 @@ void Contract::checkInParkedState( const QString & method ) {
     if ( m_state != DB::Contract::State::parked ) {
         throw Exception( Errors::ContractNotInParkedState )
                 << ( log.stream( error )
-                     << QString( "Contract::%0 was called, but contract was not in expected state '%1', but in state '%2'" )
-                     .arg( method ).arg( DB::Contract::State::parked ).arg( m_state ) );
+                    << QString( "Contract::%0 was called, but contract with id '%1' was not in expected state '%2', but in state '%3'" )
+                    .arg( method ).arg( m_id ).arg( DB::Contract::State::parked ).arg( m_state ) );
     }
 }
 
@@ -830,8 +850,8 @@ void Contract::checkInActiveState( const QString & method ) {
     if ( m_state != DB::Contract::State::active ) {
         throw Exception( Errors::ContractNotInActiveState )
                 << ( log.stream( error )
-                     << QString( "Contract::%0 was called, but contract was not in expected state '%1', but in state '%2'" )
-                     .arg( method ).arg( DB::Contract::State::active ).arg( m_state ) );
+                    << QString( "Contract::%0 was called, but contract with id '%1' was not in expected state '%2', but in state '%3'" )
+                    .arg( method ).arg( m_id ).arg( DB::Contract::State::active ).arg( m_state ) );
     }
 }
 
@@ -840,19 +860,20 @@ void Contract::checkInClosedState( const QString & method ) {
     if ( m_state != DB::Contract::State::closed) {
         throw Exception( Errors::ContractNotInClosedState )
                 << ( log.stream( error )
-                     << QString( "Contract::%0 was called, but contract was not in expected state '%1', but in state '%2'" )
-                     .arg( method ).arg( DB::Contract::State::closed ).arg( m_state ) );
+                    << QString( "Contract::%0 was called, but contract with id '%1' was not in expected state '%2', but in state '%3'" )
+                    .arg( method ).arg( m_id ).arg( DB::Contract::State::closed ).arg( m_state ) );
     }
 }
 
 // Inserts a very rough contract, with almost no information at all.
 void Contract::db_insert() {
     Logger log("void Contract::db_insert()");
+    log.stream() << "Contract with id '" << m_id << "'";
     checkInBookingState("db_insert()");
     if ( !m_hirer.isValid() ) {
         throw Exception( Errors::ContractNotInBookingState )
                 << ( log.stream( error )
-                     << QString( "Contract::db_insert was called, but contract did not have a valid hirer" ) );
+                     << "Contract::db_insert was called, but contract with id '" << m_id << "' did not have a valid hirer" );
     }
     QSqlQuery query;
     query_check_prepare( query,
@@ -872,6 +893,7 @@ void Contract::db_insert() {
 
 void Contract::db_update() {
     Logger log("void Contract::db_update()");
+    log.stream() << "Contract with id '" << m_id << "'";
     // Update price prior to database update.
     // This are always calculated when creating, but not when returning
     m_price = getTotalPrice();
