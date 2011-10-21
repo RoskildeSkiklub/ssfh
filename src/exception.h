@@ -23,6 +23,9 @@ namespace Errors {
         DBConsistencyError = 1005,
         DBQueryInActive = 1500,
 
+        DBVersionError = 1600, // Thrown if schema mismatch
+        DBSqliteVersionError = 1601, // Thrown if sqlite driver mismatch
+
         ItemDoesNotExist = 2000,
         ItemUnavailable = 2001,
         ItemNotInBookedState = 2002,
@@ -60,9 +63,11 @@ class Exception {
 private:
     long m_statusCode;
     QString m_description;
+    QString m_addInfo;
 public:
-    Exception( long statusCode, const QString & description )
-        : m_statusCode( statusCode ), m_description( description ) {};
+    Exception( long statusCode, const QString & description, const QString & addInfo = "" )
+        : m_statusCode( statusCode ), m_description( description ),
+          m_addInfo( addInfo ) {};
 
     Exception( long statusCode ) : m_statusCode( statusCode ) {};
 
@@ -81,6 +86,12 @@ public:
       * \return The statuscode of the exception */
     long getStatusCode() const {
         return m_statusCode;
+    };
+
+    /** \brief Get the additional info
+      * \return The additional info */
+    QString getAddInfo() const {
+        return m_addInfo;
     };
 
 };
