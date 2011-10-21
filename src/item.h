@@ -86,6 +86,21 @@ public:
       * It will throw, if the state is not known or illegal for this method.
       * 'out' and 'booked' are illegal for this method. */
     void db_forceState( const QString & state, const QString & reason );
+
+    /** \brief Give an item a new id
+      * \param from_id The id of the item to give a new id
+      * \param to_id The id that the item shall have
+      * \throws If any kind of error.
+      *
+      * This method is used to "relabel" stuff. Labels fall of, and items
+      * need new labels. This method makes sure that the history is "moved" in
+      * the database as well, and that a suitable item event is logged in the database.
+      * from_id must exists in the database, to_id must not.
+      * This method should not be called, if from_id is loaded into memory
+      * somewhere else in the system. That would be bad.
+      * It should work with items that are currently out, contracts that are parked,
+      * etc. (But not stuff that is loaded into memory). */
+    static void db_reid( const QString & from_id, const QString & to_id );
 private:
     QString m_id;
     QString m_type;

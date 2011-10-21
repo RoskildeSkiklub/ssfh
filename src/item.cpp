@@ -289,3 +289,29 @@ void Item::addEventLine(const QString &event, const QString &note) const {
     query.bindValue( ":note", note );
     query_check_exec( query );
 }
+
+void Item::db_reid( const QString &from_id, const QString &to_id ) {
+    Logger log( "void Item::db_reid( const QString &from_id, const QString &to_id )" );
+    log.stream( debug ) << "Will try to reid from id '" << from_id << "' to '" << to_id << "'";
+    /*
+
+select * from items where id = 101010;
+-- a) Check they exist
+-- from_id = 1020, to_id = 101020
+-- b) Copy all from from_id to to_id in items
+create temporary table temp_item_reid as select * from items where id = 1020;
+update temp_item_reid set id = 101010;
+insert into items select * from temp_item_reid;
+drop table temp_item_reid;
+-- c) Update contractitems
+update contractitems set item_id = 101010 where item_id = 1020;
+-- d) Update itemevents
+update itemevents set item_id = 101010 where item_id = 1020;
+-- e) Delete the old item row
+delete from items where id = 1020;
+-- f) Insert an event based on the new id
+-- Have code for this.
+
+*/
+
+}
