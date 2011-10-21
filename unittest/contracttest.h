@@ -13,6 +13,10 @@ private slots:
     void activate();
     void insert();
 
+    void hirerManip1();
+    void durationManip1();
+
+
     void regression_returnAll();
 
     // void cleanupTestCase();
