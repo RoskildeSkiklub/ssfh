@@ -77,3 +77,11 @@ void ItemTest::insert()
 void ItemTest::cleanupTestCase()
 {
 }
+
+void ItemTest::reid() {
+    QVERIFY2( UnitTestDB::resetDB( "ItemTest_reid" ), "Unable to open test database" );
+    // Need some stuff to test with.
+    // TODO: Write a lot of tests here. Need to create a contract.
+
+
+}

@@ -13,6 +13,9 @@ private slots:
     void constructWithArguments();
     void insert();
     void cleanupTestCase();
+
+    // Test that db_reid works.
+    void reid();
 };
 
 DECLARE_TEST(ItemTest)
