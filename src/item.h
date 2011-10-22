@@ -115,8 +115,21 @@ private:
     QString m_state;
     QString m_note;
 
+    /** \brief Check if an item exists in the database
+      * \param id The id to check for in the database
+      * \returns True if the item exists, false otherwise */
+    static bool db_exists( const QString & id );
+
     /** \brief String representation for log files */
     QString toString() const;
+
+    /** \brief Apply a db event line
+      * \param id Id of the item to add the event for
+      * \param event The type of event
+      * \param note Note. May be the empty string */
+    static void addEventLine( const QString & id,
+                             const QString & event,
+                             const QString & note );
 
     /** \brief Apply a db event line
       * \param event The type of event

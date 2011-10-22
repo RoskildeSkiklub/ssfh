@@ -1,10 +1,23 @@
 #include "itemtest.h"
 
+// Qt
+#include <QSqlQuery>
+
 // The class to test
 #include "item.h"
 
+// Other stuff from the app we need
+#include "log.h"
+#include "contract.h"
+#include "hirer.h"
+#include "utility.h"
+#include "db_consts.h"
+#include "exception.h"
+
 // Stuff to handle the testdatabase
 #include "unittestdb.h"
+#include "unittest_utilities.h"
+
 
 void ItemTest::initTestCase()
 {
@@ -78,10 +91,132 @@ void ItemTest::cleanupTestCase()
 {
 }
 
-void ItemTest::reid() {
+void ItemTest::db_reid() {
+    Log::Logger log("void ItemTest::db_reid()");
     QVERIFY2( UnitTestDB::resetDB( "ItemTest_reid" ), "Unable to open test database" );
     // Need some stuff to test with.
-    // TODO: Write a lot of tests here. Need to create a contract.
+    // This must perform two rentals, then reid one item and check that there are no problems.
 
+    qlonglong secondContractId = -1;
 
+    {
+        // Create the first contract.
+        Contract contract1;
+        QCOMPARE( contract1.getState(), DB::Contract::State::booking );
+        Hirer hirer1( 1 );
+        contract1.setHirer( hirer1 );
+        contract1.addItem( "1" );
+        contract1.addItem( "2" );
+        contract1.addItem( "3" );
+        contract1.activate();
+        QCOMPARE( contract1.getState(), DB::Contract::State::active );
+        QCOMPARE( contract1.getId(), (long long) 1 );
+        // Return the first item
+        contract1.returnItem( "1" );
+        QCOMPARE( contract1.getState(), DB::Contract::State::active );
+    }
+
+    {
+        // Create next contract
+        Contract contract2;
+        QCOMPARE( contract2.getState(), DB::Contract::State::booking );
+        Hirer hirer2( 2 );
+        contract2.setHirer( hirer2 );
+        contract2.addItem( "1" );
+        contract2.addItem( "4" );
+        contract2.addItem( "5" );
+        contract2.activate();
+        QCOMPARE( contract2.getState(), DB::Contract::State::active );
+        QCOMPARE( contract2.getId(), (long long) 2 );
+        secondContractId = contract2.getId();
+    }
+
+    // Now, Check there is no item 424242 and 424243
+    QVERIFY_THROW( Item::db_load( "424242" ), Exception );
+    QVERIFY_THROW( Item::db_load( "424243" ), Exception );
+
+    // Reid from 424242 to 424243 should fail
+    QVERIFY_THROW( Item::db_reid( "424242", "424243" ), Exception );
+    // Reid from 424242 to 1 should fail
+    QVERIFY_THROW( Item::db_reid( "424242", "1"), Exception );
+
+    // Reid from 1 to 2 should fail
+    QVERIFY_THROW( Item::db_reid( "1", "2"), Exception );
+
+    // Check that there are no contractlines and itemevents with for item 1
+    QSqlQuery query;
+    query_check_prepare( query, "select count(*) from itemevents where item_id = '1'" );
+    query_check_exec( query );
+    query_check_first( query );
+    int num = query.value( 0 ).toInt();
+    QVERIFY( num > 0 );
+    query_check_prepare( query, "select count(*) from contractitems where item_id = '1'" );
+    query_check_exec( query );
+    query_check_first( query );
+    num = query.value( 0 ).toInt();
+    QVERIFY( num > 0 );
+
+    // Now, reid 1 => 424242
+    Item::db_reid( "1", "424242" );
+    // Make sure 424242 exists and 1 does not
+    Item::db_load( "424242" );
+    QVERIFY_THROW( Item::db_load( "1" ), Exception );
+
+    // Check that there are no contractlines and itemevents with for item 1
+    query_check_prepare( query, "select count(*) from itemevents where item_id = '1'" );
+    query_check_exec( query );
+    query_check_first( query );
+    num = query.value( 0 ).toInt();
+    QVERIFY( num == 0 );
+    query_check_prepare( query, "select count(*) from contractitems where item_id = '1'" );
+    query_check_exec( query );
+    query_check_first( query );
+    num = query.value( 0 ).toInt();
+    QVERIFY( num == 0 );
+    // And, now check there are for 424242
+    query_check_prepare( query, "select count(*) from itemevents where item_id = '424242'" );
+    query_check_exec( query );
+    query_check_first( query );
+    num = query.value( 0 ).toInt();
+    QVERIFY( num > 1 );
+    int numItemEvents424242 = num;
+    query_check_prepare( query, "select count(*) from contractitems where item_id = '424242'" );
+    query_check_exec( query );
+    query_check_first( query );
+    num = query.value( 0 ).toInt();
+    QVERIFY( num > 1 );
+
+    // Now, to just make sure, rename to 424243
+    Item::db_reid( "424242", "424243" );
+    // Make sure 424242 exists and 424243 does not.
+    Item::db_load( "424243" );
+    QVERIFY_THROW( Item::db_load( "424243" ), Exception );
+    // Check that there are no contractlines and itemevents with for item 424242
+    query_check_prepare( query, "select count(*) from itemevents where item_id = '424242'" );
+    query_check_exec( query );
+    query_check_first( query );
+    num = query.value( 0 ).toInt();
+    QVERIFY( num == 0 );
+    query_check_prepare( query, "select count(*) from contractitems where item_id = '424242'" );
+    query_check_exec( query );
+    query_check_first( query );
+    num = query.value( 0 ).toInt();
+    QVERIFY( num == 0 );
+    // And, now check there are for 424243
+    query_check_prepare( query, "select count(*) from itemevents where item_id = '424243'" );
+    query_check_exec( query );
+    query_check_first( query );
+    num = query.value( 0 ).toInt();
+    QVERIFY( num == numItemEvents424242 + 1 ); // Must be one more...
+    query_check_prepare( query, "select count(*) from contractitems where item_id = '424243'" );
+    query_check_exec( query );
+    query_check_first( query );
+    num = query.value( 0 ).toInt();
+    QVERIFY( num > 1 );
+
+    // Now check that we can deliver back on the first contract.
+    // Handing back 1 should fail, wheres 424243 should be OK
+    Contract contract2reloaded = Contract::db_load( secondContractId );
+    QVERIFY_THROW( contract2reloaded.returnItem( "1" ), Exception );
+    contract2reloaded.returnItem( "424243" );
 }

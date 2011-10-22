@@ -15,7 +15,7 @@ private slots:
     void cleanupTestCase();
 
     // Test that db_reid works.
-    void reid();
+    void db_reid();
 };
 
 DECLARE_TEST(ItemTest)

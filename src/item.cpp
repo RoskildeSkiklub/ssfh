@@ -277,41 +277,111 @@ void Item::db_forceState( const QString &state, const QString & reason ) {
     m_state = state;
 }
 
-void Item::addEventLine(const QString &event, const QString &note) const {
-    Logger log("void Item::addEventLine(const QString &event, const QString &note) const");
+void Item::addEventLine(const QString &id, const QString &event, const QString &note) {
+    Logger log("void Item::addEventLine(const QString &id, const QString &event, const QString &note)");
     QSqlQuery query;
     query_check_prepare( query, "insert into itemevents "
                          "(item_id, time, event, note) "
                          "values( :item_id, :time, :event, :note)");
-    query.bindValue(":item_id", m_id );
+    query.bindValue(":item_id", id );
     query.bindValue(":time", QDateTime::currentDateTime() );
     query.bindValue( ":event", event);
     query.bindValue( ":note", note );
     query_check_exec( query );
 }
 
+void Item::addEventLine(const QString &event, const QString &note) const {
+    Logger log("void Item::addEventLine(const QString &event, const QString &note) const");
+    addEventLine( m_id, event, note );
+}
+
+
+bool Item::db_exists(const QString &id) {
+    Logger log("bool Item::db_exists(const QString &id)");
+    QSqlQuery query;
+    query_check_prepare( query, "select count(*) from items where id = :id" );
+    query.bindValue( ":id", id );
+    query_check_exec( query );
+    query_check_first( query );
+    return 0 != query.value( 0 ).toInt();
+}
+
 void Item::db_reid( const QString &from_id, const QString &to_id ) {
     Logger log( "void Item::db_reid( const QString &from_id, const QString &to_id )" );
+    // This method would have been a lot easier, if "label" was not the same as "id"...
+
     log.stream( debug ) << "Will try to reid from id '" << from_id << "' to '" << to_id << "'";
-    /*
 
-select * from items where id = 101010;
--- a) Check they exist
--- from_id = 1020, to_id = 101020
--- b) Copy all from from_id to to_id in items
-create temporary table temp_item_reid as select * from items where id = 1020;
-update temp_item_reid set id = 101010;
-insert into items select * from temp_item_reid;
-drop table temp_item_reid;
--- c) Update contractitems
-update contractitems set item_id = 101010 where item_id = 1020;
--- d) Update itemevents
-update itemevents set item_id = 101010 where item_id = 1020;
--- e) Delete the old item row
-delete from items where id = 1020;
--- f) Insert an event based on the new id
--- Have code for this.
+    // Source must exist, dest must not
+    if ( ! db_exists( from_id ) ) {
+        throw Exception( Errors::ItemDoesNotExist )
+                << ( log.stream( error )
+                    << "Item with id '" << from_id << " does not exist, so it can not get a new id." );
+    }
+    if ( db_exists( to_id ) ) {
+        throw Exception( Errors::ItemDoesNotExist )
+                << ( log.stream( error )
+                    << "Item with id '" << to_id << " already exist, so item with id '" << from_id << "' can not get this as a new id." );
+    }
 
-*/
+    // Make sure that the temp table is not in the way, so drop it now.
+    {
+        log.stream( debug ) << "Dropping temporary table temp_item_reid if it exists";
+        QSqlQuery query;
+        log.stream( debug ) << "Query.isActive is " << query.isActive()
+                            << ", isValid is " << query.isValid();
+        query_check_prepare( query,
+                            "drop table if exists temp_item_reid" );
+        query_check_exec( query );
+    }
+    // Now, copy all from from_id to to_id in items, using a temporary table.
+    // The temporary table is needed because of foreign key constraints...
+    // Need a transaction for this.
+    database_transaction( "Item::db_reid( const QString &from_id, const QString &to_id )" );
+    try {
+        QSqlQuery query;
+        log.stream( debug ) << "Creating temporary table to insert data that needs id change into";
+        query_check_prepare( query, "create temporary table temp_item_reid as select * from items where id = :from_id");
+        query.bindValue( ":from_id", from_id );
+        query_check_exec( query );
+        // Change the id
+        log.stream( debug ) << "Changing the id of the item in the temporary table";
+        query_check_prepare( query, "update temp_item_reid set id = :to_id" );
+        query.bindValue( ":to_id", to_id );
+        query_check_exec( query );
+        // Copy back, that is, insert it into items
+        log.stream( debug ) << "Copying modified item back into the items table";
+        query_check_prepare( query,
+                            "insert into items select * from temp_item_reid" );
+        query_check_exec( query );
+        log.stream( debug ) << "Modifying contractitems to point at the new id";
+        // Now, update contract items and itemevents, to point at the new row
+        query_check_prepare( query, "update contractitems set item_id = :to_id where item_id = :fromid");
+        query.bindValue( ":to_id", to_id );
+        query.bindValue( ":from_id", from_id );
+        query_check_exec( query );
+        log.stream( debug ) << "Modifying itemevents to point at the new id";
+        query_check_prepare( query, "update itemevents set item_id = :to_id where item_id = :fromid");
+        query.bindValue( ":to_id", to_id );
+        query.bindValue( ":from_id", from_id );
+        query_check_exec( query );
+        // Delete the old item row
+        log.stream( debug ) << "Deleting the old item";
+        query_check_prepare( query, "delete from items where id = :from_id" );
+        query.bindValue( ":from_id", from_id );
+        query_check_exec( query );
+        // Insert an event for the new id for this
+        log.stream( todo ) << "Should add an event line at this point";
+        // !\TODO: addEventLine( to_id, "")
+
+    }
+    catch( ... ) {
+        log.stream( error ) << "Got some kind of error during transaction, trying rollback";
+        database_rollback( "Item::db_reid( const QString &from_id, const QString &to_id ) error catcher" );
+        throw;
+    }
+    log.stream( debug ) << "All is well, about to commit";
+    database_commit( "Item::db_reid( const QString &from_id, const QString &to_id ) - all well" );
+    log.stream( info ) << "Has commit item id change from id '" << from_id << "' to '" << to_id << "'";
 
 }
