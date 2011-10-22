@@ -3,6 +3,7 @@ include(common.pri)
 
 TEMPLATE = subdirs
 SUBDIRS = src unittest doc
+CONFIG += ordered
 
 # Will be doing some dist work later on
 MY_DOCFILES=NotesOnSundhedsKort.txt Notes.txt postnr.website postnr.xls PertelianNote.txt PosPrinter.txt pertelian-display.rules
