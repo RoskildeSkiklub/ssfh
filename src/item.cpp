@@ -372,8 +372,9 @@ void Item::db_reid( const QString &from_id, const QString &to_id ) {
         query_check_exec( query );
         // Insert an event for the new id for this
         log.stream( todo ) << "Should add an event line at this point";
-        // !\TODO: addEventLine( to_id, "")
-
+        addEventLine( to_id, DB::Item::Event::reid,
+                     QString( "Reid from id '%1' to id '%2' (Item::db_reid)" )
+                     .arg( from_id ).arg( to_id ) );
     }
     catch( ... ) {
         log.stream( error ) << "Got some kind of error during transaction, trying rollback";

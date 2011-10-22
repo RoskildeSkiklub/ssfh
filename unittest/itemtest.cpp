@@ -77,7 +77,8 @@ void ItemTest::insert()
     } catch ( ... ) {
         QVERIFY2( true, "Item with illegal type, rentalgroup, could not be inserted" );
     }
-    Item item3 = Item( "id3", "type1", "size1", "mark1", "model1", "year1", "cond1", 1, "rent1", "note1" );    try {
+    Item item3 = Item( "id3", "type1", "size1", "mark1", "model1", "year1", "cond1", 1, "rent1", "note1" );
+    try {
         item1.db_insert();
         QFAIL( "Restrains in database failed for items with illegal type, rentalgroup" );
     } catch ( ... ) {
@@ -227,6 +228,10 @@ void ItemTest::db_reid() {
     Contract contract2reloaded = Contract::db_load( secondContractId );
     QVERIFY_THROW( contract2reloaded.returnItem( "1" ), Exception );
     contract2reloaded.returnItem( "424243" );
+
+    // Finally, this should not fail:
+    Item::db_reid( "424243", "1" );
+
     UnitTestDB::closeDB();
 }
 
