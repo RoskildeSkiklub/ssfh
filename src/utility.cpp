@@ -72,6 +72,7 @@ void query_check_first( QSqlQuery & query ) {
 
 void database_transaction(const QString &where) {
     Logger log("void database_transaction(const QString &where)");
+    log.stream( debug ) << "Where is " << where;
     if ( !QSqlDatabase::database().transaction() ) {
         throw Exception( Errors::DBTransactionError )
                 << ( log.stream( error )
@@ -83,6 +84,7 @@ void database_transaction(const QString &where) {
 
 void database_commit(const QString &where) {
     Logger log("void database_commit(const QString &where)");
+    log.stream( debug ) << "Where is " << where;
     if ( !QSqlDatabase::database().commit() ) {
         throw Exception( Errors::DBCommitError )
                 << ( log.stream( error )
@@ -94,6 +96,7 @@ void database_commit(const QString &where) {
 
 void database_rollback(const QString &where) {
     Logger log("void database_rollback(const QString &where)");
+    log.stream( debug ) << "Where is " << where;
     if ( !QSqlDatabase::database().rollback() ) {
         throw Exception( Errors::DBRollbackError )
                 << ( log.stream( error )
