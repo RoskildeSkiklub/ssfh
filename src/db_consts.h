@@ -46,6 +46,7 @@ struct DB {
             static const QString handed_out;
             static const QString lost;
             static const QString other;
+            static const QString reid;
             static const QString returned;
             static const QString sent_for_maintenance;
         };

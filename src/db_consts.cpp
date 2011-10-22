@@ -40,6 +40,7 @@ static const char * db_strings[] = {
     ,QT_TRANSLATE_NOOP("Item", "handed out" )
     ,QT_TRANSLATE_NOOP("Item", "lost" )
     ,QT_TRANSLATE_NOOP("Item", "other" )
+    ,QT_TRANSLATE_NOOP("Item", "reid" )
     ,QT_TRANSLATE_NOOP("Item", "returned" )
     ,QT_TRANSLATE_NOOP("Item", "sent for maintenance" )
 
@@ -70,6 +71,7 @@ const QString DB::Item::Event::discarded = "discarded";
 const QString DB::Item::Event::handed_out = "handed out";
 const QString DB::Item::Event::lost = "lost";
 const QString DB::Item::Event::other = "other";
+const QString DB::Item::Event::reid = "reid";
 const QString DB::Item::Event::returned = "returned";
 const QString DB::Item::Event::sent_for_maintenance = "sent for maintenance";
 

@@ -1,6 +1,7 @@
 DB=test.db
 UNITTESTDB=unittest.db
 SHELL=/bin/bash
+SRCDIR=../src/
 
 all:	reset-db unittest-db db_consts.cpp
 
@@ -28,15 +29,15 @@ unittest-db:	postnr.utf8.csv
 
 db_consts.cpp:	schema.sql
 	@./create-db-consts.pl < schema.sql 
-	@if ! test -a ../db_consts.h ; then \
-		cp db_consts.h .. ; \
+	@if ! test -a $(SRCDIR)/db_consts.h ; then \
+		cp db_consts.h $(SRCDIR) ; \
 	fi
-	@if ! cmp -s db_consts.h ../db_consts.h ; then \
-		cp db_consts.h .. ; \
+	@if ! cmp -s db_consts.h $(SRCDIR)/db_consts.h ; then \
+		cp db_consts.h $(SRCDIR) ; \
 	fi 
-	@if ! test -a ../db_consts.cpp ; then \
-		cp db_consts.cpp .. ; \
+	@if ! test -a $(SRCDIR)/db_consts.cpp ; then \
+		cp db_consts.cpp $(SRCDIR) ; \
 	fi
-	@if ! cmp -s db_consts.cpp ../db_consts.cpp ; then \
-		cp db_consts.cpp .. ; \
+	@if ! cmp -s db_consts.cpp $(SRCDIR)/db_consts.cpp ; then \
+		cp db_consts.cpp $(SRCDIR) ; \
 	fi 
