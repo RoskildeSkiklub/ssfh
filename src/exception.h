@@ -27,11 +27,12 @@ namespace Errors {
         DBSqliteVersionError = 1601, // Thrown if sqlite driver mismatch
 
         ItemDoesNotExist = 2000,
-        ItemUnavailable = 2001,
-        ItemNotInBookedState = 2002,
-        ItemNotPartOfContract = 2003,
-        ItemAlreadyPartOfContract = 2004,
-        ItemForceStateOnIllegalState = 2005,
+        ItemAlreadyExists = 2001,
+        ItemUnavailable = 2002,
+        ItemNotInBookedState = 2003,
+        ItemNotPartOfContract = 2004,
+        ItemAlreadyPartOfContract = 2005,
+        ItemForceStateOnIllegalState = 2006,
 
         ContractDoesNotExist = 3000,
         ContractNotInBookingState = 3001,
