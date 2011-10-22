@@ -100,7 +100,10 @@ public:
       * This method should not be called, if from_id is loaded into memory
       * somewhere else in the system. That would be bad.
       * It should work with items that are currently out, contracts that are parked,
-      * etc. (But not stuff that is loaded into memory). */
+      * etc. (But not stuff that is loaded into memory).
+      *
+      * \note It is very important that no other query is active, when you call
+      * this method, as it will fail because of locking issues very easily. */
     static void db_reid( const QString & from_id, const QString & to_id );
 private:
     QString m_id;

@@ -77,14 +77,13 @@ void ItemTest::insert()
     } catch ( ... ) {
         QVERIFY2( true, "Item with illegal type, rentalgroup, could not be inserted" );
     }
-    Item item3 = Item( "id3", "type1", "size1", "mark1", "model1", "year1", "cond1", 1, "rent1", "note1" );
-    try {
+    Item item3 = Item( "id3", "type1", "size1", "mark1", "model1", "year1", "cond1", 1, "rent1", "note1" );    try {
         item1.db_insert();
         QFAIL( "Restrains in database failed for items with illegal type, rentalgroup" );
     } catch ( ... ) {
         QVERIFY2( true, "Item with illegal type, rentalgroup, could not be inserted" );
     }
-
+    UnitTestDB::closeDB();
 }
 
 void ItemTest::cleanupTestCase()
@@ -143,18 +142,20 @@ void ItemTest::db_reid() {
     // Reid from 1 to 2 should fail
     QVERIFY_THROW( Item::db_reid( "1", "2"), Exception );
 
-    // Check that there are no contractlines and itemevents with for item 1
-    QSqlQuery query;
-    query_check_prepare( query, "select count(*) from itemevents where item_id = '1'" );
-    query_check_exec( query );
-    query_check_first( query );
-    int num = query.value( 0 ).toInt();
-    QVERIFY( num > 0 );
-    query_check_prepare( query, "select count(*) from contractitems where item_id = '1'" );
-    query_check_exec( query );
-    query_check_first( query );
-    num = query.value( 0 ).toInt();
-    QVERIFY( num > 0 );
+    {
+        // Check that there are no contractlines and itemevents with for item 1
+        QSqlQuery query;
+        query_check_prepare( query, "select count(*) from itemevents where item_id = '1'" );
+        query_check_exec( query );
+        query_check_first( query );
+        int num = query.value( 0 ).toInt();
+        QVERIFY( num > 0 );
+        query_check_prepare( query, "select count(*) from contractitems where item_id = '1'" );
+        query_check_exec( query );
+        query_check_first( query );
+        num = query.value( 0 ).toInt();
+        QVERIFY( num > 0 );
+    }
 
     // Now, reid 1 => 424242
     Item::db_reid( "1", "424242" );
@@ -162,61 +163,70 @@ void ItemTest::db_reid() {
     Item::db_load( "424242" );
     QVERIFY_THROW( Item::db_load( "1" ), Exception );
 
-    // Check that there are no contractlines and itemevents with for item 1
-    query_check_prepare( query, "select count(*) from itemevents where item_id = '1'" );
-    query_check_exec( query );
-    query_check_first( query );
-    num = query.value( 0 ).toInt();
-    QVERIFY( num == 0 );
-    query_check_prepare( query, "select count(*) from contractitems where item_id = '1'" );
-    query_check_exec( query );
-    query_check_first( query );
-    num = query.value( 0 ).toInt();
-    QVERIFY( num == 0 );
-    // And, now check there are for 424242
-    query_check_prepare( query, "select count(*) from itemevents where item_id = '424242'" );
-    query_check_exec( query );
-    query_check_first( query );
-    num = query.value( 0 ).toInt();
-    QVERIFY( num > 1 );
-    int numItemEvents424242 = num;
-    query_check_prepare( query, "select count(*) from contractitems where item_id = '424242'" );
-    query_check_exec( query );
-    query_check_first( query );
-    num = query.value( 0 ).toInt();
-    QVERIFY( num > 1 );
+    int numItemEvents424242;
+    {
+        // Check that there are no contractlines and itemevents with for item 1
+        QSqlQuery query;
+        query_check_prepare( query, "select count(*) from itemevents where item_id = '1'" );
+        query_check_exec( query );
+        query_check_first( query );
+        int num = query.value( 0 ).toInt();
+        QVERIFY( num == 0 );
+        query_check_prepare( query, "select count(*) from contractitems where item_id = '1'" );
+        query_check_exec( query );
+        query_check_first( query );
+        num = query.value( 0 ).toInt();
+        QVERIFY( num == 0 );
+        // And, now check there are for 424242
+        query_check_prepare( query, "select count(*) from itemevents where item_id = '424242'" );
+        query_check_exec( query );
+        query_check_first( query );
+        num = query.value( 0 ).toInt();
+        QVERIFY( num > 1 );
+        numItemEvents424242 = num;
+        query_check_prepare( query, "select count(*) from contractitems where item_id = '424242'" );
+        query_check_exec( query );
+        query_check_first( query );
+        num = query.value( 0 ).toInt();
+        QVERIFY( num > 1 );
+    }
 
     // Now, to just make sure, rename to 424243
     Item::db_reid( "424242", "424243" );
-    // Make sure 424242 exists and 424243 does not.
+    // Make sure 424243 exists and 424242 does not.
     Item::db_load( "424243" );
-    QVERIFY_THROW( Item::db_load( "424243" ), Exception );
-    // Check that there are no contractlines and itemevents with for item 424242
-    query_check_prepare( query, "select count(*) from itemevents where item_id = '424242'" );
-    query_check_exec( query );
-    query_check_first( query );
-    num = query.value( 0 ).toInt();
-    QVERIFY( num == 0 );
-    query_check_prepare( query, "select count(*) from contractitems where item_id = '424242'" );
-    query_check_exec( query );
-    query_check_first( query );
-    num = query.value( 0 ).toInt();
-    QVERIFY( num == 0 );
-    // And, now check there are for 424243
-    query_check_prepare( query, "select count(*) from itemevents where item_id = '424243'" );
-    query_check_exec( query );
-    query_check_first( query );
-    num = query.value( 0 ).toInt();
-    QVERIFY( num == numItemEvents424242 + 1 ); // Must be one more...
-    query_check_prepare( query, "select count(*) from contractitems where item_id = '424243'" );
-    query_check_exec( query );
-    query_check_first( query );
-    num = query.value( 0 ).toInt();
-    QVERIFY( num > 1 );
+    QVERIFY_THROW( Item::db_load( "424242" ), Exception );
+    {
+        // Check that there are no contractlines and itemevents with for item 424242
+        QSqlQuery query;
+        query_check_prepare( query, "select count(*) from itemevents where item_id = '424242'" );
+        query_check_exec( query );
+        query_check_first( query );
+        int num = query.value( 0 ).toInt();
+        QVERIFY( num == 0 );
+        query_check_prepare( query, "select count(*) from contractitems where item_id = '424242'" );
+        query_check_exec( query );
+        query_check_first( query );
+        num = query.value( 0 ).toInt();
+        QVERIFY( num == 0 );
+        // And, now check there are for 424243
+        query_check_prepare( query, "select count(*) from itemevents where item_id = '424243'" );
+        query_check_exec( query );
+        query_check_first( query );
+        num = query.value( 0 ).toInt();
+        QVERIFY( num == numItemEvents424242 + 1 ); // Must be one more...
+        query_check_prepare( query, "select count(*) from contractitems where item_id = '424243'" );
+        query_check_exec( query );
+        query_check_first( query );
+        num = query.value( 0 ).toInt();
+        QVERIFY( num > 1 );
 
+    }
     // Now check that we can deliver back on the first contract.
     // Handing back 1 should fail, wheres 424243 should be OK
     Contract contract2reloaded = Contract::db_load( secondContractId );
     QVERIFY_THROW( contract2reloaded.returnItem( "1" ), Exception );
     contract2reloaded.returnItem( "424243" );
+    UnitTestDB::closeDB();
 }
+
