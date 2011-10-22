@@ -1,0 +1,8 @@
+The only change is that another value for itemevents.event have been added:
+
+from
+  event text check ( event in ('created', 'booked', 'handed out', 'returned', 'sent for maintenance', 'lost', 'discarded', 'deleted', 'other' ) ), 
+to
+  event text check ( event in ('created', 'booked', 'handed out', 'returned', 'sent for maintenance', 'lost', 'discarded', 'deleted', 'reid', 'other' ) ), 
+
+It is implemented as a dump to a file, updating (including setting up the index again), then reloading.

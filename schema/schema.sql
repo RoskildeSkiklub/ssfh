@@ -9,7 +9,7 @@ create table configuration(
   value text
 );
 -- DB VERSION: REMEMBER TO UPDATE, WHEN CHANGING ANYTHING
-insert into configuration values( 'db_version', '47' );
+insert into configuration values( 'db_version', '48' );
 insert into configuration values( 'sqlite_min_version', '3.6.19' );
 
 -- ----------------------------------------------------------------------
@@ -175,7 +175,7 @@ create table itemevents(
   time datetime,
   -- Do not remove the next line, the build system uses it
   -- TRANSLATE:Item
-  event text check ( event in ('created', 'booked', 'handed out', 'returned', 'sent for maintenance', 'lost', 'discarded', 'deleted', 'other' ) ), 
+  event text check ( event in ('created', 'booked', 'handed out', 'returned', 'sent for maintenance', 'lost', 'discarded', 'deleted', 'reid', 'other' ) ), 
   note text
 );
 
