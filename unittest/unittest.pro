@@ -1,6 +1,6 @@
 include(../common.pri)
 
-QT += testlib
+QT += testlib sql phonon
 # QT -= gui
 TARGET = unittest
 CONFIG += console
@@ -21,4 +21,7 @@ LIBS += ../src/objs/item.o \
 ../src/objs/hirer.o \
 ../src/objs/contractitem.o \
 ../src/objs/posprinter.o \
-../src/objs/posimage.o
+../src/objs/posimage.o \
+../src/objs/globals.o \
+../src/objs/feedbackobject.o \
+../src/objs/moc_feedbackobject.o
