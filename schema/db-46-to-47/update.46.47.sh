@@ -37,6 +37,7 @@ SQLFILE=`mktemp -t` || die "Unable to call mktemp"
 echo ".bail ON;" > $SQLFILE
 echo "begin transaction; " >> $SQLFILE
 cat $TRIGGERFILE | awk '{print "drop trigger "$0";"}' >> $SQLFILE
+echo "insert into configuration values( 'sqlite_min_version', '3.6.19' );" >> $SQLFILE 
 echo "update configuration set value='$TOVER' where key='db_version';" >> $SQLFILE
 echo "commit;" >> $SQLFILE
 
