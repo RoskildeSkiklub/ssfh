@@ -13,6 +13,20 @@ use strict;
 my $total = "";
 while( <> ) {
     $total .= $_;
+
+    if ( m/SKIP\s*: (.*)/ ) {
+        my $res = $1;
+        while( <> ) {
+            $total .= chop($_);
+            if ( m/^\s*Loc: \[(.*)\((\d*)\)\]/ ) {
+#                print "Got this: $res\n";
+                print STDERR "$1:$2:1: warning: $res\n";
+                last;
+            }
+            $res .= $_;
+        }
+    }
+
     if ( m/FAIL\!\s*: (.*)/ ) {
         my $res = $1;
         while( <> ) {
