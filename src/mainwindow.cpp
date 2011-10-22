@@ -21,6 +21,7 @@
 #include "selectcontractdialog.h"
 #include "checksetupdialog.h"
 #include "swapdialog.h"
+#include "reiddialog.h"
 
 // App
 #include "log.h"
