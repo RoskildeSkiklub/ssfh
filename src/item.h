@@ -17,6 +17,7 @@ public:
           QString condition, long price, QString rentalgroup, QString note );
 
     /** \brief Lookup an item, and book it, if free.
+      * \param id of item to lookup and book
       * \param contract_id Id of booking contract, used for logging
       * \return An in memory representation of an item. Booked in the database.
       *
