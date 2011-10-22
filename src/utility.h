@@ -4,6 +4,7 @@
 class QSqlQuery;
 class QString;
 class QStateMachine;
+class QSqlDatabase;
 
 #include <QStringList>
 
@@ -47,6 +48,23 @@ void database_commit( const QString & where );
   *
   * Rollbacks a transaction, logs errors/ throws if unable to rollback */
 void database_rollback( const QString & where );
+
+/** \brief Check version of sqlitedb, and enable foreign_keys
+  * \param db The database connection, must be already open
+  * \param version The minimum version, on the form xx.yy.zz
+  *
+  * Checks the version of the db driver is at least the version passed in.
+  * Also, enables foreign keys. Throws on errors. */
+void sqlite_setup( const QSqlDatabase & db, const QString & version );
+
+/** \brief Check version of schema is equal to the one passed in
+  * \param db The database connection, must be already open
+  * \param version The exact version
+  *
+  * Lookups the db_version key in the configuration, and checks it against
+  * the version passed in (equality required). Throws on errors */
+void database_check_version( const QSqlDatabase & db, const QString & version );
+
 
 //////////////////////////////////////////////////////////////
 // VARIOUS STUFF

@@ -11,6 +11,7 @@
 #include <QStateMachine>
 #include <QSet>
 #include <QAbstractState>
+#include <QSqlDatabase>
 
 // Application
 #include "utility.h"
@@ -133,4 +134,18 @@ QString capitalizeWords(const QString &input) {
     }
     return res;
 }
+
+void database_check_version( const QSqlDatabase &db, const QString &version ) {
+    Logger log( "void database_check_version( const QDatabase &db, const QString &version )" );
+    QSqlQuery query;
+    query_check_prepare( query, "select value from configuration where key='db_version'" );
+    query_check_exec( query );
+    query_check_first( query );
+    QString db_version = query.value(0).toString();
+    if ( db_version != version ) {
+        throw Exception( Errors::DBVersionError, "", db_version );
+    }
+}
+
+
 

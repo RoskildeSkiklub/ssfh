@@ -14,6 +14,9 @@
 
 namespace Globals {
 
+    /** \brief The database version expected */
+    extern const QString expected_db_version;
+
     extern Interceptor * interceptor;
     // So it can be set up from main
     // TODO: Fix this, its broken.

@@ -21,8 +21,6 @@
 #include "exception.h"
 #include "utility.h"
 
-/** \brief The database version expected */
-const QString db_version = "46";
 
 /** \brief Toplevel error handling, handled through QApplication override */
 class RshApplication : public QApplication {
@@ -141,20 +139,30 @@ int main(int argc, char **argv) {
             QMessageBox::critical( NULL, QObject::tr( "Unable to open database" ), QString( QObject::tr( "Unable to open database specified as '%0'. Aborting." ) ).arg( databasefile ) );
             return -1;
         }
-        log.stream() << "Database successfully opened, checking version of database";
+        log.stream() << "Database successfully opened, checking version of sqlite and of database";
         try {
-            QSqlQuery query;
-            query_check_prepare( query, "select value from configuration where key='db_version'" );
+            /* QSqlQuery query;
+            query_check_prepare( query, "select sqlite_version();" );
             query_check_exec( query );
             query_check_first( query );
             QString version = query.value(0).toString();
-            if ( db_version != version ) {
+            QStringList ids; */
+
+            database_check_version( db, Globals::expected_db_version );
+        }
+        catch( const Exception & ex ) {
+            switch ( ex.getStatusCode() ) {
+            case Errors::DBVersionError:
+                log.stream( Log::fatal )
+                        << QString( "Database version mismatch. Expected version '%0' on database '%1', got version '%2'. Aborting")
+                           .arg( Globals::expected_db_version ).arg( databasefile ).arg( ex.getAddInfo() );
                 QMessageBox::critical( NULL, QObject::tr("Incompatible database version"),
                                        QObject::tr( "Database version mismatch. Expected version '%0' on database '%1', got version '%2'. Aborting")
-                                       .arg( db_version ).arg( databasefile ).arg( version ) );
+                                       .arg( Globals::expected_db_version ).arg( databasefile ).arg( ex.getAddInfo() ) );
                 return -1;
             }
         }
+
         catch( ... ) {
             log.stream( Log::fatal ) << "Unable to perform initial select on database '" << databasefile << "'";
             QMessageBox::critical( NULL, QObject::tr( "Unable to perform initial select on database" ),
