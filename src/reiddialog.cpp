@@ -10,9 +10,9 @@
 
 using namespace Log;
 
-ReidDialog::ReidDialog(QWidget *parent) :
+ReIdDialog::ReIdDialog(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::ReidDialog)
+    ui(new Ui::ReIdDialog)
 {
     ui->setupUi(this);
 
@@ -31,12 +31,12 @@ ReidDialog::ReidDialog(QWidget *parent) :
 
 }
 
-ReidDialog::~ReidDialog()
+ReIdDialog::~ReIdDialog()
 {
     delete ui;
 }
 
-void ReidDialog::scan_item(const QString &item_id) {
+void ReIdDialog::scan_item(const QString &item_id) {
     Logger log("ReidDialog::scan_item(const QString &item_id)");
     // Use readonly status of fromId to determine where we are...
 
@@ -57,7 +57,7 @@ void ReidDialog::scan_item(const QString &item_id) {
     }
 }
 
-void ReidDialog::fromIdSet() {
+void ReIdDialog::fromIdSet() {
     Logger log("ReidDialog::fromIdSet()");
     if ( ui->input_fromId_lineEdit->text().isEmpty() ) {
         throw Exception( Errors::InternalError )
@@ -77,12 +77,12 @@ void ReidDialog::fromIdSet() {
     // ui->buttonBox->button( QDialogButtonBox::Ok )->setEnabled( ui->input_returnItem_lineEdit->isReadOnly() && !ui->input_rentItem_lineEdit->text().isEmpty() );
 }
 
-void ReidDialog::toIdSet() {
+void ReIdDialog::toIdSet() {
     Logger log( "void ReidDialog::toIdSet()" );
     TODO( "Implement ReidDialog::toIdSet" );
 }
 
-void ReidDialog::on_input_lookup_pushButton_clicked()
+void ReIdDialog::on_input_lookup_pushButton_clicked()
 {
     Logger log( "void ReidDialog::on_input_lookup_pushButton_clicked()" );
     toIdSet();

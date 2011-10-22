@@ -4,16 +4,16 @@
 #include <QDialog>
 
 namespace Ui {
-    class ReidDialog;
+    class ReIdDialog;
 }
 
-class ReidDialog : public QDialog
+class ReIdDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit ReidDialog(QWidget *parent = 0);
-    ~ReidDialog();
+    explicit ReIdDialog(QWidget *parent = 0);
+    ~ReIdDialog();
 
 public slots:
     void scan_item( const QString & item_id );
@@ -22,7 +22,7 @@ private slots:
     void on_input_lookup_pushButton_clicked();
 
 private:
-    Ui::ReidDialog *ui;
+    Ui::ReIdDialog *ui;
 
     /** \brief Method to lookup the item when the from id has been set
       *
