@@ -10,7 +10,7 @@
 use warnings;
 use strict;
 
-my $total;
+my $total = "";
 while( <> ) {
     $total .= $_;
     if ( m/FAIL\!\s*: (.*)/ ) {
