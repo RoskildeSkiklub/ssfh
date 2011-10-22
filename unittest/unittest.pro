@@ -8,10 +8,13 @@ CONFIG -= app_bundle
 TEMPLATE = app
 INCLUDEPATH += ../src/
 SOURCES += itemtest.cpp main.cpp unittestdb.cpp \
-    contracttest.cpp
+    contracttest.cpp \
+    utilitytest.cpp
 HEADERS += AutoTest.h itemtest.h \
     unittestdb.h \
-    contracttest.h
+    contracttest.h \
+    utilitytest.h \
+    unittest_utilities.h
 
 LIBS += ../src/objs/item.o \
 ../src/objs/log.o \

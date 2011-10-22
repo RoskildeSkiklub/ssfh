@@ -17,7 +17,7 @@ using namespace Log;
 
 namespace Globals  {
 
-    const QString expected_db_version = "46";
+    const QString expected_db_version = "47";
 
     FeedbackObject * getFeedbackObject() {
         Logger log("FeedbackObject * getFeedbackObject()");

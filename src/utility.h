@@ -49,13 +49,17 @@ void database_commit( const QString & where );
   * Rollbacks a transaction, logs errors/ throws if unable to rollback */
 void database_rollback( const QString & where );
 
+/** \brief Retrieve a configuration value from the database
+  * \param db The database connection, must be already open
+  * \param key The key to get the value for */
+QString database_get_config_value( const QSqlDatabase & db, const QString & key );
+
 /** \brief Check version of sqlitedb, and enable foreign_keys
   * \param db The database connection, must be already open
-  * \param version The minimum version, on the form xx.yy.zz
   *
-  * Checks the version of the db driver is at least the version passed in.
-  * Also, enables foreign keys. Throws on errors. */
-void sqlite_setup( const QSqlDatabase & db, const QString & version );
+  * Checks the version of the db driver is at least the version stored in the configuration
+  * in the database. Also, enables foreign keys. Throws on errors. */
+void sqlite_check_setup( const QSqlDatabase & db );
 
 /** \brief Check version of schema is equal to the one passed in
   * \param db The database connection, must be already open
@@ -69,6 +73,12 @@ void database_check_version( const QSqlDatabase & db, const QString & version );
 //////////////////////////////////////////////////////////////
 // VARIOUS STUFF
 
+/** \brief Compare two version strings
+  * \param vera Versionstring, on the form xx.yy.zz, all numbers
+  * \param verb Versionstring, on the form xx.yy.zz, all numbers
+  *
+  * Compares vera with verb, and returns true if vera >= verb */
+  bool versionstring_qe( const QString & vera, const QString & verb );
 /** \brief Show a todo dialog and log a message with level debug.
   * \param where Where the message is
   * \param msg The message of the todo */
@@ -91,6 +101,7 @@ QStringList get_current_states( const QStateMachine & stateMachine );
   *
   * This changes e.g. MADS BONDO to Mads Bondo. */
 QString capitalizeWords( const QString & input );
+
 
 
 #endif // UTILITY_H

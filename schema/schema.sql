@@ -10,6 +10,7 @@ create table configuration(
 );
 -- DB VERSION: REMEMBER TO UPDATE, WHEN CHANGING ANYTHING
 insert into configuration values( 'db_version', '47' );
+insert into configuration values( 'sqlite_min_version', '3.6.19' );
 
 -- ----------------------------------------------------------------------
 -- RENTAL GROUPS

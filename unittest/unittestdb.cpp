@@ -84,14 +84,8 @@ bool UnitTestDB::resetDB( const QString &testId ) {
     log.stream() << "Database successfully opened";
     log.stream() << "Database successfully opened, checking version of sqlite and of database";
     try {
-        /* QSqlQuery query;
-        query_check_prepare( query, "select sqlite_version();" );
-        query_check_exec( query );
-        query_check_first( query );
-        QString version = query.value(0).toString();
-        QStringList ids; */
-
         database_check_version( db, Globals::expected_db_version );
+        sqlite_check_setup( db );
     }
     catch( const Exception & ex ) {
         switch ( ex.getStatusCode() ) {

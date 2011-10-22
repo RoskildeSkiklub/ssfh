@@ -141,26 +141,42 @@ int main(int argc, char **argv) {
         }
         log.stream() << "Database successfully opened, checking version of sqlite and of database";
         try {
-            /* QSqlQuery query;
-            query_check_prepare( query, "select sqlite_version();" );
-            query_check_exec( query );
-            query_check_first( query );
-            QString version = query.value(0).toString();
-            QStringList ids; */
-
             database_check_version( db, Globals::expected_db_version );
+            sqlite_check_setup( db );
         }
         catch( const Exception & ex ) {
             switch ( ex.getStatusCode() ) {
-            case Errors::DBVersionError:
+            case Errors::DBVersionError: {
                 log.stream( Log::fatal )
-                        << QString( "Database version mismatch. Expected version '%0' on database '%1', got version '%2'. Aborting")
-                           .arg( Globals::expected_db_version ).arg( databasefile ).arg( ex.getAddInfo() );
-                QMessageBox::critical( NULL, QObject::tr("Incompatible database version"),
-                                       QObject::tr( "Database version mismatch. Expected version '%0' on database '%1', got version '%2'. Aborting")
+                        << QString( "Database version mismatch on database '%1'" )
+                           .arg( databasefile )
+                        << ". " << ex.toString();
+                QMessageBox::critical( NULL,
+                                      QObject::tr("Incompatible database version"),
+                                      QObject::tr( "Database version mismatch. Expected version '%1' on database '%2', got version '%3'. Aborting")
                                        .arg( Globals::expected_db_version ).arg( databasefile ).arg( ex.getAddInfo() ) );
                 return -1;
+            } // DBVersionError
+            case Errors::DBSqliteVersionError: {
+                log.stream( Log::fatal )
+                        << QString( "Database version mismatch on database '%1'" )
+                           .arg( databasefile )
+                        << ". " << ex.toString();
+                QMessageBox::critical( NULL,
+                                      QObject::tr("Incompatible database driver version"),
+                                      QObject::tr( "Database version driver mismatch. Got version '%2' on database '%1' which was less than expected. Aborting")
+                                      .arg( databasefile ).arg( ex.getAddInfo() ) );
+                return -1;
+            } // DBVersionError
+            default: {
+                log.stream( Log::fatal )
+                        << QString( "Some kind of unknown error happened while checking version of database, and version of database driver: " ) << ex.toString();
+                QMessageBox::critical( NULL, QObject::tr("Unknown error during database check"),
+                                      QObject::tr( "Some kind of unknown error happened while checking version of database, and version of database driver: '%1'" ).arg( ex.toString() ) );
+                return -1;
+            } // Default
             }
+
         }
 
         catch( ... ) {

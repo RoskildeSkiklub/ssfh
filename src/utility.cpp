@@ -12,6 +12,7 @@
 #include <QSet>
 #include <QAbstractState>
 #include <QSqlDatabase>
+#include <QStringList>
 
 // Application
 #include "utility.h"
@@ -135,17 +136,98 @@ QString capitalizeWords(const QString &input) {
     return res;
 }
 
-void database_check_version( const QSqlDatabase &db, const QString &version ) {
-    Logger log( "void database_check_version( const QDatabase &db, const QString &version )" );
-    QSqlQuery query;
-    query_check_prepare( query, "select value from configuration where key='db_version'" );
+bool versionstring_qe( const QString &vera, const QString &verb ) {
+    Logger log( "bool versionstring_qe( const QString &vera, const QString &verb )" );
+    QStringList a = vera.split( "." );
+    QStringList b = verb.split( "." );
+    if ( a.size() != 3 ) {
+        throw Exception( Errors::InternalError )
+                << ( log.stream( error ) << "Version a passed to versionstring_qe not on expected form: '" << vera << "'" );
+    }
+    if ( b.size() != 3 ) {
+        throw Exception( Errors::InternalError )
+                << ( log.stream( error ) << "Version b passed to versionstring_qe not on expected form: '" << verb << "'" );
+    }
+    bool ok;
+    int amajor = a[0].toInt( & ok );
+    if ( !ok ) {
+        throw Exception( Errors::InternalError )
+                << ( log.stream( error ) << "Version a passed to versionstring_qe not on expected form: '" << vera << "', a part was not a number." );
+    }
+    int aminor = a[1].toInt( & ok );
+    if ( !ok ) {
+        throw Exception( Errors::InternalError )
+                << ( log.stream( error ) << "Version a passed to versionstring_qe not on expected form: '" << vera << "', a part was not a number." );
+    }
+    int apatch = a[2].toInt( & ok );
+    if ( !ok ) {
+        throw Exception( Errors::InternalError )
+                << ( log.stream( error ) << "Version a passed to versionstring_qe not on expected form: '" << vera << "', a part was not a number." );
+    }
+    int bmajor = b[0].toInt( & ok );
+    if ( !ok ) {
+        throw Exception( Errors::InternalError )
+                << ( log.stream( error ) << "Version b passed to versionstring_qe not on expected form: '" << verb << "', a part was not a number." );
+    }
+    int bminor = b[1].toInt( & ok );
+    if ( !ok ) {
+        throw Exception( Errors::InternalError )
+                << ( log.stream( error ) << "Version b passed to versionstring_qe not on expected form: '" << verb << "', a part was not a number." );
+    }
+    int bpatch = b[2].toInt( & ok );
+    if ( !ok ) {
+        throw Exception( Errors::InternalError )
+                << ( log.stream( error ) << "Version b passed to versionstring_qe not on expected form: '" << verb << "', a part was not a number." );
+    }
+
+    return ( amajor > bmajor ) ||
+            ( ( amajor == bmajor ) && ( ( aminor > bminor ) ||
+                                       ( ( aminor == bminor)  && ( apatch >= bpatch)  ) ) );
+}
+
+QString database_get_config_value( const QSqlDatabase &db, const QString &key ) {
+    Logger log( "QString database_get_config_value( const QSqlDatabase &db, const QString &key )" );
+    if ( key.isEmpty() ) {
+        throw Exception( Errors::InternalError )
+                << ( log.stream( error ) << "Empty key passed to database_get_config_value" );
+    }
+    QSqlQuery query( db );
+    query_check_prepare( query, "select value from configuration where key=:key" );
+    query.bindValue( ":key", key );
     query_check_exec( query );
     query_check_first( query );
-    QString db_version = query.value(0).toString();
+    return query.value(0).toString();
+}
+
+void database_check_version( const QSqlDatabase &db, const QString &version ) {
+    Logger log( "void database_check_version( const QDatabase &db, const QString &version )" );
+    QString db_version = database_get_config_value( db, "db_version" );
     if ( db_version != version ) {
-        throw Exception( Errors::DBVersionError, "", db_version );
+        throw Exception( Errors::DBVersionError,
+                        QString( "Version mismatch. Expected: '%1', got : '%2'" )
+                        .arg( version ).arg( db_version ),
+                        db_version );
     }
 }
 
+void sqlite_check_setup( const QSqlDatabase &db ) {
+    Logger log( "void sqlite_check_setup(const QSqlDatabase &db, const QString &version)" );
+    QSqlQuery query( db );
+    query_check_prepare( query, "select sqlite_version();" );
+    query_check_exec( query );
+    query_check_first( query );
+    QString sqlite_version = query.value(0).toString();
+    QString sqlite_min_version = database_get_config_value( db, "sqlite_min_version" );
+    // Now compare
+    if (! versionstring_qe( sqlite_version, sqlite_min_version ) ) {
+        throw Exception( Errors::DBSqliteVersionError,
+                        QString( "Version mismatch. Expected minimum: '%1', got : '%2'" )
+                        .arg( sqlite_min_version ).arg( sqlite_version ),
+                        sqlite_version );
+    }
+    // Enable pragma foreign_keys = on to ensure foreign key support
+    query_check_prepare( query, "pragma foreign_keys = on;" );
+    query_check_exec( query );
+}
 
 
