@@ -173,6 +173,14 @@ void MainWindow::showSwapDialog() const {
     updateDbStatusDisplay();
 }
 
+void MainWindow::showReIdDialog() const {
+    Logger log( "void MainWindow::showReIdDialog() const" );
+    log.stream() << "Displaying ReIdDialog";
+    ReIdDialog reIdDialog;
+    reIdDialog.exec();
+    updateDbStatusDisplay();
+}
+
 void MainWindow::showReturnDialog() const {
     Logger log( "void MainWindow::showReturnDialog() const" );
     log.stream() << "Displaying returnDialog";
@@ -365,4 +373,10 @@ void MainWindow::on_input_swap_pushButton_clicked()
 {
     Logger log("void MainWindow::on_input_swap_pushButton_clicked()");
     showSwapDialog();
+}
+
+void MainWindow::on_action_Reid_items_triggered()
+{
+    Logger log( "void MainWindow::on_action_Reid_items_triggered()" );
+    showReIdDialog();
 }

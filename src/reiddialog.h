@@ -21,6 +21,8 @@ public slots:
 private slots:
     void on_input_lookup_pushButton_clicked();
 
+    void on_input_fromId_lineEdit_textChanged(QString );
+
 private:
     Ui::ReIdDialog *ui;
 

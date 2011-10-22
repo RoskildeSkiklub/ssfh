@@ -85,5 +85,10 @@ void ReIdDialog::toIdSet() {
 void ReIdDialog::on_input_lookup_pushButton_clicked()
 {
     Logger log( "void ReidDialog::on_input_lookup_pushButton_clicked()" );
-    toIdSet();
+    fromIdSet();
+}
+
+void ReIdDialog::on_input_fromId_lineEdit_textChanged( QString value ) {
+    Logger log("void ReIdDialog::on_input_fromId_lineEdit_textChanged( QString )");
+    ui->input_lookup_pushButton->setEnabled( !value.isEmpty() );
 }

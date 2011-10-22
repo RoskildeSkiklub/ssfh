@@ -39,6 +39,7 @@ private:
     void doPrintCommandSheet() const;
     void showContractsDialog( const QString & state ) const;
     void showSwapDialog() const;
+    void showReIdDialog() const;
 
     /** \brief Pointer to statusbar db label
       *
@@ -70,6 +71,8 @@ private slots:
 
     /** \brief Display a warning dialog */
     void on_magSwipeFailure();
+
+    void on_action_Reid_items_triggered();
 
 public slots:
     void on_barcodeCommandScan( const Globals::BarcodeCommands::Command & command );
