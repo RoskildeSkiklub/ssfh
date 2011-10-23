@@ -31,9 +31,13 @@ public:
 signals:
 
 public slots:
+    /** \brief The sound of an item added to a contract */
     void itemAdded() const;
+    /** \brief The sound of an item returned on a contract */
     void itemReturned() const;
+    /** \brief The sound of an hirer set on a contract */
     void hirerSet() const;
+    /** \brief The sound of an item scanned (general version of added, really) */
 
 };
 
