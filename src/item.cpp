@@ -319,7 +319,7 @@ void Item::db_reid( const QString &from_id, const QString &to_id ) {
                     << "Item with id '" << from_id << " does not exist, so it can not get a new id." );
     }
     if ( db_exists( to_id ) ) {
-        throw Exception( Errors::ItemDoesNotExist )
+        throw Exception( Errors::ItemAlreadyExists )
                 << ( log.stream( error )
                     << "Item with id '" << to_id << " already exist, so item with id '" << from_id << "' can not get this as a new id." );
     }

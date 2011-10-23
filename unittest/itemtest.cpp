@@ -136,12 +136,12 @@ void ItemTest::db_reid() {
     QVERIFY_THROW( Item::db_load( "424243" ), Exception );
 
     // Reid from 424242 to 424243 should fail
-    QVERIFY_THROW( Item::db_reid( "424242", "424243" ), Exception );
+    QVERIFY_EXCEPTION_STATUS( Item::db_reid( "424242", "424243" ), Errors::ItemDoesNotExist );
     // Reid from 424242 to 1 should fail
-    QVERIFY_THROW( Item::db_reid( "424242", "1"), Exception );
+    QVERIFY_EXCEPTION_STATUS( Item::db_reid( "424242", "1"), Errors::ItemDoesNotExist );
 
     // Reid from 1 to 2 should fail
-    QVERIFY_THROW( Item::db_reid( "1", "2"), Exception );
+    QVERIFY_EXCEPTION_STATUS( Item::db_reid( "1", "2"), Errors::ItemAlreadyExists );
 
     {
         // Check that there are no contractlines and itemevents with for item 1
