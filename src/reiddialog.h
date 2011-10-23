@@ -47,6 +47,10 @@ private:
       * This calles the Item::db_reid method and prepares for a new go */
     bool doReId();
 
+    /** \brief Clear the dialog, prepare for a new reid operation */
+    void clear();
+
+
 
 };
 

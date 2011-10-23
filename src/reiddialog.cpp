@@ -3,6 +3,9 @@
 
 // Qt
 #include <QAbstractButton>
+#include <QMessageBox>
+#include <QRegExp>
+#include <QValidator>
 
 // app
 #include "log.h"
@@ -19,21 +22,49 @@ ReIdDialog::ReIdDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    //! \todo Fix up
-    // Disable accept/ok button
-    ui->buttonBox->button( QDialogButtonBox::Ok )->setEnabled( false );
-    ui->buttonBox->button( QDialogButtonBox::Apply )->setEnabled( false );
-    ui->input_toId_lineEdit->setEnabled( false );
+    // Set validators for to_id lineedit.
+    // Technically, one could envision ids different from only numbers...
+    QRegExp rx( "\\d+" );
+    QValidator *validator = new QRegExpValidator( rx, this);
+    ui->input_toId_lineEdit->setValidator( validator );
+
+    // Clear the fields, set enabled on buttons, etc.
+    clear();
+
     // Get the signals from the scan input events.
     connect( Globals::interceptor, SIGNAL(barcodeItemScan(QString)),
              this, SLOT(scan_item(QString) ) );
-    // Provide audio feedback when returning/adding items
+    //! \todo Provide audio feedback when returning/adding items
     /* \todo: connect(this, SIGNAL(item_returned()),
             Globals::getFeedbackObject(), SLOT(itemReturned()));
     connect(this, SIGNAL(item_added()),
             Globals::getFeedbackObject(), SLOT(itemAdded())); */
+}
 
+void ReIdDialog::clear() {
+    Logger log( "void ReIdDialog::clear()" );
+    //! \todo Fix up
 
+    // Clear and enable fromId lineEdit
+    ui->input_fromId_lineEdit->setText( "" );
+    ui->input_fromId_lineEdit->setReadOnly( false );
+
+    // Lookup is not enabled, fromId is blank
+    ui->input_lookup_pushButton->setEnabled( false );
+
+    // ToId not enabled, until lookup has been performed
+    ui->input_toId_lineEdit->setText( "");
+    ui->input_toId_lineEdit->setEnabled( false );
+
+    // Clear the item description
+    ui->output_contract_textBrowser->setText( "" );
+
+    // Disable accept/ok button
+    ui->buttonBox->button( QDialogButtonBox::Ok )->setEnabled( false );
+    ui->buttonBox->button( QDialogButtonBox::Apply )->setEnabled( false );
+
+    // Set focus to fromId
+    ui->input_fromId_lineEdit->setFocus();
 }
 
 ReIdDialog::~ReIdDialog()
@@ -85,9 +116,35 @@ void ReIdDialog::fromIdSet() {
 }
 
 bool ReIdDialog::doReId() {
-    Logger log( "void ReidDialog::toIdSet()" );
-    TODO( "Implement ReidDialog::toIdSet" );
-    return false;
+    Logger log( "void ReidDialog::doReId()" );
+    QString from_id = ui->input_fromId_lineEdit->text();
+    QString to_id = ui->input_toId_lineEdit->text();
+    try {
+        Item::db_reid( from_id, to_id );
+    }
+    catch ( const Exception & ex ) {
+        log.stream( debug ) << "Item::db_reid failed, checking reason";
+        switch ( ex.getStatusCode() ) {
+        case Errors::ItemDoesNotExist: {
+            QMessageBox::critical( this, tr( "Item does not exist"),
+                                  tr( "The item with id '%1' was not found in the database, so it can not be given the new id '%2'.").arg( from_id ).arg( to_id ) );
+            return false;
+        }
+        case Errors::ItemAlreadyExists: {
+            QMessageBox::critical( this, tr( "Item already exist"),
+                                  tr( "The item with id '%1' was found in the database, so the item with id '%2' can not be given the new id '%1'.").arg( to_id ).arg( from_id ) );
+            return false;
+        }
+        default: {
+            log.stream( error ) << "Unexpected exception from Item::db_reid : " << ex.toString();
+            throw;
+        }
+        }
+    }
+    QMessageBox::information( this, tr( "Item has been given a new id"),
+                             tr( "The item with id '%1' now have id '%2'").arg( from_id).arg( to_id ) );
+    clear();
+    return true;
 }
 
 void ReIdDialog::on_input_lookup_pushButton_clicked()
