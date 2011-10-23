@@ -30,7 +30,7 @@ private slots:
 
     void on_buttonBox_clicked(QAbstractButton* button);
 
-    void on_pushButton_clicked();
+    void on_input_loadFile_pushButton_clicked();
 
 private:
     Ui::ReIdDialog *ui;
@@ -49,6 +49,9 @@ private:
 
     /** \brief Clear the dialog, prepare for a new reid operation */
     void clear();
+
+    /** \brief Read id changes from a file, and process them */
+    void readChangesFromFile();
 
 
 

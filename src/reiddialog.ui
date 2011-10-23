@@ -69,7 +69,7 @@
     </widget>
    </item>
    <item row="2" column="0">
-    <widget class="QPushButton" name="pushButton">
+    <widget class="QPushButton" name="input_loadFile_pushButton">
      <property name="toolTip">
       <string>Read id changes from file</string>
      </property>
@@ -111,7 +111,7 @@
   <tabstop>input_lookup_pushButton</tabstop>
   <tabstop>input_toId_lineEdit</tabstop>
   <tabstop>buttonBox</tabstop>
-  <tabstop>pushButton</tabstop>
+  <tabstop>input_loadFile_pushButton</tabstop>
   <tabstop>output_contract_textBrowser</tabstop>
  </tabstops>
  <resources/>
