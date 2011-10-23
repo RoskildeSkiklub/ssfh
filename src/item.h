@@ -105,6 +105,12 @@ public:
       * \note It is very important that no other query is active, when you call
       * this method, as it will fail because of locking issues very easily. */
     static void db_reid( const QString & from_id, const QString & to_id );
+
+    /** \brief Check if an item exists in the database
+      * \param id The id to check for in the database
+      * \returns True if the item exists, false otherwise */
+    static bool db_exists( const QString & id );
+
 private:
     QString m_id;
     QString m_type;
@@ -117,11 +123,6 @@ private:
     QString m_rentalgroup;
     QString m_state;
     QString m_note;
-
-    /** \brief Check if an item exists in the database
-      * \param id The id to check for in the database
-      * \returns True if the item exists, false otherwise */
-    static bool db_exists( const QString & id );
 
     /** \brief String representation for log files */
     QString toString() const;
