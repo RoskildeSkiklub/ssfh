@@ -6,12 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>389</width>
+    <width>505</width>
     <height>228</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>ReId Items</string>
+  </property>
+  <property name="toolTip">
+   <string>Dialog used to give new ids to items (relabelling)</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
@@ -25,7 +28,11 @@
     </widget>
    </item>
    <item row="0" column="1">
-    <widget class="QLineEdit" name="input_fromId_lineEdit"/>
+    <widget class="QLineEdit" name="input_fromId_lineEdit">
+     <property name="toolTip">
+      <string>Id of item that needs a new id</string>
+     </property>
+    </widget>
    </item>
    <item row="0" column="2">
     <widget class="QPushButton" name="input_lookup_pushButton">
@@ -48,13 +55,24 @@
     </widget>
    </item>
    <item row="0" column="4">
-    <widget class="QLineEdit" name="input_toId_lineEdit"/>
+    <widget class="QLineEdit" name="input_toId_lineEdit">
+     <property name="toolTip">
+      <string>New id for item</string>
+     </property>
+    </widget>
    </item>
    <item row="1" column="0" colspan="5">
-    <widget class="QTextBrowser" name="output_contract_textBrowser"/>
+    <widget class="QTextBrowser" name="output_contract_textBrowser">
+     <property name="toolTip">
+      <string>Will show information about the item about to be given a new id</string>
+     </property>
+    </widget>
    </item>
    <item row="2" column="0">
     <widget class="QPushButton" name="pushButton">
+     <property name="toolTip">
+      <string>Read id changes from file</string>
+     </property>
      <property name="text">
       <string>&amp;Load file</string>
      </property>
@@ -67,7 +85,7 @@
      </property>
      <property name="sizeHint" stdset="0">
       <size>
-       <width>97</width>
+       <width>155</width>
        <height>20</height>
       </size>
      </property>
@@ -75,16 +93,44 @@
    </item>
    <item row="2" column="2" colspan="3">
     <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="toolTip">
+      <string>ReId and close dialog, or keep it, or simply discard the dialog</string>
+     </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
      <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+      <set>QDialogButtonBox::Apply|QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
      </property>
     </widget>
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>input_fromId_lineEdit</tabstop>
+  <tabstop>input_lookup_pushButton</tabstop>
+  <tabstop>input_toId_lineEdit</tabstop>
+  <tabstop>buttonBox</tabstop>
+  <tabstop>pushButton</tabstop>
+  <tabstop>output_contract_textBrowser</tabstop>
+ </tabstops>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>ReIdDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>371</x>
+     <y>211</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>252</x>
+     <y>113</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

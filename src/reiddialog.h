@@ -2,6 +2,7 @@
 #define REIDDIALOG_H
 
 #include <QDialog>
+class QAbstractButton;
 
 namespace Ui {
     class ReIdDialog;
@@ -23,6 +24,14 @@ private slots:
 
     void on_input_fromId_lineEdit_textChanged(QString );
 
+    void on_input_toId_lineEdit_textChanged(QString );
+
+    void on_buttonBox_accepted();
+
+    void on_buttonBox_clicked(QAbstractButton* button);
+
+    void on_pushButton_clicked();
+
 private:
     Ui::ReIdDialog *ui;
 
@@ -36,7 +45,7 @@ private:
     /** \brief Method to actually perform the reid
       *
       * This calles the Item::db_reid method and prepares for a new go */
-    void toIdSet();
+    bool doReId();
 
 
 };

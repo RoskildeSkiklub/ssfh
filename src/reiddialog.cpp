@@ -1,6 +1,9 @@
 #include "reiddialog.h"
 #include "ui_reiddialog.h"
 
+// Qt
+#include <QAbstractButton>
+
 // app
 #include "log.h"
 #include "globals.h"
@@ -18,7 +21,9 @@ ReIdDialog::ReIdDialog(QWidget *parent) :
 
     //! \todo Fix up
     // Disable accept/ok button
-    // ui->buttonBox->button( QDialogButtonBox::Ok )->setEnabled( false );
+    ui->buttonBox->button( QDialogButtonBox::Ok )->setEnabled( false );
+    ui->buttonBox->button( QDialogButtonBox::Apply )->setEnabled( false );
+    ui->input_toId_lineEdit->setEnabled( false );
     // Get the signals from the scan input events.
     connect( Globals::interceptor, SIGNAL(barcodeItemScan(QString)),
              this, SLOT(scan_item(QString) ) );
@@ -73,13 +78,16 @@ void ReIdDialog::fromIdSet() {
     // Lock the field
     ui->input_fromId_lineEdit->setReadOnly( true );
     ui->input_lookup_pushButton->setEnabled( false );
+    ui->input_toId_lineEdit->setEnabled( true );
+    ui->input_toId_lineEdit->setFocus();
     //! \todo
     // ui->buttonBox->button( QDialogButtonBox::Ok )->setEnabled( ui->input_returnItem_lineEdit->isReadOnly() && !ui->input_rentItem_lineEdit->text().isEmpty() );
 }
 
-void ReIdDialog::toIdSet() {
+bool ReIdDialog::doReId() {
     Logger log( "void ReidDialog::toIdSet()" );
     TODO( "Implement ReidDialog::toIdSet" );
+    return false;
 }
 
 void ReIdDialog::on_input_lookup_pushButton_clicked()
@@ -91,4 +99,38 @@ void ReIdDialog::on_input_lookup_pushButton_clicked()
 void ReIdDialog::on_input_fromId_lineEdit_textChanged( QString value ) {
     Logger log("void ReIdDialog::on_input_fromId_lineEdit_textChanged( QString )");
     ui->input_lookup_pushButton->setEnabled( !value.isEmpty() );
+}
+
+
+void ReIdDialog::on_input_toId_lineEdit_textChanged(QString )
+{
+    Logger log("void ReIdDialog::on_input_toId_lineEdit_textChanged(QString )");
+    ui->buttonBox->button( QDialogButtonBox::Ok )->setEnabled( ui->input_fromId_lineEdit->isReadOnly() && !ui->input_toId_lineEdit->text().isEmpty() );
+    ui->buttonBox->button( QDialogButtonBox::Apply )->setEnabled( ui->input_fromId_lineEdit->isReadOnly() && !ui->input_toId_lineEdit->text().isEmpty() );
+}
+
+// OK, as Apply, but also closes window
+void ReIdDialog::on_buttonBox_accepted()
+{
+    Logger log( "void ReIdDialog::on_buttonBox_accepted()" );
+    if ( doReId() )  {
+        close();
+    }
+}
+
+void ReIdDialog::on_buttonBox_clicked(QAbstractButton* button)
+{
+    Logger log( "void ReIdDialog::on_buttonBox_clicked(QAbstractButton* button)" );
+    if ( button == ui->buttonBox->button( QDialogButtonBox::Apply) ) {
+        log.stream() << "Apply pressed";
+        doReId();
+    } else {
+        log.stream(  warn ) << "Unknown button pressed";
+    }
+}
+
+void ReIdDialog::on_pushButton_clicked()
+{
+    Logger log("void ReIdDialog::on_pushButton_clicked()");
+    TODO( "Implement file reading and stuff" );
 }
