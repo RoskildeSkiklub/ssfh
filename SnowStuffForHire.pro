@@ -6,7 +6,8 @@ SUBDIRS = src unittest doc
 CONFIG += ordered
 
 # Will be doing some dist work later on
-MY_DOCFILES=NotesOnSundhedsKort.txt Notes.txt postnr.website postnr.xls PertelianNote.txt PosPrinter.txt pertelian-display.rules
+MY_DOCFILES=NotesOnSundhedsKort.txt Notes.txt postnr.website postnr.xls PertelianNote.txt PosPrinter.txt pertelian-display.rules Requirements.txt Logging.txt
+# This needs fixing... 
 MY_SCHEMAFILES=Makefile create-db-consts.pl postnr-to-csv.pl schema.sql rsh-setup.sql test-data.sql Transactions.txt
 MY_SOUNDFILES=critical_error.wav  error.wav  hirer_set.wav  item_added.wav
 DISTFILES = \
