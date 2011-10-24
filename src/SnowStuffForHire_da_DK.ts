@@ -130,28 +130,28 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="checksetupdialog.ui" line="38"/>
         <source>Barcode Scanner</source>
-        <translation type="unfinished"></translation>
+        <translation>Stregkode læser</translation>
     </message>
     <message>
         <location filename="checksetupdialog.ui" line="45"/>
         <location filename="checksetupdialog.ui" line="65"/>
         <source>TextLabel</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="checksetupdialog.ui" line="58"/>
         <source>Customer Display</source>
-        <translation type="unfinished"></translation>
+        <translation>Kassedisplay</translation>
     </message>
     <message>
         <location filename="checksetupdialog.cpp" line="34"/>
         <source>Present</source>
-        <translation type="unfinished"></translation>
+        <translation>Fundet</translation>
     </message>
     <message>
         <location filename="checksetupdialog.cpp" line="36"/>
         <source>Missing</source>
-        <translation type="unfinished"></translation>
+        <translation>Mangler</translation>
     </message>
 </context>
 <context>
@@ -655,7 +655,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="db_consts.cpp" line="43"/>
         <source>reid</source>
-        <translation type="unfinished"></translation>
+        <translation>ændret id</translation>
     </message>
     <message>
         <location filename="db_consts.cpp" line="45"/>
@@ -785,7 +785,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="mainwindow.ui" line="189"/>
         <source>&amp;Reid items...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Ændre id...</translation>
     </message>
     <message>
         <source>Re&amp;turn Items</source>
@@ -1102,7 +1102,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="printchecklistdialog.cpp" line="190"/>
         <source>&lt;id&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;id&gt;</translation>
     </message>
     <message>
         <location filename="printchecklistdialog.cpp" line="206"/>
@@ -1149,27 +1149,27 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="main.cpp" line="156"/>
         <source>Database version mismatch. Expected version &apos;%1&apos; on database &apos;%2&apos;, got version &apos;%3&apos;. Aborting</source>
-        <translation type="unfinished">Database versioner passer ikke sammen. Forventede version &apos;%0&apos; af database &apos;%1&apos;. Er version &apos;%2&apos;. Afbryder {1&apos;?} {2&apos;?} {3&apos;?}</translation>
+        <translation>Database versioner passer ikke sammen. Forventede version &apos;%1&apos; af database &apos;%2&apos;. Er version &apos;%3&apos;. Afbryder</translation>
     </message>
     <message>
         <location filename="main.cpp" line="166"/>
         <source>Incompatible database driver version</source>
-        <translation type="unfinished"></translation>
+        <translation>Inkompatibel database driver version</translation>
     </message>
     <message>
         <location filename="main.cpp" line="167"/>
         <source>Database version driver mismatch. Got version &apos;%2&apos; on database &apos;%1&apos; which was less than expected. Aborting</source>
-        <translation type="unfinished"></translation>
+        <translation>Database versions driver uoverenstemmelse. Fik version &apos;%2&apos; for databse &apos;%1&apos;, hvilket var ældre end forventet. Afbryder</translation>
     </message>
     <message>
         <location filename="main.cpp" line="174"/>
         <source>Unknown error during database check</source>
-        <translation type="unfinished"></translation>
+        <translation>Ukendt fejl ved database check</translation>
     </message>
     <message>
         <location filename="main.cpp" line="175"/>
         <source>Some kind of unknown error happened while checking version of database, and version of database driver: &apos;%1&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>En ukendt fejl opstod under kontrol af database version, og version af database driver: &apos;%1&apos;</translation>
     </message>
     <message>
         <source>Database version mismatch. Expected version &apos;%0&apos; on database &apos;%1&apos;, got version &apos;%2&apos;. Aborting</source>
@@ -1216,174 +1216,174 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="reiddialog.ui" line="14"/>
         <source>ReId Items</source>
-        <translation type="unfinished"></translation>
+        <translation>Ændre id for genstande</translation>
     </message>
     <message>
         <location filename="reiddialog.ui" line="17"/>
         <source>Dialog used to give new ids to items (relabelling)</source>
-        <translation type="unfinished"></translation>
+        <translation>Dialog der anvendes til at give nye id&apos;er til genstande (nye labels)</translation>
     </message>
     <message>
         <location filename="reiddialog.ui" line="23"/>
         <source>&amp;From id</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Fra id</translation>
     </message>
     <message>
         <location filename="reiddialog.ui" line="33"/>
         <source>Id of item that needs a new id</source>
-        <translation type="unfinished"></translation>
+        <translation>Id for genstand der skal have nyt id</translation>
     </message>
     <message>
         <location filename="reiddialog.ui" line="43"/>
         <source>&amp;Lookup</source>
-        <translation type="unfinished">&amp;Søg</translation>
+        <translation>&amp;Søg</translation>
     </message>
     <message>
         <location filename="reiddialog.ui" line="50"/>
         <source>&amp;To id</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Til id</translation>
     </message>
     <message>
         <location filename="reiddialog.ui" line="60"/>
         <source>New id for item</source>
-        <translation type="unfinished"></translation>
+        <translation>Nyt id for genstand</translation>
     </message>
     <message>
         <location filename="reiddialog.ui" line="67"/>
         <source>Will show information about the item about to be given a new id</source>
-        <translation type="unfinished"></translation>
+        <translation>Viser information om den genstand der skal have nyt id</translation>
     </message>
     <message>
         <location filename="reiddialog.ui" line="74"/>
         <source>Read id changes from file</source>
-        <translation type="unfinished"></translation>
+        <translation>Læs id ændringer fra fil</translation>
     </message>
     <message>
         <location filename="reiddialog.ui" line="77"/>
         <source>&amp;Load file</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Indlæs fil</translation>
     </message>
     <message>
         <location filename="reiddialog.ui" line="97"/>
         <source>ReId and close dialog, or keep it, or simply discard the dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Ændre id og luk dialog, eller behold dialog, eller simpelthen luk dialog</translation>
     </message>
     <message>
         <location filename="reiddialog.cpp" line="134"/>
         <location filename="reiddialog.cpp" line="236"/>
         <source>Item does not exist</source>
-        <translation type="unfinished"></translation>
+        <translation>Genstanden eksisterer ikke</translation>
     </message>
     <message>
         <location filename="reiddialog.cpp" line="135"/>
         <source>The item with id &apos;%1&apos; was not found in the database, so it can not be given the new id &apos;%2&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Genstanden med id &apos;%1&apos; blev ikke fundet i databasen, så den kan ikke tildeles det nye id &apos;%2&apos;.</translation>
     </message>
     <message>
         <location filename="reiddialog.cpp" line="139"/>
         <location filename="reiddialog.cpp" line="244"/>
         <source>Item already exist</source>
-        <translation type="unfinished"></translation>
+        <translation>Genstand eksisterer allerede</translation>
     </message>
     <message>
         <location filename="reiddialog.cpp" line="140"/>
         <source>The item with id &apos;%1&apos; was found in the database, so the item with id &apos;%2&apos; can not be given the new id &apos;%1&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Genstanden med id &apos;%1&apos; var allerede i databasen, så genstanden med id &apos;%2&apos; kan ikke få id &apos;%1&apos;.</translation>
     </message>
     <message>
         <location filename="reiddialog.cpp" line="149"/>
         <source>Item has been given a new id</source>
-        <translation type="unfinished"></translation>
+        <translation>Genstand har fået nyt id</translation>
     </message>
     <message>
         <location filename="reiddialog.cpp" line="150"/>
         <source>The item with id &apos;%1&apos; now have id &apos;%2&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>Genstanden med id &apos;%1&apos; har nu id &apos;%2&apos;</translation>
     </message>
     <message>
         <location filename="reiddialog.cpp" line="159"/>
         <source>Reading id changes from a file</source>
-        <translation type="unfinished"></translation>
+        <translation>Læser id ændringer fra en fil</translation>
     </message>
     <message>
         <location filename="reiddialog.cpp" line="160"/>
         <source>&lt;p&gt;In order to read id changes from a file, you will have to provide a filename.&lt;/p&gt;&lt;p&gt;The file will be assumed to contain one item id change pr. line. The default format for each line is &lt;tt&gt;id=&gt;id&lt;/tt&gt;, but this can be changed by providing your own pattern.&lt;/p&gt;&lt;p&gt;Note, that the file can not change the same item twice. This will be checked prior to any changes occuring.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;For at kunne læse id ændringer fra en fil, skal du angive et filnavn.&lt;/p&gt;&lt;p&gt;Filen skal indeholde en id ændring pr. linie. Standard formatet for hver linie er &lt;tt&gt;id=&gt;id&lt;/tt&gt;, men dette format kan ændres, ved at angive et andet mønster.&lt;/p&gt;&lt;p&gt;Bemærk at filen ikke kan ændre den samme genstand to gange. Det vil blive kontrolleret inden nogen ændringer finder sted.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="reiddialog.cpp" line="169"/>
         <source>Select file with item id changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Vælg fil med id ændringer</translation>
     </message>
     <message>
         <location filename="reiddialog.cpp" line="178"/>
         <source>Unable to read from file</source>
-        <translation type="unfinished"></translation>
+        <translation>Kunne ikke læse fra fil</translation>
     </message>
     <message>
         <location filename="reiddialog.cpp" line="179"/>
         <source>Unable to read from file &apos;%1&apos;. Aborting.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kunne ikke læse fra fil &apos;%1&apos;. Afbryder.</translation>
     </message>
     <message>
         <location filename="reiddialog.cpp" line="188"/>
         <source>Input pattern for lines</source>
-        <translation type="unfinished"></translation>
+        <translation>Inddata mønster for linier</translation>
     </message>
     <message>
         <location filename="reiddialog.cpp" line="189"/>
         <source>Format for lines (id=&gt;id)</source>
-        <translation type="unfinished"></translation>
+        <translation>Format for linier (id=&gt;id)</translation>
     </message>
     <message>
         <location filename="reiddialog.cpp" line="213"/>
         <source>Unable to extract ids from line</source>
-        <translation type="unfinished"></translation>
+        <translation>Kunne ikke udtrække id&apos;er fra linie</translation>
     </message>
     <message>
         <location filename="reiddialog.cpp" line="214"/>
         <source>&lt;p&gt;The following line&lt;/p&gt;&lt;p&gt;&lt;tt&gt;%1: %2&lt;/tt&gt;&lt;/p&gt;&lt;p&gt;did not match the pattern &apos;%3&apos;. No changes have been committed. Aborting.</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Den følgende linie&lt;/p&gt;&lt;p&gt;&lt;tt&gt;%1: %2&lt;/tt&gt;&lt;/p&gt;&lt;p&gt;matchede ikke mønsteret &apos;%3&apos;. Ingen ændringer er blevet skrevet til databasen. Afbryder.</translation>
     </message>
     <message>
         <location filename="reiddialog.cpp" line="228"/>
         <source>Duplicate item id change found</source>
-        <translation type="unfinished"></translation>
+        <translation>Dobbelt id ændring for genstand fundet</translation>
     </message>
     <message>
         <location filename="reiddialog.cpp" line="229"/>
         <source>The id &apos;%1&apos; was present in the file more than once. This is not allowed. No changes committed. Aborting.</source>
-        <translation type="unfinished"></translation>
+        <translation>Id &apos;%1&apos; optrådte i filen mere end een gang. Dette er ikke tilladt. Ingen ændringer skrevet til databasen. Afbryder.</translation>
     </message>
     <message>
         <location filename="reiddialog.cpp" line="237"/>
         <source>&lt;p&gt;The item with id &apos;%1&apos; does not exist in the database, but this line indicated a id change from this id.&lt;/p&gt;&lt;p&gt;&lt;tt&gt;%2: %3&lt;/tt&gt;&lt;/p&gt;&lt;p&gt;No changes committed. Aborting.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Genstanden med id &apos;%1&apos; eksisterer ikke i databsen, men denne linie indikerede en id ændring fra dette id.&lt;/p&gt;&lt;p&gt;&lt;tt&gt;%2: %3&lt;/tt&gt;&lt;/p&gt;&lt;p&gt;Ingen ændringer skrevet til databasen. Afbryder.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="reiddialog.cpp" line="245"/>
         <source>&lt;p&gt;The item with id &apos;%1&apos; already exist in the database, but this line indicated an id change to this id.&lt;/p&gt;&lt;p&gt;&lt;tt&gt;%2: %3&lt;/tt&gt;&lt;/p&gt;&lt;p&gt;No changes committed. Aborting.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Genstanden med id &apos;%1&apos; eksisterer allrede i databasen, men denne linie indikerer en id ændring til dette id.&lt;/p&gt;&lt;p&gt;&lt;tt&gt;%2: %3&lt;/tt&gt;&lt;/p&gt;&lt;p&gt;Ingen ændringer skrevet til databasen. Afbryder.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="reiddialog.cpp" line="263"/>
         <source>Failure during changing of id</source>
-        <translation type="unfinished"></translation>
+        <translation>Fejl under ændring af id</translation>
     </message>
     <message>
         <location filename="reiddialog.cpp" line="264"/>
         <source>Some kind of error happened, while trying to change the id of item &apos;%1&apos; to id &apos;%2&apos;. This, and all changes following this in the file, have not been written to the database. When you close this dialog, a message describing the error will appear.</source>
-        <translation type="unfinished"></translation>
+        <translation>Der skete en fejl, da id for genstand &apos;%1&apos; skulle ændres til &apos;%2&apos;. Denne, og alle ændringer der følger efter denne i filen, er ikke skrevet til databasen. Når du lukker denne dialog, vil der komme en besked der beskriver fejlen.</translation>
     </message>
     <message>
         <location filename="reiddialog.cpp" line="270"/>
         <source>All changes committed</source>
-        <translation type="unfinished"></translation>
+        <translation>Alle ændringer skrevet til databasen</translation>
     </message>
     <message>
         <location filename="reiddialog.cpp" line="271"/>
         <source>All %1 changes of ids succesfully committed to the database.</source>
-        <translation type="unfinished"></translation>
+        <translation>Alle %1 ændringer af id&apos;er er opdateret med success i databasen.</translation>
     </message>
 </context>
 <context>
@@ -1401,7 +1401,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="rentdialog.ui" line="35"/>
         <source>Is &amp;member</source>
-        <translation type="unfinished"></translation>
+        <translation>Er &amp;medlem</translation>
     </message>
     <message>
         <location filename="rentdialog.ui" line="42"/>
