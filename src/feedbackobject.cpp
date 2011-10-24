@@ -67,7 +67,7 @@ void FeedbackObject::itemAdded() const {
 
 void FeedbackObject::itemReturned() const {
     Logger log("FeedbackObject::itemReturned()");
-    if ( m_sound_item_added ) {
+    if ( m_sound_item_added ) { // TODO: Change...
         m_sound_item_added->play();
     }
 }
@@ -76,5 +76,12 @@ void FeedbackObject::hirerSet() const {
     Logger log("FeedbackObject::hirerSet()");
     if ( m_sound_hirer_set ) {
         m_sound_hirer_set->play();
+    }
+}
+
+void FeedbackObject::itemScanned() const {
+    Logger log("FeedbackObject::itemScanned()");
+    if ( m_sound_item_added ) { // TODO: Change...
+        m_sound_item_added->play();
     }
 }

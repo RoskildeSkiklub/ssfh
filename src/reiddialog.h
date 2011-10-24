@@ -32,6 +32,9 @@ private slots:
 
     void on_input_loadFile_pushButton_clicked();
 
+signals:
+    void item_scanned();
+
 private:
     Ui::ReIdDialog *ui;
 

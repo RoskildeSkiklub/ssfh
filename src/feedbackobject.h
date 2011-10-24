@@ -38,7 +38,7 @@ public slots:
     /** \brief The sound of an hirer set on a contract */
     void hirerSet() const;
     /** \brief The sound of an item scanned (general version of added, really) */
-
+    void itemScanned() const;
 };
 
 #endif // FEEDBACKOBJECT_H

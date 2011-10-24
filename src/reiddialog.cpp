@@ -40,9 +40,9 @@ ReIdDialog::ReIdDialog(QWidget *parent) :
     connect( Globals::interceptor, SIGNAL(barcodeItemScan(QString)),
              this, SLOT(scan_item(QString) ) );
     //! \todo Provide audio feedback when returning/adding items
-    /* \todo: connect(this, SIGNAL(item_returned()),
-            Globals::getFeedbackObject(), SLOT(itemReturned()));
-    connect(this, SIGNAL(item_added()),
+    connect(this, SIGNAL(item_scanned()),
+            Globals::getFeedbackObject(), SLOT(itemScanned()));
+    /* connect(this, SIGNAL(item_added()),
             Globals::getFeedbackObject(), SLOT(itemAdded())); */
 }
 
@@ -86,15 +86,15 @@ void ReIdDialog::scan_item(const QString &item_id) {
         // Insert into rentItem and do the swap.
         ui->input_toId_lineEdit->setText( item_id );
         //! \todo
-        // rentItemSet();
-        // emit item_added();
+        doReId();
+        emit item_scanned();
     } else {
         log.stream() << "fromId is writeable, inputting stuff into fromId";
         // Into returnItem, and try to return
         ui->input_fromId_lineEdit->setText( item_id );
         //! \todo
         fromIdSet();
-        // emit item_returned();
+        emit item_scanned();
     }
 }
 
