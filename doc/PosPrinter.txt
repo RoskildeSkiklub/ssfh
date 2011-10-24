@@ -12,4 +12,9 @@ It is assumed the user has write access to the device the printer is
 connected to. This will most often be /dev/usb/lp0. 
 
 The easiest way is probably to have the user be a member of the "lp"
-group, which in most Linux distros will have write access to line printers.
+group, which in most Linux distros will have write access to line
+printers.
+
+For the user foobard, do
+sudo usermod -a -G lp foobard
+foobar may have to log out and log in again to enable the changes.
