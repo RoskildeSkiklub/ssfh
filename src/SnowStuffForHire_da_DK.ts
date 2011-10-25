@@ -683,8 +683,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="mainwindow.ui" line="53"/>
-        <source>Re&amp;turn</source>
-        <oldsource>Rent</oldsource>
+        <source>Ret&amp;urn</source>
+        <oldsource>Re&amp;turn</oldsource>
         <translation>&amp;Returner</translation>
     </message>
     <message>
@@ -694,7 +694,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="mainwindow.ui" line="40"/>
-        <source>&amp;Swap</source>
+        <source>S&amp;wap</source>
+        <oldsource>&amp;Swap</oldsource>
         <translation>&amp;Ombyt</translation>
     </message>
     <message>

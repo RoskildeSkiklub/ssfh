@@ -37,7 +37,7 @@
        </size>
       </property>
       <property name="text">
-       <string>&amp;Swap</string>
+       <string>S&amp;wap</string>
       </property>
      </widget>
     </item>
@@ -50,7 +50,7 @@
        </size>
       </property>
       <property name="text">
-       <string>Re&amp;turn</string>
+       <string>Ret&amp;urn</string>
       </property>
      </widget>
     </item>
