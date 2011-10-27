@@ -89,6 +89,7 @@
      <string>&amp;Tools</string>
     </property>
     <addaction name="action_Print_Command_Sheet"/>
+    <addaction name="actionPrint_Item_Barcodes"/>
    </widget>
    <widget class="QMenu" name="menu_Contract">
     <property name="title">
@@ -187,6 +188,11 @@
   <action name="action_Reid_items">
    <property name="text">
     <string>&amp;Reid items...</string>
+   </property>
+  </action>
+  <action name="actionPrint_Item_Barcodes">
+   <property name="text">
+    <string>Print Item &amp;Barcodes...</string>
    </property>
   </action>
  </widget>

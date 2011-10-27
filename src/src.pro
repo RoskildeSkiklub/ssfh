@@ -36,7 +36,8 @@ SOURCES += main.cpp \
     creditcard.cpp \
     feedbackobject.cpp \
     swapdialog.cpp \
-    reiddialog.cpp
+    reiddialog.cpp \
+    printiddialog.cpp
 HEADERS += mainwindow.h \
     rentdialog.h \
     stockdialog.h \
@@ -67,7 +68,8 @@ HEADERS += mainwindow.h \
     creditcard.h \
     feedbackobject.h \
     swapdialog.h \
-    reiddialog.h
+    reiddialog.h \
+    printiddialog.h
 FORMS += mainwindow.ui \
     rentdialog.ui \
     stockdialog.ui \
@@ -81,7 +83,8 @@ FORMS += mainwindow.ui \
     selectcontractdialog.ui \
     checksetupdialog.ui \
     swapdialog.ui \
-    reiddialog.ui
+    reiddialog.ui \
+    printiddialog.ui
 TRANSLATIONS = SnowStuffForHire_da_DK.ts
 
 # Keep moc and stuff out of the way - if possible

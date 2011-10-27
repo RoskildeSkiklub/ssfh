@@ -40,6 +40,7 @@ private:
     void showContractsDialog( const QString & state ) const;
     void showSwapDialog() const;
     void showReIdDialog() const;
+    void showPrintIdDialog() const;
 
     /** \brief Pointer to statusbar db label
       *
@@ -73,6 +74,8 @@ private slots:
     void on_magSwipeFailure();
 
     void on_action_Reid_items_triggered();
+
+    void on_actionPrint_Item_Barcodes_triggered();
 
 public slots:
     void on_barcodeCommandScan( const Globals::BarcodeCommands::Command & command );

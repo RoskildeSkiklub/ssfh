@@ -22,6 +22,7 @@
 #include "checksetupdialog.h"
 #include "swapdialog.h"
 #include "reiddialog.h"
+#include "printiddialog.h"
 
 // App
 #include "log.h"
@@ -178,6 +179,14 @@ void MainWindow::showReIdDialog() const {
     log.stream() << "Displaying ReIdDialog";
     ReIdDialog reIdDialog;
     reIdDialog.exec();
+    updateDbStatusDisplay();
+}
+
+void MainWindow::showPrintIdDialog() const {
+    Logger log( "void MainWindow::showPrintIdDialog() const" );
+    log.stream() << "Displaying PrintIdDialog";
+    PrintIdDialog printIdDialog;
+    printIdDialog.exec();
     updateDbStatusDisplay();
 }
 
@@ -379,4 +388,10 @@ void MainWindow::on_action_Reid_items_triggered()
 {
     Logger log( "void MainWindow::on_action_Reid_items_triggered()" );
     showReIdDialog();
+}
+
+void MainWindow::on_actionPrint_Item_Barcodes_triggered()
+{
+    Logger log("void MainWindow::on_actionPrint_Item_Barcodes_triggered()");
+    showPrintIdDialog();
 }
