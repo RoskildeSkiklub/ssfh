@@ -16,12 +16,16 @@ public:
     ~PrintIdDialog();
 
 private slots:
-    void on_buttonBox_accepted();
+    void on_buttonBox_accepted(); // Print
+    void on_buttonBox_rejected(); // Close
 
-    void on_buttonBox_rejected();
+    void on_input_itemIds_plainTextEdit_textChanged();
 
 private:
     Ui::PrintIdDialog *ui;
+
+    /** \brief Do the actual print */
+    bool doPrint() const;
 };
 
 #endif // PRINTIDDIALOG_H
