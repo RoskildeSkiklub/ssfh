@@ -281,9 +281,10 @@ void RentDialog::finish() {
         if ( Globals::checkPosPrinter() ) {
             Pos::Printer & posp( Globals::getPosPrinter() );
             // The receipt the customer needs to sign
+            /* This has been disabled, as we really do not use it for anything.
             posp.startReceipt();
             m_contract.printRental( posp );
-            posp.endReceipt();
+            posp.endReceipt(); */
 
             // The receipt for the customer
             posp.startReceipt();
