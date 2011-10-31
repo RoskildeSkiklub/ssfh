@@ -77,6 +77,8 @@ private slots:
 
     void on_actionPrint_Item_Barcodes_triggered();
 
+    void on_action_Active_Contracts_triggered();
+
 public slots:
     void on_barcodeCommandScan( const Globals::BarcodeCommands::Command & command );
 };

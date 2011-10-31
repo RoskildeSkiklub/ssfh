@@ -233,17 +233,25 @@ void MainWindow::showMassStateChangeDialog() const {
 void MainWindow::showContractsDialog(const QString &state) const {
     Logger log("void MainWindow::showContractsDialog(const QString &state) const");
     log.stream() << "Wants to show contracts of type '" << state << "'";
-    if ( state != DB::Contract::State::parked ) {
+    if ( state != DB::Contract::State::parked &&
+         state != DB::Contract::State::active ) {
         throw Exception( Errors::InternalError )
-                << (log.stream( error ) << "Can only show contracts with state 'parked'");
+                << (log.stream( error )
+                    << "Can not show contracts with state '" << state << "'");
     }
-    SelectContractDialog scd( state );
-    // TODO: React to this stuff here...
-    if ( QDialog::Accepted == scd.exec() && scd.getContractId() != -1 ) {
-        log.stream() << "Displaying rentDialog";
-        RentDialog rentDialog;
-        rentDialog.useParkedContract( scd.getContractId() );
-        rentDialog.exec();
+    if ( state == DB::Contract::State::parked ) {
+        SelectContractDialog scd( state );
+        // TODO: React to this stuff here...
+        if ( QDialog::Accepted == scd.exec() && scd.getContractId() != -1 ) {
+            log.stream() << "Displaying rentDialog";
+            RentDialog rentDialog;
+            rentDialog.useParkedContract( scd.getContractId() );
+            rentDialog.exec();
+        }
+    }
+    if ( state == DB::Contract::State::active ) {
+        SelectContractDialog scd( state );
+        scd.exec();
     }
     updateDbStatusDisplay();
 }
@@ -394,4 +402,10 @@ void MainWindow::on_actionPrint_Item_Barcodes_triggered()
 {
     Logger log("void MainWindow::on_actionPrint_Item_Barcodes_triggered()");
     showPrintIdDialog();
+}
+
+void MainWindow::on_action_Active_Contracts_triggered()
+{
+    Logger log( "void MainWindow::on_action_Active_Contracts_triggered()" );
+    showContractsDialog( DB::Contract::State::active );
 }

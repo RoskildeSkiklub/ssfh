@@ -96,6 +96,7 @@
      <string>&amp;Contracts</string>
     </property>
     <addaction name="action_Parked_Contracts"/>
+    <addaction name="action_Active_Contracts"/>
    </widget>
    <widget class="QMenu" name="menu_Help">
     <property name="title">
@@ -169,7 +170,7 @@
   </action>
   <action name="action_Parked_Contracts">
    <property name="text">
-    <string>&amp;Parked Contracts</string>
+    <string>&amp;Parked Contracts...</string>
    </property>
   </action>
   <action name="action_About">
@@ -193,6 +194,11 @@
   <action name="actionPrint_Item_Barcodes">
    <property name="text">
     <string>Print Item &amp;Barcodes...</string>
+   </property>
+  </action>
+  <action name="action_Active_Contracts">
+   <property name="text">
+    <string>&amp;Active Contracts...</string>
    </property>
   </action>
  </widget>
