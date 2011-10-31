@@ -117,6 +117,7 @@ contractitem for den i kontrakt 2, ikke er OK.
 
 Det kan jo heldigvis laves om til en unittest....
   */
+// Regression test for bug related to returning all.
 void ContractTest::regression_returnAll() {
     Log::Logger log( "void ContractTest::regression_returnAll()" );
     UnitTestDB::resetDB( "ContractTest_regression_returnAll" );
