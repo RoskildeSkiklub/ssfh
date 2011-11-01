@@ -256,7 +256,7 @@
          <item>
           <widget class="QPushButton" name="pushButton_use">
            <property name="text">
-            <string>Add/U&amp;se</string>
+            <string>Add/&amp;Use</string>
            </property>
           </widget>
          </item>
