@@ -134,9 +134,10 @@ void SwapDialog::returnItemSet() {
                 << m_contract.getId()
                 << "'";
         ui->output_contract_textBrowser->setText( m_contract.toReturnHtml() );
-        // Lock fields
+        // Lock fields and change focus to rent line edit.
         ui->input_returnItem_lineEdit->setReadOnly( true );
         ui->input_lookup_pushButton->setEnabled( false );
+        ui->input_rentItem_lineEdit->setFocus();
     }
     ui->buttonBox->button( QDialogButtonBox::Ok )->setEnabled( ui->input_returnItem_lineEdit->isReadOnly() && !ui->input_rentItem_lineEdit->text().isEmpty() );
 }
