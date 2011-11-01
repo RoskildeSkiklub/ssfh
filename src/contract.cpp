@@ -663,7 +663,12 @@ void Contract::printReceipt(Pos::Printer &posPrinter) {
 void Contract::printReturn(Pos::Printer &posPrinter) {
     Logger log("void Contract::printReturn(Pos::Printer &posPrinter)");
     log.stream() << "Contract with id '" << m_id << "'";
-    checkInClosedState( "void Contract::printReturn" );
+    // Warn if called for other than closed (true return) or active (probably swap).
+    if ( m_state != DB::Contract::State::closed
+            && m_state != DB::Contract::State::active ) {
+        log.stream( warn ) << "Contract::printReturn called with contract in unexpected state: '"
+                           << m_state << "'";
+    }
     printGeneralReceipt( posPrinter, ReturnReceipt );
 }
 
