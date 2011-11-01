@@ -222,7 +222,9 @@ void Contract::returnAll() {
     QList<ContractItem>::const_iterator cii;
     // TODO: I am not entirely sure this is stable..
     for ( cii = m_contractItems.begin(); cii != m_contractItems.end(); ++cii ) {
-        if ( cii->getItem().getState() == DB::Item::State::out ) {
+        // Used to be a pretty nasty bug here, seee ContractText::regression_returnAll()
+        // if ( cii->getItem().getState() == DB::Item::State::out ) {
+        if ( cii->getState() == DB::ContractItem::State::out ) {
             log.stream() << "Item with id '" << cii->getItem().getId()
                     << "' is returnable. Trying to return it, for contract with id '" << m_id << "'";
             returnItem( cii->getItem().getId() );

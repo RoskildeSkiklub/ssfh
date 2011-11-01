@@ -172,10 +172,10 @@ void ContractTest::regression_returnAll() {
         Contract contract2 = Contract::db_load( 2 );
         QCOMPARE( contract2.getState(), DB::Contract::State::active );
         contract2.returnAll();
-        QSKIP("THIS TEST IS CURRENTLY DISABLED", SkipAll);
+        // QSKIP("THIS TEST IS CURRENTLY DISABLED", SkipAll);
         QCOMPARE( contract2.hasReturnableItems(), false );
     }
 
-    QVERIFY2( false, "Just to make sure it keeps failing - remove when check is OK." );
+    // QVERIFY2( false, "Just to make sure it keeps failing - remove when check is OK." );
 }
 
