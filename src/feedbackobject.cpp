@@ -6,7 +6,6 @@
 #include <QDir>
 #include <QFile>
 
-
 // App
 #include "log.h"
 
@@ -16,7 +15,7 @@ using namespace Log;
 //TODO This may leak files - but who cares... (valgrind does).
 
 FeedbackObject::FeedbackObject(QObject *parent) :
-    QObject(parent), m_sound_item_added( 0 ), m_sound_hirer_set( 0 )
+    QObject(parent), m_media_object( 0 )
 {
     Logger log( "FeedbackObject::FeedbackObject(QObject *parent)");
     log.stream() << "Copying sounds to temporary dir";
@@ -26,75 +25,69 @@ FeedbackObject::FeedbackObject(QObject *parent) :
         log.stream( error ) << "Unable to create directory for sounds - no sound support";
         return;
     }
-    QString targetDir = QDir::tempPath() + QDir::separator() + "ssfhsounds" + QDir::separator();
+    QString targetDir = QDir::tempPath() + QDir::separator()
+            + "ssfhsounds" + QDir::separator();
 
     // Copy all ressources
     log.stream() <<  "Creating sound objects";
-    addSound( "item_added.wav", targetDir, &m_sound_item_added );
-    addSound( "hirer_set.wav", targetDir, &m_sound_hirer_set );
-    connect( m_sound_item_added, SIGNAL(finished()), this, SLOT(testme()));
+    // Setup the media object - set actual sounds later.
+    m_media_object
+            = createPlayer( NotificationCategory );
 
+    // Map EventTypes to file names.
+    eventToFilename[ItemAdded]    = addSound( "item_added.wav", targetDir );
+    eventToFilename[ItemReturned] = addSound( "item_added.wav", targetDir );
+    eventToFilename[HirerSet]     = addSound( "hirer_set.wav", targetDir );
+    eventToFilename[ItemScanned]  = addSound( "item_added.wav", targetDir );
 }
 
-void FeedbackObject::addSound(const QString &ressourceName, const QString &targetDir,
-                              Phonon::MediaObject **media_object) {
+QString FeedbackObject::addSound(const QString &ressourceName, const QString &targetDir ) {
     Logger log("void FeedbackObject::addSound(QString ressourceName)");
     log.stream() << "Trying to add sound from ressource sounds/'" << ressourceName
             << "' to targetDir '" << targetDir << "'";
     QString targetFile = targetDir + QDir::separator() + ressourceName;
     if ( QFile::exists( targetFile )
         || QFile::copy( QString( ":sounds/%0" ).arg( ressourceName ), targetFile ) ) {
-        log.stream() << "Adding sound '" << ressourceName << "' as a MediaSource";
-        *media_object
-                = createPlayer( NotificationCategory, MediaSource( targetFile ) );
-        // This really is a bug, somewhere....
-        // (*media_object)->play();
+        log.stream() << "Adding sound '" << ressourceName << "'";
+        return targetFile;
     }
+    return "";
 }
-
-void FeedbackObject::testme() {
-    Logger log( "void FeedbackObject::testme()" );
-    // m_sound_item_added->seek(0);
-}
-
 
 FeedbackObject::~FeedbackObject() {
     Logger log("FeedbackObject::~FeedbackObject()");
-    delete m_sound_item_added;
-    m_sound_item_added = 0;
-    delete m_sound_hirer_set;
-    m_sound_hirer_set = 0;
+    delete m_media_object;
+    m_media_object = 0;
 }
+
+void FeedbackObject::eventTriggered(const EventType &type) const {
+    Logger log("void FeedbackObject::eventTriggered(EventType &type)");
+    if ( m_media_object ) {
+        m_media_object->setCurrentSource( MediaSource( eventToFilename[type]) );
+        m_media_object->play();
+    } else {
+        log.stream( warn ) << "No media object, not playing sounds";
+    }
+}
+
+// Below here should go at some point, really.
 
 void FeedbackObject::itemAdded() const {
     Logger log("FeedbackObject::itemAdded()");
-    if ( m_sound_item_added ) {
-        log.stream() << "Playing sound";
-        m_sound_item_added->setCurrentSource( MediaSource( "/tmp/ssfhsounds/item_added.wav") );
-        // m_sound_item_added->seek(0);
-        m_sound_item_added->play();
-    } else {
-        log.stream() << "Not playing sound... ";
-    }
+    eventTriggered( ItemAdded );
 }
 
 void FeedbackObject::itemReturned() const {
     Logger log("FeedbackObject::itemReturned()");
-    if ( m_sound_item_added ) { // TODO: Change...
-        m_sound_item_added->play();
-    }
+    eventTriggered( ItemReturned );
 }
 
 void FeedbackObject::hirerSet() const {
     Logger log("FeedbackObject::hirerSet()");
-    if ( m_sound_hirer_set ) {
-        m_sound_hirer_set->play();
-    }
+    eventTriggered( HirerSet );
 }
 
 void FeedbackObject::itemScanned() const {
     Logger log("FeedbackObject::itemScanned()");
-    if ( m_sound_item_added ) { // TODO: Change...
-        m_sound_item_added->play();
-    }
+    eventTriggered( ItemScanned );
 }
