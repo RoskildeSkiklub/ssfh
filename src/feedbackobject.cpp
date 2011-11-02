@@ -32,6 +32,8 @@ FeedbackObject::FeedbackObject(QObject *parent) :
     log.stream() <<  "Creating sound objects";
     addSound( "item_added.wav", targetDir, &m_sound_item_added );
     addSound( "hirer_set.wav", targetDir, &m_sound_hirer_set );
+    connect( m_sound_item_added, SIGNAL(finished()), this, SLOT(testme()));
+
 }
 
 void FeedbackObject::addSound(const QString &ressourceName, const QString &targetDir,
@@ -46,9 +48,15 @@ void FeedbackObject::addSound(const QString &ressourceName, const QString &targe
         *media_object
                 = createPlayer( NotificationCategory, MediaSource( targetFile ) );
         // This really is a bug, somewhere....
-        (*media_object)->play();
+        // (*media_object)->play();
     }
 }
+
+void FeedbackObject::testme() {
+    Logger log( "void FeedbackObject::testme()" );
+    // m_sound_item_added->seek(0);
+}
+
 
 FeedbackObject::~FeedbackObject() {
     Logger log("FeedbackObject::~FeedbackObject()");
@@ -61,7 +69,12 @@ FeedbackObject::~FeedbackObject() {
 void FeedbackObject::itemAdded() const {
     Logger log("FeedbackObject::itemAdded()");
     if ( m_sound_item_added ) {
+        log.stream() << "Playing sound";
+        m_sound_item_added->setCurrentSource( MediaSource( "/tmp/ssfhsounds/item_added.wav") );
+        // m_sound_item_added->seek(0);
         m_sound_item_added->play();
+    } else {
+        log.stream() << "Not playing sound... ";
     }
 }
 

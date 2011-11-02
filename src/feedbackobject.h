@@ -28,6 +28,11 @@ public:
     explicit FeedbackObject(QObject *parent = 0);
     ~FeedbackObject();
 
+// Testing.
+private slots:
+    void testme();
+
+
 signals:
 
 public slots:
