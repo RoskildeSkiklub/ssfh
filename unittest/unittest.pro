@@ -16,6 +16,8 @@ HEADERS += AutoTest.h itemtest.h \
     utilitytest.h \
     unittest_utilities.h
 
+QMAKE_CLEAN+=*.db *.log
+
 LIBS += ../src/objs/item.o \
 ../src/objs/log.o \
 ../src/objs/db_consts.o \
