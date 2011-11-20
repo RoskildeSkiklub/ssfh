@@ -93,23 +93,6 @@
         <translation>List over tilføjelser</translation>
     </message>
     <message>
-        <location filename="addnewitemdialog.ui" line="234"/>
-        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:7pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;table border=&quot;0&quot; style=&quot;-qt-table-type: root; margin-top:4px; margin-bottom:4px; margin-left:4px; margin-right:4px;&quot;&gt;
-&lt;tr&gt;
-&lt;td style=&quot;border: none;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="addnewitemdialog.cpp" line="155"/>
         <source>&lt;b&gt;Added item: &lt;/b&gt;</source>
         <translation>&lt;b&gt;Tilføjede artikel: &lt;/b&gt;</translation>
@@ -125,7 +108,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="checksetupdialog.ui" line="23"/>
         <source>Dialog</source>
-        <translation type="unfinished">Dialog</translation>
+        <translation>Dialog</translation>
     </message>
     <message>
         <location filename="checksetupdialog.ui" line="38"/>
@@ -157,159 +140,159 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>Contract</name>
     <message>
-        <location filename="contract.cpp" line="579"/>
+        <location filename="contract.cpp" line="581"/>
         <source>Hirer information</source>
         <translation>Information om lejer</translation>
     </message>
     <message>
-        <location filename="contract.cpp" line="581"/>
+        <location filename="contract.cpp" line="583"/>
         <source>Please add a hirer by swiping an id card.</source>
         <translation>Tilføj venligst en lejer ved at scanne et sundhedskort.</translation>
     </message>
     <message>
-        <location filename="contract.cpp" line="587"/>
+        <location filename="contract.cpp" line="589"/>
         <source>Duration of contract</source>
         <translation>Varighed af lejeaftale</translation>
     </message>
     <message>
-        <location filename="contract.cpp" line="588"/>
+        <location filename="contract.cpp" line="590"/>
         <source>Hand out: </source>
         <translation>Udleveres: </translation>
     </message>
     <message>
-        <location filename="contract.cpp" line="589"/>
+        <location filename="contract.cpp" line="591"/>
         <source>Return no later than: </source>
         <translation>Returneres ikke senere end: </translation>
     </message>
     <message>
-        <location filename="contract.cpp" line="592"/>
+        <location filename="contract.cpp" line="594"/>
         <source>Items in contract</source>
         <translation>Genstande i lejeaftale</translation>
     </message>
     <message>
-        <location filename="contract.cpp" line="594"/>
+        <location filename="contract.cpp" line="596"/>
         <source>Please add items by scanning barcodes on the items.</source>
         <translation>Tilføj venligst genstande ved at scanne stregkoder på genstandene.</translation>
     </message>
     <message>
-        <location filename="contract.cpp" line="615"/>
+        <location filename="contract.cpp" line="617"/>
         <source>Count of types in contract</source>
         <translation>Antal genstande i aftale</translation>
     </message>
     <message>
-        <location filename="contract.cpp" line="622"/>
+        <location filename="contract.cpp" line="624"/>
         <source>Totals</source>
         <translation>Totaler</translation>
     </message>
     <message>
-        <location filename="contract.cpp" line="625"/>
-        <location filename="contract.cpp" line="790"/>
-        <location filename="contract.cpp" line="792"/>
+        <location filename="contract.cpp" line="627"/>
+        <location filename="contract.cpp" line="797"/>
+        <location filename="contract.cpp" line="799"/>
         <source>Total</source>
         <translation>Total</translation>
     </message>
     <message>
-        <location filename="contract.cpp" line="628"/>
+        <location filename="contract.cpp" line="630"/>
         <source>Discount</source>
         <translation>Rabat</translation>
     </message>
     <message>
-        <location filename="contract.cpp" line="632"/>
+        <location filename="contract.cpp" line="634"/>
         <source>Payed</source>
         <translation>Betalt</translation>
     </message>
     <message>
-        <location filename="contract.cpp" line="635"/>
+        <location filename="contract.cpp" line="637"/>
         <source>Payable amount</source>
         <translation>Skyldigt beløb</translation>
     </message>
     <message>
-        <location filename="contract.cpp" line="640"/>
+        <location filename="contract.cpp" line="642"/>
         <source>Note</source>
         <translation>Note</translation>
     </message>
     <message>
-        <location filename="contract.cpp" line="687"/>
+        <location filename="contract.cpp" line="694"/>
         <source>Rental Agreement</source>
         <translation>Lejeafatale</translation>
     </message>
     <message>
-        <location filename="contract.cpp" line="688"/>
+        <location filename="contract.cpp" line="695"/>
         <source>Rental Receipt</source>
         <translation>Lejekvittering</translation>
     </message>
     <message>
-        <location filename="contract.cpp" line="689"/>
+        <location filename="contract.cpp" line="696"/>
         <source>Return Receipt</source>
         <translation>Afleveringskvittering</translation>
     </message>
     <message>
-        <location filename="contract.cpp" line="704"/>
-        <location filename="contract.cpp" line="709"/>
+        <location filename="contract.cpp" line="711"/>
+        <location filename="contract.cpp" line="716"/>
         <source>Contract id</source>
         <translation>Lejeaftale nr.</translation>
     </message>
     <message>
-        <location filename="contract.cpp" line="705"/>
-        <location filename="contract.cpp" line="711"/>
+        <location filename="contract.cpp" line="712"/>
+        <location filename="contract.cpp" line="718"/>
         <source>Time</source>
         <translation>Tidspunkt</translation>
     </message>
     <message>
-        <location filename="contract.cpp" line="706"/>
         <location filename="contract.cpp" line="713"/>
+        <location filename="contract.cpp" line="720"/>
         <source>Rental time</source>
         <translation>Udlejes</translation>
     </message>
     <message>
-        <location filename="contract.cpp" line="707"/>
-        <location filename="contract.cpp" line="718"/>
+        <location filename="contract.cpp" line="714"/>
+        <location filename="contract.cpp" line="725"/>
         <source>Due back</source>
         <translation>Afleveres</translation>
     </message>
     <message>
-        <location filename="contract.cpp" line="725"/>
+        <location filename="contract.cpp" line="732"/>
         <source>Hirer id : </source>
         <translation>Lejer nr. : </translation>
     </message>
     <message>
-        <location filename="contract.cpp" line="728"/>
+        <location filename="contract.cpp" line="735"/>
         <source>Hirer:</source>
         <translation>Lejer:</translation>
     </message>
     <message>
-        <location filename="contract.cpp" line="741"/>
+        <location filename="contract.cpp" line="748"/>
         <source>Items:</source>
         <translation>Genstande:</translation>
     </message>
     <message>
-        <location filename="contract.cpp" line="775"/>
+        <location filename="contract.cpp" line="782"/>
         <source>Count </source>
         <translation>Antal </translation>
     </message>
     <message>
-        <location filename="contract.cpp" line="785"/>
+        <location filename="contract.cpp" line="792"/>
         <source>Some items not returned</source>
         <translation>Nogle genstande ikke afleveret</translation>
     </message>
     <message>
-        <location filename="contract.cpp" line="787"/>
+        <location filename="contract.cpp" line="794"/>
         <source>All items returned</source>
         <translation>Alle genstande afleveret</translation>
     </message>
     <message>
-        <location filename="contract.cpp" line="802"/>
+        <location filename="contract.cpp" line="809"/>
         <source>Thank you for visiting</source>
         <translation>Tak for besøget</translation>
     </message>
     <message>
-        <location filename="contract.cpp" line="804"/>
+        <location filename="contract.cpp" line="811"/>
         <source>Conditions available upon request</source>
         <translation>Vilkår udleveres på anmodning</translation>
     </message>
     <message>
-        <location filename="contract.cpp" line="813"/>
-        <location filename="contract.cpp" line="815"/>
+        <location filename="contract.cpp" line="820"/>
+        <location filename="contract.cpp" line="822"/>
         <source>Signature : </source>
         <translation>Underskrift : </translation>
     </message>
@@ -468,7 +451,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="hirerdialog.ui" line="259"/>
-        <source>Add/U&amp;se</source>
+        <source>Add/&amp;Use</source>
+        <oldsource>Add/U&amp;se</oldsource>
         <translation>Tilføj/&amp;Anvend</translation>
     </message>
     <message>
@@ -664,6 +648,11 @@ p, li { white-space: pre-wrap; }
         <translation>sendt til vedligehold</translation>
     </message>
     <message>
+        <location filename="db_consts.cpp" line="46"/>
+        <source>status</source>
+        <translation>status</translation>
+    </message>
+    <message>
         <location filename="db_consts.cpp" line="44"/>
         <source>returned</source>
         <translation>returneret</translation>
@@ -719,77 +708,86 @@ p, li { white-space: pre-wrap; }
         <translation>&amp;Aftaler</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="102"/>
+        <location filename="mainwindow.ui" line="103"/>
         <source>&amp;Help</source>
         <translation>&amp;Hjælp</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="120"/>
+        <location filename="mainwindow.ui" line="121"/>
         <source>&amp;Rent...</source>
         <translation>&amp;Udlej...</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="128"/>
+        <location filename="mainwindow.ui" line="129"/>
         <source>Re&amp;turn Items...</source>
         <translation>&amp;Returnér genstande...</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="141"/>
+        <location filename="mainwindow.ui" line="142"/>
         <source>&amp;Add items...</source>
         <translation>&amp;Tilføj genstande...</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="146"/>
+        <location filename="mainwindow.ui" line="147"/>
         <source>&amp;Hired Items...</source>
         <translation>&amp;Udlejede genstande...</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="154"/>
+        <location filename="mainwindow.ui" line="155"/>
         <source>&amp;Print Checklist...</source>
         <translation>Udskriv &amp;checkliste...</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="157"/>
+        <location filename="mainwindow.ui" line="158"/>
         <source>&amp;Print Checklist</source>
         <translation>Udskriv &amp;checkliste</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="162"/>
+        <location filename="mainwindow.ui" line="163"/>
         <source>&amp;Mass State Change...</source>
         <translation>&amp;Masseændring af tilstande...</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="167"/>
+        <location filename="mainwindow.ui" line="168"/>
         <source>&amp;Print Command Sheet</source>
         <translation>Udskriv &amp;kommandooversigt</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="172"/>
-        <source>&amp;Parked Contracts</source>
+        <location filename="mainwindow.ui" line="173"/>
+        <source>&amp;Parked Contracts...</source>
         <translation>&amp;Parkerede aftaler...</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="177"/>
+        <location filename="mainwindow.ui" line="201"/>
+        <source>&amp;Active Contracts...</source>
+        <translation>&amp;Aktive aftaler...</translation>
+    </message>
+    <message>
+        <source>&amp;Parked Contracts</source>
+        <translation type="obsolete">&amp;Parkerede aftaler...</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="178"/>
         <source>&amp;About</source>
         <translation>&amp;Om</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="182"/>
+        <location filename="mainwindow.ui" line="183"/>
         <source>&amp;Check Setup</source>
         <translation>&amp;Kontroller opsætning</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="185"/>
+        <location filename="mainwindow.ui" line="186"/>
         <source>Check Setup</source>
         <translation>Kontroller opsætning</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="190"/>
+        <location filename="mainwindow.ui" line="191"/>
         <source>&amp;Reid items...</source>
         <translation>&amp;Ændre id...</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="195"/>
+        <location filename="mainwindow.ui" line="196"/>
         <source>Print Item &amp;Barcodes...</source>
         <translation>Udskriv &amp;genstandsstregkoder...</translation>
     </message>
@@ -798,12 +796,12 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">&amp;Returner genstande</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="131"/>
+        <location filename="mainwindow.ui" line="132"/>
         <source>Return rented items</source>
         <translation>Return lejede genstande</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="136"/>
+        <location filename="mainwindow.ui" line="137"/>
         <source>E&amp;xit</source>
         <translation>&amp;Afslut</translation>
     </message>
@@ -816,7 +814,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">&amp;Udlejede genstande</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="149"/>
+        <location filename="mainwindow.ui" line="150"/>
         <source>Show all hired items</source>
         <translation>Vis alle udlejede genstande</translation>
     </message>
@@ -829,7 +827,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Returner</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="123"/>
+        <location filename="mainwindow.ui" line="124"/>
         <source>Rent Items</source>
         <oldsource>Inventory</oldsource>
         <translation>Lej genstande</translation>
@@ -866,57 +864,57 @@ p, li { white-space: pre-wrap; }
         <translation>&lt;b&gt;aftaler:&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="257"/>
+        <location filename="mainwindow.cpp" line="265"/>
         <source>Done</source>
         <translation>Afslut</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="261"/>
+        <location filename="mainwindow.cpp" line="269"/>
         <source>Open Rental Window</source>
         <translation>Udlejningsvindue</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="262"/>
+        <location filename="mainwindow.cpp" line="270"/>
         <source>Open Return Window</source>
         <translation>Returneringsvindue</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="278"/>
+        <location filename="mainwindow.cpp" line="286"/>
         <source>List of Barcode Commands</source>
         <translation>Liste af scanner kommandoer</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="292"/>
+        <location filename="mainwindow.cpp" line="300"/>
         <source>Command List printed</source>
         <translation>Liste af kommandoer udskrevet</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="293"/>
+        <location filename="mainwindow.cpp" line="301"/>
         <source>Command List Printed</source>
         <translation>Liste over kommandoer udskrevet</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="294"/>
+        <location filename="mainwindow.cpp" line="302"/>
         <source>Printed Command List to printer.</source>
         <translation>Udskrev kommandoliste til printer.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="352"/>
+        <location filename="mainwindow.cpp" line="360"/>
         <source>About SnowStuffForHire</source>
         <translation>Om SnowStuffForHire</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="353"/>
+        <location filename="mainwindow.cpp" line="361"/>
         <source>&lt;p&gt;Version: %0&lt;/p&gt;&lt;p&gt;Created by Mads Bondo Dydensborg&lt;/p&gt;&lt;p&gt;Mail: mads@dydensborg.dk&lt;/p&gt;&lt;p&gt;Phone: 29 84 00 42&lt;/p&gt;</source>
         <translation>&lt;p&gt;Version: %0&lt;/p&gt;&lt;p&gt;Lavet af Mads Bondo Dydensborg&lt;/p&gt;&lt;p&gt;Mail: mads@dydensborg.dk&lt;/p&gt;&lt;p&gt;Telefon: 29 84 00 42&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="366"/>
+        <location filename="mainwindow.cpp" line="374"/>
         <source>Exit application?</source>
         <translation>Afslut program?</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="367"/>
+        <location filename="mainwindow.cpp" line="375"/>
         <source>Are you sure you wish to exit?</source>
         <translation>Er du sikker på at du ønsker at afslutte programmet?</translation>
     </message>
@@ -1545,37 +1543,37 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Tilføj</translation>
     </message>
     <message>
-        <location filename="rentdialog.cpp" line="311"/>
+        <location filename="rentdialog.cpp" line="312"/>
         <source>Hirer already set</source>
         <translation>Lejer allerede tilknyttet</translation>
     </message>
     <message>
-        <location filename="rentdialog.cpp" line="311"/>
+        <location filename="rentdialog.cpp" line="312"/>
         <source>A hirer has already been set for this contract.</source>
         <translation>En lejer er allerede blevet tilknyttet denne lejeaftale.</translation>
     </message>
     <message>
-        <location filename="rentdialog.cpp" line="321"/>
+        <location filename="rentdialog.cpp" line="322"/>
         <source>Could not set hirer</source>
         <translation>Kunne ikke tilknytte lejer</translation>
     </message>
     <message>
-        <location filename="rentdialog.cpp" line="321"/>
+        <location filename="rentdialog.cpp" line="322"/>
         <source>Could not set hirer for contract</source>
         <translation>Kunne ikke tilknytte lejer til lejeaftale</translation>
     </message>
     <message>
-        <location filename="rentdialog.cpp" line="354"/>
+        <location filename="rentdialog.cpp" line="355"/>
         <source>Item not registered in database</source>
         <translation>Genstand ikke registreret i database</translation>
     </message>
     <message>
-        <location filename="rentdialog.cpp" line="355"/>
+        <location filename="rentdialog.cpp" line="356"/>
         <source>Item with id &apos;%0&apos; was not found in database. Unable to add to contract.</source>
         <translation>Genstanden med id &apos;%0&apos; kunne ikke findes i database. Kunne ikke tilføje genstand til lejeaftale.</translation>
     </message>
     <message>
-        <location filename="rentdialog.cpp" line="362"/>
+        <location filename="rentdialog.cpp" line="363"/>
         <source>The item is unavailable</source>
         <translation>Genstand ikke tilgængelig</translation>
     </message>
@@ -1584,20 +1582,20 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Genstanden med id &apos;%0&apos; er allerede tilføjet en anden lejeaftale. Kan ikke tilføjes til denne.</translation>
     </message>
     <message>
-        <location filename="rentdialog.cpp" line="292"/>
-        <location filename="rentdialog.cpp" line="295"/>
+        <location filename="rentdialog.cpp" line="293"/>
+        <location filename="rentdialog.cpp" line="296"/>
         <source>Contract created</source>
         <translation>Lejeaftale dannet</translation>
     </message>
     <message>
         <location filename="rentdialog.cpp" line="183"/>
-        <location filename="rentdialog.cpp" line="447"/>
+        <location filename="rentdialog.cpp" line="448"/>
         <source>Cancel Contract?</source>
         <translation>Annuler aftale?</translation>
     </message>
     <message>
         <location filename="rentdialog.cpp" line="184"/>
-        <location filename="rentdialog.cpp" line="448"/>
+        <location filename="rentdialog.cpp" line="449"/>
         <source>Are you sure you want to cancel the contract?</source>
         <translation>Er du sikker på at du vil annulere aftalen?</translation>
     </message>
@@ -1627,37 +1625,37 @@ p, li { white-space: pre-wrap; }
         <translation>Aktiver aftale</translation>
     </message>
     <message>
-        <location filename="rentdialog.cpp" line="293"/>
+        <location filename="rentdialog.cpp" line="294"/>
         <source>Contract created, printing receipt.</source>
         <translation>Lejeaftale dannet, udskriver kvittering.</translation>
     </message>
     <message>
-        <location filename="rentdialog.cpp" line="296"/>
+        <location filename="rentdialog.cpp" line="297"/>
         <source>Contract created. Unable to print receipt.</source>
         <translation>Kontrakt dannet. Kunne ikke udskrive kvittering.</translation>
     </message>
     <message>
-        <location filename="rentdialog.cpp" line="363"/>
+        <location filename="rentdialog.cpp" line="364"/>
         <source>The item with id &apos;%0&apos; is not marked as available in the system. It may be marked as part of another active contract, lost, discarded or similar. Would you like to cancel that status, and add it to this contract anyway?</source>
         <translation>Genstanden med id &apos;%0&apos; er ikke markeret som værende udlejningsklar. Den er muligvis udlejet på en anden aftale, booked, gået tabt, kasseret, eller lignende. Ønsker du at gøre genstanden tilgængelig og tilføje den til aftalen?</translation>
     </message>
     <message>
-        <location filename="rentdialog.cpp" line="433"/>
+        <location filename="rentdialog.cpp" line="434"/>
         <source>Set note for contract</source>
         <translation>Sæt note på aftale</translation>
     </message>
     <message>
-        <location filename="rentdialog.cpp" line="434"/>
+        <location filename="rentdialog.cpp" line="435"/>
         <source>&lt;b&gt;Current note&lt;/b&gt;</source>
         <translation>&lt;b&gt;Nuværende note&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="rentdialog.cpp" line="460"/>
+        <location filename="rentdialog.cpp" line="461"/>
         <source>Park Contract?</source>
         <translation>Parker aftale?</translation>
     </message>
     <message>
-        <location filename="rentdialog.cpp" line="461"/>
+        <location filename="rentdialog.cpp" line="462"/>
         <source>Are you sure you want to park the contract?</source>
         <translation>Er du sikker på at du ønsker at parkere aftalen?</translation>
     </message>
@@ -1853,18 +1851,18 @@ p, li { white-space: pre-wrap; }
         <translation>Kunne ikke finde en aktiv lejeaftale for genstanden med id &apos;%0&apos;. Brug vedligehold for at ændre genstandens tilstand.</translation>
     </message>
     <message>
-        <location filename="swapdialog.cpp" line="160"/>
-        <location filename="swapdialog.cpp" line="163"/>
+        <location filename="swapdialog.cpp" line="161"/>
+        <location filename="swapdialog.cpp" line="164"/>
         <source>Items swapped</source>
         <translation>Genstande ombyttet</translation>
     </message>
     <message>
-        <location filename="swapdialog.cpp" line="161"/>
+        <location filename="swapdialog.cpp" line="162"/>
         <source>Items swapped. Printing receipt.</source>
         <translation>Genstande ombyttet. Udskriver kvittering.</translation>
     </message>
     <message>
-        <location filename="swapdialog.cpp" line="164"/>
+        <location filename="swapdialog.cpp" line="165"/>
         <source>Items swapped. Unable to print receipt.</source>
         <translation>Genstande ombyttet. Kunne ikke udskrive kvittering.</translation>
     </message>
