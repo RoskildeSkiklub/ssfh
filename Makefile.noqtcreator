@@ -1,0 +1,17 @@
+# To build if you do not have qtcreator
+
+all:	runqmake updateschemas build unittest
+
+runqmake:
+	qmake
+
+updateschemas:
+	make -C schema
+
+build:	updateschemas
+	make -j4 
+
+unittest:	build
+	cd unittest && \
+	./unittest-wrapper.sh
+

@@ -16,7 +16,8 @@ MY_SOUNDFILES=critical_error.wav  error.wav  hirer_set.wav  item_added.wav
 MY_GUITESTFILES=guitest.odt reid-dialog/fail.test reid-dialog/ok.test
 MY_UNITTESTFILES=unittest-output-to-error.pl unittest-wrapper.sh
 DISTFILES = \
-    SnowStuffForHire.pro doc/doc.pro unittest/unittest.pro SnowStuffForHire.qrc common.pri make-dist.sh Makefile.l10n \
+    SnowStuffForHire.pro doc/doc.pro unittest/unittest.pro SnowStuffForHire.qrc common.pri \
+    make-dist.sh Makefile.l10n Makefile.noqtcreator \
     SnowStuffForHire.pro.user \
     $$join( MY_DOCFILES, " doc/", "doc/" ) \
     $$join( MY_GUITESTFILES, " guitest/", "guitest/" ) \
