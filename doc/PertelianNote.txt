@@ -1,0 +1,18 @@
+A note about getting the Pertelian to work with this project.
+
+First of all, one needs the development files installed on the system.
+These can be obtained from 
+http://developer.pertelian.com/
+A copy of a recent SDK is placed in the "extras" directory.
+(Bit unsure about License, I think it is GPL or similar).
+
+You need to install the SDK in order to compile support for the
+display into ssfh.
+
+** Linux
+
+The Linux SDK is embedded in the SDK zip file. It uses autoconf, and
+is easy to install.
+
+In order to configure, you should set up an udev rule, something like
+the example rule in this directory. (pertelian-display.rules)
