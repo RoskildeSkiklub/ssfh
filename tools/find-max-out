@@ -2,7 +2,13 @@
 
 # Script to find the max for a given set of item bins for a given day
 
-db_version = "46"
+# To find the relevant days, try something like this:
+# -- Figure out the days where some item was rented or returned
+# select distinct substr(time, 1, 10 ) from itemevents where event = 'returned';
+# Personal note: 2010-12-28 was the most busy day of all!
+
+
+db_version = "49"
 
 import sys, os, getopt, math
 from pysqlite2 import dbapi2 as sqlite3
