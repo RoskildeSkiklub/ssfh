@@ -1,3 +1,11 @@
+2011-11-21  Mads Bondo Dydensborg  <mads@dydensborg.dk>
+
+	* Release
+	Version 0.7.0 is equal to svn rev. 687
+
+	* Tools
+	Added tool to find the max out of a given type/size for a given day
+
 2010-12-18  Mads Bondo Dydensborg  <mads@dydensborg.dk>
 
         * Release
