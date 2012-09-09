@@ -9,6 +9,7 @@
 #include "log.h"
 #include "globals.h"
 #include "posprinter.h"
+#include "printerhelpers.h"
 
 using namespace Log;
 
@@ -43,27 +44,13 @@ void PrintIdDialog::on_buttonBox_rejected()
 
 bool PrintIdDialog::doPrint() const {
     Logger log("void PrintIdDialog::doPrint() const");
-
-    if ( Globals::checkPosPrinter() ) {
-        QStringList lines
-                = ui->input_itemIds_plainTextEdit->toPlainText().split( QRegExp( "\n") );
-
-        if ( !lines.empty() ) {
-            log.stream() << "Starting to print item ids";
-            Pos::Printer & posp( Globals::getPosPrinter() );
-            posp.setFontSize();
-            posp.startReceipt();
-            QString line;
-            foreach ( line, lines ) {
-                posp << Pos::center << Pos::Barcode( line ) << Pos::hr;
-            }
-            posp.endReceipt();
-            return true;
-        } else {
-            log.stream() << "No lines to print";
-        }
+    QStringList lines
+            = ui->input_itemIds_plainTextEdit->toPlainText().split( QRegExp( "\n") );
+    if ( lines.empty() ) {
+        log.stream() << "No lines to print";
+        return false;
     }
-    return false;
+    return PrinterHelpers::printStringsAsBarcodes( "List of ids", lines, "" );
 }
 
 void PrintIdDialog::on_input_itemIds_plainTextEdit_textChanged()
