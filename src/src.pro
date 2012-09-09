@@ -38,7 +38,8 @@ SOURCES += main.cpp \
     swapdialog.cpp \
     reiddialog.cpp \
     printiddialog.cpp \
-    performstatusdialog.cpp
+    performstatusdialog.cpp \
+    printerhelpers.cpp
 HEADERS += mainwindow.h \
     rentdialog.h \
     stockdialog.h \
@@ -71,7 +72,8 @@ HEADERS += mainwindow.h \
     swapdialog.h \
     reiddialog.h \
     printiddialog.h \
-    performstatusdialog.h
+    performstatusdialog.h \
+    printerhelpers.h
 FORMS += mainwindow.ui \
     rentdialog.ui \
     stockdialog.ui \

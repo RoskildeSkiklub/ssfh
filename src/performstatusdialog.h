@@ -25,6 +25,10 @@ private slots:
 
     void on_input_close_pushButton_clicked();
 
+    void on_input_save_pushButton_clicked();
+
+    void on_input_print_pushButton_clicked();
+
 private:
     Ui::PerformStatusDialog *ui;
 };

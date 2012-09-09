@@ -3,6 +3,7 @@
 
 // Qt
 #include "QMessageBox"
+#include "QFileDialog"
 
 // app
 #include "log.h"
@@ -11,6 +12,7 @@
 #include "db_consts.h"
 #include "item.h"
 #include "exception.h"
+#include "printerhelpers.h"
 
 using namespace Log;
 
@@ -73,4 +75,31 @@ void PerformStatusDialog::scan_item(const QString &item_id) {
 void PerformStatusDialog::on_input_close_pushButton_clicked() {
     Logger log("void PerformStatusDialog::on_input_close_pushButton_clicked()");
     close();
+}
+
+void PerformStatusDialog::on_input_save_pushButton_clicked()
+{
+    Logger log("void PerformStatusDialog::on_input_save_pushButton_clicked()");
+    QString filename = QFileDialog::getSaveFileName();
+    QFile file( filename );
+    file.open(QIODevice::WriteOnly | QIODevice::Text);
+    if ( !file.isOpen() ) {
+        QMessageBox::warning(this, tr( "Failed to open file for writing"),
+                             tr( "Could not write to selected file '%1'").arg( filename ) );
+    }
+    QTextStream out(&file);
+    out << ui->output_scannednotinitems_textBrowser->toPlainText();
+    file.close();
+    QMessageBox::information( this, tr( "File written" ), tr( "Information about items that were present, but not marked as in, was written to file '%1'." ).arg( filename ) );
+}
+
+void PerformStatusDialog::on_input_print_pushButton_clicked()
+{
+    Logger log( "void PerformStatusDialog::on_input_print_pushButton_clicked()" );
+    if ( PrinterHelpers::printStringsAsBarcodes( tr( "List of items present, but not in" ),
+                ui->output_scannednotinitems_textBrowser->toPlainText().split( QRegExp( "\n") ),
+                                                 "" ) ) {
+        QMessageBox::information( this, tr( "Item Ids printed"),
+                                 tr( "The item ids have been printed as barcodes") );
+    }
 }
