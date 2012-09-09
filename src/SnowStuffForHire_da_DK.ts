@@ -698,96 +698,101 @@
         <translation>&amp;Lager</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="89"/>
+        <location filename="mainwindow.ui" line="90"/>
         <source>&amp;Tools</source>
         <translation>Værk&amp;tøjer</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="96"/>
+        <location filename="mainwindow.ui" line="97"/>
         <source>&amp;Contracts</source>
         <translation>&amp;Aftaler</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="103"/>
+        <location filename="mainwindow.ui" line="104"/>
         <source>&amp;Help</source>
         <translation>&amp;Hjælp</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="121"/>
+        <location filename="mainwindow.ui" line="122"/>
         <source>&amp;Rent...</source>
         <translation>&amp;Udlej...</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="129"/>
+        <location filename="mainwindow.ui" line="130"/>
         <source>Re&amp;turn Items...</source>
         <translation>&amp;Returnér genstande...</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="142"/>
+        <location filename="mainwindow.ui" line="143"/>
         <source>&amp;Add items...</source>
         <translation>&amp;Tilføj genstande...</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="147"/>
+        <location filename="mainwindow.ui" line="148"/>
         <source>&amp;Hired Items...</source>
         <translation>&amp;Udlejede genstande...</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="155"/>
+        <location filename="mainwindow.ui" line="156"/>
         <source>&amp;Print Checklist...</source>
         <translation>Udskriv &amp;checkliste...</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="158"/>
+        <location filename="mainwindow.ui" line="159"/>
         <source>&amp;Print Checklist</source>
         <translation>Udskriv &amp;checkliste</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="163"/>
+        <location filename="mainwindow.ui" line="164"/>
         <source>&amp;Mass State Change...</source>
         <translation>&amp;Masseændring af tilstande...</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="168"/>
+        <location filename="mainwindow.ui" line="169"/>
         <source>&amp;Print Command Sheet</source>
         <translation>Udskriv &amp;kommandooversigt</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="173"/>
+        <location filename="mainwindow.ui" line="174"/>
         <source>&amp;Parked Contracts...</source>
         <translation>&amp;Parkerede aftaler...</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="201"/>
+        <location filename="mainwindow.ui" line="202"/>
         <source>&amp;Active Contracts...</source>
         <translation>&amp;Aktive aftaler...</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="207"/>
+        <source>Perform &amp;status...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;Parked Contracts</source>
         <translation type="obsolete">&amp;Parkerede aftaler...</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="178"/>
+        <location filename="mainwindow.ui" line="179"/>
         <source>&amp;About</source>
         <translation>&amp;Om</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="183"/>
+        <location filename="mainwindow.ui" line="184"/>
         <source>&amp;Check Setup</source>
         <translation>&amp;Kontroller opsætning</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="186"/>
+        <location filename="mainwindow.ui" line="187"/>
         <source>Check Setup</source>
         <translation>Kontroller opsætning</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="191"/>
+        <location filename="mainwindow.ui" line="192"/>
         <source>&amp;Reid items...</source>
         <translation>&amp;Ændre id...</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="196"/>
+        <location filename="mainwindow.ui" line="197"/>
         <source>Print Item &amp;Barcodes...</source>
         <translation>Udskriv &amp;genstandsstregkoder...</translation>
     </message>
@@ -796,12 +801,12 @@
         <translation type="obsolete">&amp;Returner genstande</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="132"/>
+        <location filename="mainwindow.ui" line="133"/>
         <source>Return rented items</source>
         <translation>Return lejede genstande</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="137"/>
+        <location filename="mainwindow.ui" line="138"/>
         <source>E&amp;xit</source>
         <translation>&amp;Afslut</translation>
     </message>
@@ -814,7 +819,7 @@
         <translation type="obsolete">&amp;Udlejede genstande</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="150"/>
+        <location filename="mainwindow.ui" line="151"/>
         <source>Show all hired items</source>
         <translation>Vis alle udlejede genstande</translation>
     </message>
@@ -827,7 +832,7 @@
         <translation type="obsolete">Returner</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="124"/>
+        <location filename="mainwindow.ui" line="125"/>
         <source>Rent Items</source>
         <oldsource>Inventory</oldsource>
         <translation>Lej genstande</translation>
@@ -849,72 +854,72 @@
         <translation type="obsolete">Vis udlejningsdialogen</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="100"/>
+        <location filename="mainwindow.cpp" line="101"/>
         <source>Card reader failure</source>
         <translation>Kortlæser fejl</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="101"/>
+        <location filename="mainwindow.cpp" line="102"/>
         <source>Failure reading magnetic card data. Either the card could not be read, or the card was of an unknown type.</source>
         <translation>Fejl under læsning af magnetstribe. Enten kunne magnetstriben ikke læses, eller kortet er af en ukendt type.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="129"/>
+        <location filename="mainwindow.cpp" line="130"/>
         <source>&lt;b&gt;contracts:&lt;/b&gt;</source>
         <translation>&lt;b&gt;aftaler:&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="265"/>
+        <location filename="mainwindow.cpp" line="275"/>
         <source>Done</source>
         <translation>Afslut</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="269"/>
+        <location filename="mainwindow.cpp" line="279"/>
         <source>Open Rental Window</source>
         <translation>Udlejningsvindue</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="270"/>
+        <location filename="mainwindow.cpp" line="280"/>
         <source>Open Return Window</source>
         <translation>Returneringsvindue</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="286"/>
+        <location filename="mainwindow.cpp" line="296"/>
         <source>List of Barcode Commands</source>
         <translation>Liste af scanner kommandoer</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="300"/>
+        <location filename="mainwindow.cpp" line="310"/>
         <source>Command List printed</source>
         <translation>Liste af kommandoer udskrevet</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="301"/>
+        <location filename="mainwindow.cpp" line="311"/>
         <source>Command List Printed</source>
         <translation>Liste over kommandoer udskrevet</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="302"/>
+        <location filename="mainwindow.cpp" line="312"/>
         <source>Printed Command List to printer.</source>
         <translation>Udskrev kommandoliste til printer.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="360"/>
+        <location filename="mainwindow.cpp" line="370"/>
         <source>About SnowStuffForHire</source>
         <translation>Om SnowStuffForHire</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="361"/>
+        <location filename="mainwindow.cpp" line="371"/>
         <source>&lt;p&gt;Version: %0&lt;/p&gt;&lt;p&gt;Created by Mads Bondo Dydensborg&lt;/p&gt;&lt;p&gt;Mail: mads@dydensborg.dk&lt;/p&gt;&lt;p&gt;Phone: 29 84 00 42&lt;/p&gt;</source>
         <translation>&lt;p&gt;Version: %0&lt;/p&gt;&lt;p&gt;Lavet af Mads Bondo Dydensborg&lt;/p&gt;&lt;p&gt;Mail: mads@dydensborg.dk&lt;/p&gt;&lt;p&gt;Telefon: 29 84 00 42&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="374"/>
+        <location filename="mainwindow.cpp" line="384"/>
         <source>Exit application?</source>
         <translation>Afslut program?</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="375"/>
+        <location filename="mainwindow.cpp" line="385"/>
         <source>Are you sure you wish to exit?</source>
         <translation>Er du sikker på at du ønsker at afslutte programmet?</translation>
     </message>
@@ -950,6 +955,94 @@
         <location filename="massstatechangedialog.ui" line="95"/>
         <source>&amp;Close</source>
         <translation>&amp;Luk</translation>
+    </message>
+</context>
+<context>
+    <name>PerformStatusDialog</name>
+    <message>
+        <location filename="performstatusdialog.ui" line="14"/>
+        <source>Perform status</source>
+        <translation>Lav status</translation>
+    </message>
+    <message>
+        <location filename="performstatusdialog.ui" line="24"/>
+        <source>Last scanned item</source>
+        <translation>Sidste skannede genstand</translation>
+    </message>
+    <message>
+        <location filename="performstatusdialog.ui" line="44"/>
+        <source>Description</source>
+        <translation>Beskrivelse</translation>
+    </message>
+    <message>
+        <location filename="performstatusdialog.ui" line="64"/>
+        <source>Scanned, but not in, items</source>
+        <translation>Skannede, men ikke afleverede, genstande</translation>
+    </message>
+    <message>
+        <location filename="performstatusdialog.ui" line="84"/>
+        <source>Recently scanned items</source>
+        <translation>Nyligt skannede genstande</translation>
+    </message>
+    <message>
+        <location filename="performstatusdialog.ui" line="109"/>
+        <source>&amp;Save</source>
+        <translation>&amp;Gem</translation>
+    </message>
+    <message>
+        <location filename="performstatusdialog.ui" line="119"/>
+        <source>&amp;Print</source>
+        <translation>&amp;Udskriv</translation>
+    </message>
+    <message>
+        <location filename="performstatusdialog.ui" line="139"/>
+        <source>&amp;Close</source>
+        <translation>&amp;Luk</translation>
+    </message>
+    <message>
+        <location filename="performstatusdialog.cpp" line="64"/>
+        <source>Item not registered in database</source>
+        <translation>Genstand ikke registreret i database</translation>
+    </message>
+    <message>
+        <location filename="performstatusdialog.cpp" line="65"/>
+        <source>Item with id &apos;%0&apos; was not found in database. Unable to register for status.</source>
+        <translation>Genstand med id &apos;%0&apos; blev ikke fundet i databasen. Kan ikke registrere til status.</translation>
+    </message>
+    <message>
+        <location filename="performstatusdialog.cpp" line="87"/>
+        <source>Failed to open file for writing</source>
+        <translation>Kunne ikke åbne fil for skrivning</translation>
+    </message>
+    <message>
+        <location filename="performstatusdialog.cpp" line="88"/>
+        <source>Could not write to selected file &apos;%1&apos;</source>
+        <translation>Kunne ikke skrive til den valgte fil &apos;%1&apos;</translation>
+    </message>
+    <message>
+        <location filename="performstatusdialog.cpp" line="93"/>
+        <source>File written</source>
+        <translation>Fil skrevet</translation>
+    </message>
+    <message>
+        <location filename="performstatusdialog.cpp" line="93"/>
+        <source>Information about items that were present, but not marked as in, was written to file &apos;%1&apos;.</source>
+        <translation>Information om genstande der var til stede, men ikke markeret som afleveret, blev skrevet til fil &apos;%1&apos;.</translation>
+    </message>
+    <message>
+        <location filename="performstatusdialog.cpp" line="99"/>
+        <source>List of items present, but not in</source>
+        <translation>Liste af genstande der er tilstede, men ikke afleveret</translation>
+    </message>
+    <message>
+        <location filename="performstatusdialog.cpp" line="102"/>
+        <source>Item Ids printed</source>
+        <translation>Genstandsid&apos;er udskrevet</translation>
+    </message>
+    <message>
+        <location filename="performstatusdialog.cpp" line="103"/>
+        <source>The item ids have been printed as barcodes</source>
+        <translation>Id&apos;er på genstande er blevet udskrevet som stregkoder</translation>
     </message>
 </context>
 <context>
@@ -1132,12 +1225,12 @@
         <translation>Indtast id&apos;er på genstande der skal udskrives stregkoder for, en på hver linie</translation>
     </message>
     <message>
-        <location filename="printiddialog.cpp" line="32"/>
+        <location filename="printiddialog.cpp" line="33"/>
         <source>Item Ids printed</source>
         <translation>Genstandsid&apos;er udskrevet</translation>
     </message>
     <message>
-        <location filename="printiddialog.cpp" line="33"/>
+        <location filename="printiddialog.cpp" line="34"/>
         <source>The item ids have been printed as barcodes</source>
         <translation>Id&apos;er på genstande er blevet udskrevet som stregkoder</translation>
     </message>
