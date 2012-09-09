@@ -23,6 +23,7 @@
 #include "swapdialog.h"
 #include "reiddialog.h"
 #include "printiddialog.h"
+#include "performstatusdialog.h"
 
 // App
 #include "log.h"
@@ -189,6 +190,15 @@ void MainWindow::showPrintIdDialog() const {
     printIdDialog.exec();
     updateDbStatusDisplay();
 }
+
+void MainWindow::showPerformStatusDialog() const {
+    Logger log( "void MainWindow::showPerformStatusDialog() const" );
+    log.stream() << "Displaying PerformStatusDialog";
+    PerformStatusDialog performStatusDialog;
+    performStatusDialog.exec();
+    updateDbStatusDisplay();
+}
+
 
 void MainWindow::showReturnDialog() const {
     Logger log( "void MainWindow::showReturnDialog() const" );
@@ -408,4 +418,10 @@ void MainWindow::on_action_Active_Contracts_triggered()
 {
     Logger log( "void MainWindow::on_action_Active_Contracts_triggered()" );
     showContractsDialog( DB::Contract::State::active );
+}
+
+void MainWindow::on_actionPerform_status_triggered()
+{
+    Logger log( "void MainWindow::on_actionPerform_status_triggered()" );
+    showPerformStatusDialog();
 }

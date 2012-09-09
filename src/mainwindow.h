@@ -41,6 +41,7 @@ private:
     void showSwapDialog() const;
     void showReIdDialog() const;
     void showPrintIdDialog() const;
+    void showPerformStatusDialog() const;
 
     /** \brief Pointer to statusbar db label
       *
@@ -78,6 +79,8 @@ private slots:
     void on_actionPrint_Item_Barcodes_triggered();
 
     void on_action_Active_Contracts_triggered();
+
+    void on_actionPerform_status_triggered();
 
 public slots:
     void on_barcodeCommandScan( const Globals::BarcodeCommands::Command & command );

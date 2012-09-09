@@ -83,6 +83,7 @@
     <addaction name="actionPrint_Checklist"/>
     <addaction name="action_Mass_State_Change"/>
     <addaction name="action_Reid_items"/>
+    <addaction name="actionPerform_status"/>
    </widget>
    <widget class="QMenu" name="menu_Tools">
     <property name="title">
@@ -199,6 +200,11 @@
   <action name="action_Active_Contracts">
    <property name="text">
     <string>&amp;Active Contracts...</string>
+   </property>
+  </action>
+  <action name="actionPerform_status">
+   <property name="text">
+    <string>Perform &amp;status...</string>
    </property>
   </action>
  </widget>
