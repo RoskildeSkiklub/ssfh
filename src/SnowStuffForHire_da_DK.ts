@@ -765,7 +765,7 @@
     <message>
         <location filename="mainwindow.ui" line="207"/>
         <source>Perform &amp;status...</source>
-        <translation type="unfinished"></translation>
+        <translation>Lav &amp;status...</translation>
     </message>
     <message>
         <source>&amp;Parked Contracts</source>
