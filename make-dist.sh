@@ -30,6 +30,9 @@ for var in "$@" ; do
     cp --parent "$var" "$TMPDIR" || die "Unable to do cp --parent \"$var\" \"$TMPDIR\""
 done
 
+# Clean out moc files.
+rm -Rf "$TMPDIR"/*/moc_*.cpp
+
 # Tar it
 tar -zcvf $TMPDIR.tar.gz $TMPDIR || die "Unable to tar $TMPDIR"
 
