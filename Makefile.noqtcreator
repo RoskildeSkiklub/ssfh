@@ -1,6 +1,6 @@
 # To build if you do not have qtcreator
 
-all:	runqmake updateschemas build unittest
+all:	runqmake updateschemas build unittest languages
 
 runqmake:
 	qmake
@@ -15,3 +15,5 @@ unittest:	build
 	cd unittest && \
 	./unittest-wrapper.sh
 
+languages:  unittest
+	make -f Makefile.l10n release
