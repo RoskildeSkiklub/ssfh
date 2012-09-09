@@ -29,7 +29,7 @@
         <widget class="QTextBrowser" name="output_lastscanneditem_textBrowser">
          <property name="font">
           <font>
-           <pointsize>60</pointsize>
+           <pointsize>200</pointsize>
           </font>
          </property>
         </widget>
@@ -46,7 +46,13 @@
         </widget>
        </item>
        <item>
-        <widget class="QTextBrowser" name="output_itemdescription_textBrowser"/>
+        <widget class="QTextBrowser" name="output_itemdescription_textBrowser">
+         <property name="font">
+          <font>
+           <pointsize>20</pointsize>
+          </font>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>
@@ -60,7 +66,13 @@
         </widget>
        </item>
        <item>
-        <widget class="QTextBrowser" name="output_scannednotinitems_textBrowser"/>
+        <widget class="QTextBrowser" name="output_scannednotinitems_textBrowser">
+         <property name="font">
+          <font>
+           <pointsize>20</pointsize>
+          </font>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>
@@ -74,7 +86,13 @@
         </widget>
        </item>
        <item>
-        <widget class="QTextBrowser" name="output_recentlyscanneditems_textBrowser"/>
+        <widget class="QTextBrowser" name="output_recentlyscanneditems_textBrowser">
+         <property name="font">
+          <font>
+           <pointsize>20</pointsize>
+          </font>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>
