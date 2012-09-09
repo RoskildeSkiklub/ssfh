@@ -28,7 +28,9 @@ public:
 
     //! \todo Document
     /** \brief Locate and load an item from the database
-      * \param id The id of the item to load */
+      * \param id The id of the item to load
+      *
+      * If the item is not known in the database, it throws (ItemDoesNotExist) */
     static Item db_load( const QString & id );
 
     /** \brief Insert this item into the database.
@@ -111,20 +113,8 @@ public:
       * \returns True if the item exists, false otherwise */
     static bool db_exists( const QString & id );
 
-private:
-    QString m_id;
-    QString m_type;
-    QString m_size;
-    QString m_mark;
-    QString m_model;
-    QString m_year;
-    QString m_condition;
-    qlonglong m_price;
-    QString m_rentalgroup;
-    QString m_state;
-    QString m_note;
-
-    /** \brief String representation for log files */
+    /** \brief String representation for log files
+      * \returns A String representation suitable for logging the item. */
     QString toString() const;
 
     /** \brief Apply a db event line
@@ -141,7 +131,18 @@ private:
     void addEventLine( const QString & event,
                        const QString & note ) const;
 
-
+private:
+    QString m_id;
+    QString m_type;
+    QString m_size;
+    QString m_mark;
+    QString m_model;
+    QString m_year;
+    QString m_condition;
+    qlonglong m_price;
+    QString m_rentalgroup;
+    QString m_state;
+    QString m_note;
 
 };
 

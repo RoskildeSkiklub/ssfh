@@ -29,7 +29,7 @@
         <widget class="QTextBrowser" name="output_lastscanneditem_textBrowser">
          <property name="font">
           <font>
-           <pointsize>40</pointsize>
+           <pointsize>60</pointsize>
           </font>
          </property>
         </widget>

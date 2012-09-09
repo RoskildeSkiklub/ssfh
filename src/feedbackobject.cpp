@@ -5,6 +5,7 @@
 #include <QApplication>
 #include <QDir>
 #include <QFile>
+#include <QSound>
 
 // App
 #include "log.h"
@@ -62,6 +63,10 @@ FeedbackObject::~FeedbackObject() {
 
 void FeedbackObject::eventTriggered(const EventType &type) const {
     Logger log("void FeedbackObject::eventTriggered(EventType &type)");
+    // BUG: There is a *huge* delay in playing sounds here.
+    // http://stackoverflow.com/questions/5600515/qt-how-to-play-sound-witout-blocking-main-thread
+    // This must be fixed at a later time.
+    return;
     if ( m_media_object ) {
         m_media_object->setCurrentSource( MediaSource( eventToFilename[type]) );
         m_media_object->play();
