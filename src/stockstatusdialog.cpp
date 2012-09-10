@@ -62,7 +62,7 @@ void StockStatusDialog::updateItemModel() {
 void StockStatusDialog::on_input_print_pushButton_clicked()
 {
     Logger log("void StockStatusDialog::on_input_print_pushButton_clicked()");
-    TODO("Implement");
+    TODO("Implement print functionality");
 }
 
 void StockStatusDialog::on_input_close_pushButton_clicked()
@@ -75,10 +75,35 @@ void StockStatusDialog::on_input_from_dateEdit_editingFinished()
 {
     Logger log("void StockStatusDialog::on_input_from_dateEdit_editingFinished()");
     updateItemModel();
+    ui->output_itemevents_tableView->setModel( NULL );
 }
 
 void StockStatusDialog::on_input_to_dateEdit_editingFinished()
 {
     Logger log("void StockStatusDialog::on_input_to_dateEdit_editingFinished()");
     updateItemModel();
+}
+
+void StockStatusDialog::on_output_items_tableView_activated(const QModelIndex &index)
+{
+    Logger log("void StockStatusDialog::on_output_items_tableView_activated(const QModelIndex &index)");
+    // Get id from coloum 0
+    QModelIndex myIndex = item_model.index( index.row(), 0 );
+    QString item_id = item_model.data( myIndex ).toString();
+    log.stream() << "Selected item with id '" << item_id << "'";
+
+    // Load it, set the text
+    // TODO: Move this somewhere else.
+    // Setup the query model for the itemevents
+    QSqlQuery query;
+    query_check_prepare( query, "select * from itemevents "
+                                "where item_id = :item_id "
+                                "order by time desc" );
+    query.bindValue( ":item_id", item_id );
+    query_check_exec( query );
+    itemevents_model.setQuery( query );
+    // TODO: Fix header translations / select headers.
+    ui->output_itemevents_tableView->setModel( &itemevents_model );
+    ui->output_itemevents_tableView->resizeColumnsToContents();
+
 }

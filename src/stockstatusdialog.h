@@ -25,6 +25,8 @@ private slots:
 
     void on_input_to_dateEdit_editingFinished();
 
+    void on_output_items_tableView_activated(const QModelIndex &index);
+
 private:
     Ui::StockStatusDialog *ui;
 
