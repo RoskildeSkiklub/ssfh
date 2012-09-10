@@ -24,6 +24,7 @@
 #include "reiddialog.h"
 #include "printiddialog.h"
 #include "performstatusdialog.h"
+#include "stockstatusdialog.h"
 
 // App
 #include "log.h"
@@ -196,6 +197,14 @@ void MainWindow::showPerformStatusDialog() const {
     log.stream() << "Displaying PerformStatusDialog";
     PerformStatusDialog performStatusDialog;
     performStatusDialog.exec();
+    updateDbStatusDisplay();
+}
+
+void MainWindow::showStockStatusDialog() const {
+    Logger log( "void MainWindow::showStockStatusDialog() const" );
+    log.stream() << "Displaying StockStatusDialog";
+    StockStatusDialog stockStatusDialog;
+    stockStatusDialog.exec();
     updateDbStatusDisplay();
 }
 
@@ -424,4 +433,10 @@ void MainWindow::on_actionPerform_status_triggered()
 {
     Logger log( "void MainWindow::on_actionPerform_status_triggered()" );
     showPerformStatusDialog();
+}
+
+void MainWindow::on_actionStock_status_triggered()
+{
+    Logger log( "void MainWindow::on_actionStock_status_triggered()" );
+    showStockStatusDialog();
 }
