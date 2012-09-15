@@ -4,11 +4,13 @@
 // Qt
 #include <QSqlQuery>
 #include <QVariant>
+#include <QMessageBox>
 
 // App
 #include "utility.h"
 #include "log.h"
 #include "db_consts.h"
+#include "printerhelpers.h"
 using namespace Log;
 
 StockStatusDialog::StockStatusDialog(QWidget *parent) :
@@ -35,7 +37,11 @@ void StockStatusDialog::updateItemModel() {
     Logger log("StockStatusDialog::updateItemModel()");
 
     // Setup the query model for the items
-    QSqlQuery query;
+    QSqlQuery query = createItemQuery( "id, type, size, mark, model, year, condition, price, rentalgroup, state, note",
+                                       ui->input_from_dateEdit->date(),
+                                       ui->input_to_dateEdit->date(),
+                                       "order by id" );
+    /*
     query_check_prepare( query, "select * from items "
                                 "where state not in ( :state_lost, :state_discarded ) "
                                 "and not exists "
@@ -43,26 +49,41 @@ void StockStatusDialog::updateItemModel() {
                                 "    where item_id = items.id "
                                 "    and event = :state_status "
                                 "    and time >= :fromdate "
-                                "    and time <= :todate )" );
+                                "    and time <= :todate ) "
+                                "order by id");
     query.bindValue( ":state_lost",      DB::Item::Event::lost );
     query.bindValue( ":state_discarded", DB::Item::Event::discarded );
     query.bindValue( ":state_status",    DB::Item::Event::status );
     query.bindValue( ":fromdate", ui->input_from_dateEdit->date() );
-    query.bindValue( ":todate", ui->input_to_dateEdit->date() );
+    query.bindValue( ":todate", ui->input_to_dateEdit->date() ); */
     query_check_exec( query );
     item_model.setQuery( query );
     // TODO: Fix header translations / select headers.
     ui->output_items_tableView->setModel( &item_model );
     ui->output_items_tableView->resizeColumnsToContents();
-
-
 }
 
-
-void StockStatusDialog::on_input_print_pushButton_clicked()
-{
-    Logger log("void StockStatusDialog::on_input_print_pushButton_clicked()");
-    TODO("Implement print functionality");
+QSqlQuery StockStatusDialog::createItemQuery( const QString & columnClause,
+                                              const QDate & fromdate,
+                                              const QDate & todate,
+                                              const QString & orderClause ) {
+    Logger log( "QSqlQuery StockStatusDialog::createItemQuery( bool detailed, const QDate & fromdate, const QDate & todate )" );
+    QSqlQuery query;
+    query_check_prepare( query, "select " + columnClause + " from items "
+                                "where state not in ( :state_lost, :state_discarded ) "
+                                "and not exists "
+                                "  ( select id from itemevents "
+                                "    where item_id = items.id "
+                                "    and event = :state_status "
+                                "    and time >= :fromdate "
+                                "    and time <= :todate ) "
+                                + orderClause );
+    query.bindValue( ":state_lost",      DB::Item::Event::lost );
+    query.bindValue( ":state_discarded", DB::Item::Event::discarded );
+    query.bindValue( ":state_status",    DB::Item::Event::status );
+    query.bindValue( ":fromdate", fromdate );
+    query.bindValue( ":todate", todate );
+    return query;
 }
 
 void StockStatusDialog::on_input_close_pushButton_clicked()
@@ -106,4 +127,25 @@ void StockStatusDialog::on_output_items_tableView_activated(const QModelIndex &i
     ui->output_itemevents_tableView->setModel( &itemevents_model );
     ui->output_itemevents_tableView->resizeColumnsToContents();
 
+}
+
+void StockStatusDialog::on_input_print_pushButton_clicked()
+{
+    Logger log("void StockStatusDialog::on_input_print_pushButton_clicked()");
+    // Print the item ids of all the items from the itemmodel.
+    QSqlQuery query = createItemQuery( "id, type, size", ui->input_from_dateEdit->date(), ui->input_to_dateEdit->date(),
+                                       "order by type, size, id" );
+    if ( PrinterHelpers::doItemSplitPrint( tr( "List of missing items" ),
+                                      tr( "Printed at ") + QDateTime::currentDateTime().date().toString(),
+                                      query, true, 1, 10 ) ) {
+        QMessageBox::information( this, tr( "List printed" ),
+                                  tr( "List of missing items printed" ) );
+    }
+
+}
+
+void StockStatusDialog::on_input_savereport_pushButton_clicked()
+{
+    Logger log("void StockStatusDialog::on_input_savereport_pushButton_clicked()");
+    TODO("Implement print functionality");
 }

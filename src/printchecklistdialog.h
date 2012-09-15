@@ -4,6 +4,8 @@
 #include <QDialog>
 #include <QStringList>
 
+class QSqlQuery;
+
 namespace Ui {
     class PrintChecklistDialog;
 }
@@ -28,6 +30,9 @@ private:
       *
       * This does the actual printing, based on settings in the dialog */
     void doPrint();
+
+    static void doItemSplitPrint( const QString & header1, const QString & header2,
+                                  QSqlQuery query, bool includeBarCodes, int sortLevel, int maxItemsPrPage );
 
     /** \brief Update the count of items in a current state */
     void updateItemsCount();

@@ -56,7 +56,7 @@
      <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
         <widget class="QLabel" name="label_3">
@@ -70,7 +70,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
         <widget class="QLabel" name="label_4">
@@ -92,6 +92,13 @@
       <widget class="QPushButton" name="input_print_pushButton">
        <property name="text">
         <string>&amp;Print</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="input_savereport_pushButton">
+       <property name="text">
+        <string>&amp;Save report</string>
        </property>
       </widget>
      </item>
@@ -118,20 +125,6 @@
     </layout>
    </item>
   </layout>
-  <zorder>label</zorder>
-  <zorder>input_from_dateEdit</zorder>
-  <zorder>label_2</zorder>
-  <zorder>input_to_dateEdit</zorder>
-  <zorder>label_3</zorder>
-  <zorder>output_items_tableView</zorder>
-  <zorder>label_4</zorder>
-  <zorder>output_itemevents_tableView</zorder>
-  <zorder>input_print_pushButton</zorder>
-  <zorder>input_close_pushButton</zorder>
-  <zorder>horizontalSpacer</zorder>
-  <zorder>input_to_dateEdit</zorder>
-  <zorder>label_2</zorder>
-  <zorder>horizontalSpacer_2</zorder>
  </widget>
  <resources/>
  <connections/>
