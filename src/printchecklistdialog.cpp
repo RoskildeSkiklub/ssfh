@@ -16,6 +16,7 @@
 #include "utility.h"
 #include "db_consts.h"
 #include "item.h"
+#include "printerhelpers.h"
 
 using namespace Log;
 
@@ -82,90 +83,18 @@ void PrintChecklistDialog::doPrint() {
     QString queryString = QString( "select id %0%1 from items where state = :state order by %1%0 id" )
                           .arg( prepostfix ).arg( sortString );
 
-    // Now, actually do it.
+    // Now, actually print, prepare a query, call the splitPrint function.
     QSqlQuery query;
     query_check_prepare( query, queryString );
     query.bindValue( ":state", ui->input_itemState_comboBox->itemData(
             ui->input_itemState_comboBox->currentIndex() ) );
-    query_check_exec( query );
-    if ( query.first() ) {
-        if ( Globals::checkPosPrinter() ) {
-            // Date for the print
-            QDateTime now = QDateTime::currentDateTime();
 
-            // Track count here. This is reset for each page.
-            int count = 0;
-            // Track the content of the last printed item. at(0) is also reset for each page
-            QVector<QVariant> prevItem( 1 + sortLevel );
-
-            Pos::Printer & posp( Globals::getPosPrinter() );
-            posp.setFontSize( 1, 2 );
-
-            bool needToStartReceipt = true;
-            bool shouldEndReceipt = false;
-
-            log.stream( info ) << "Starting print of check list";
-            do {
-                bool breakPage = false;
-
-                // Check if we should do a pagebreak, *before* printing the next value now.
-                if ( prevItem.at(0).isValid() ) {
-                    for( int i = 1; i <= sortLevel; ++i ) {
-                        if ( prevItem.at( i ) != query.value( i ) ) {
-                            breakPage = true;
-                            break;
-                        }
-                    }
-                }
-
-                if ( breakPage || ( maxItems != 0 && count != 0 && count % maxItems == 0 ) ) {
-                    posp.endReceipt();
-                    needToStartReceipt = true;
-                    shouldEndReceipt = false;
-                }
-
-                // Start new receipt, if needed, set up for final closure.
-                if ( needToStartReceipt ) {
-                    posp.startReceipt();
-                    needToStartReceipt = false;
-                    count = 0;
-                    prevItem[ 0 ] = QVariant();
-                    posp << tr( "List of items with state: " )
-                            << ui->input_itemState_comboBox->currentText() << Pos::endl;
-                    posp << tr( "Printed at " ) << now << Pos::endl;
-                    posp << Pos::hr;
-                    shouldEndReceipt = true;
-                }
-
-                // Print items.
-                // posp << Pos::endl;
-                QString item_id = query.value(0).toString();
-                Item item( Item::db_load( item_id ) );
-                posp << item.toReceiptString() << Pos::endl;
-                if ( ui->input_includeBarcodes_checkBox->isChecked() ) {
-                    posp.setFontSize();
-                    posp << Pos::center << Pos::Barcode( item_id ) << Pos::hr;
-                    posp.setFontSize(1, 2);
-                }
-
-                // Adjust split controllers
-                ++count;
-                for( int i = 0; i <= sortLevel; ++i ) {
-                    prevItem[ i ] = query.value( i );
-                }
-
-            } while( query.next() );
-
-            if ( shouldEndReceipt ) {
-                posp.endReceipt();
-            }
-            posp.setFontSize();
-            QMessageBox::information( this, tr("Checklist printed"),
-                                      tr( "Checklist printed" ) );
-        }
-    } else {
-        QMessageBox::information( this, tr("No items found"),
-                                  tr( "No missing items found") );
+    if ( PrinterHelpers::doItemSplitPrint( tr( "List of items with state: " ) + ui->input_itemState_comboBox->currentText(),
+                                           tr( "Printed at " ) + QDateTime::currentDateTime().date().toString(),
+                                           query, ui->input_includeBarcodes_checkBox->isChecked(),
+                                           sortLevel, maxItems ) ) {
+        QMessageBox::information( this, tr("Checklist printed"),
+                                  tr( "Checklist printed" ) );
     }
 }
 
