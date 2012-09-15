@@ -89,7 +89,7 @@ void PrintChecklistDialog::doPrint() {
     query.bindValue( ":state", ui->input_itemState_comboBox->itemData(
             ui->input_itemState_comboBox->currentIndex() ) );
 
-    if ( PrinterHelpers::doItemSplitPrint( tr( "List of items with state: " ) + ui->input_itemState_comboBox->currentText(),
+    if ( PrinterHelpers::printItemsSplitted( tr( "List of items with state: " ) + ui->input_itemState_comboBox->currentText(),
                                            tr( "Printed at " ) + QDateTime::currentDateTime().date().toString(),
                                            query, ui->input_includeBarcodes_checkBox->isChecked(),
                                            sortLevel, maxItems ) ) {

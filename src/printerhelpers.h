@@ -26,9 +26,9 @@ namespace PrinterHelpers {
       * \param sortLevel Reflects the number of criterias in the "order by" part of the query
       * \param maxItemsPrPage The number of items that can be printed before splitting the page
       * \returns true if printing was succesfull, false otherwise */
-    bool doItemSplitPrint( const QString & header1, const QString & header2,
-                           QSqlQuery & query, bool includeBarCodes,
-                           int sortLevel, int maxItemsPrPage );
+    bool printItemsSplitted( const QString & header1, const QString & header2,
+                             QSqlQuery & query, bool includeBarCodes,
+                             int sortLevel, int maxItemsPrPage );
 
 }
 

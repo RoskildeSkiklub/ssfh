@@ -48,9 +48,9 @@ namespace PrinterHelpers {
     } // printStringsAsBarcodes
 
 
-    bool doItemSplitPrint( const QString & header1, const QString & header2,
-                           QSqlQuery & query, bool includeBarCodes,
-                           int sortLevel, int maxItemsPrPage ) {
+    bool printItemsSplitted( const QString & header1, const QString & header2,
+                             QSqlQuery & query, bool includeBarCodes,
+                             int sortLevel, int maxItemsPrPage ) {
         Logger log("void doItemSplitPrint( const QString & header1, const QString & header2, const QSqlQuery & query, bool includeBarCodes, int sortLevel, int maxItemsPrPage )");
         query_check_exec( query );
         if ( ! query.first() ) {

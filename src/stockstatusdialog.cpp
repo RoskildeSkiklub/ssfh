@@ -135,7 +135,7 @@ void StockStatusDialog::on_input_print_pushButton_clicked()
     // Print the item ids of all the items from the itemmodel.
     QSqlQuery query = createItemQuery( "id, type, size", ui->input_from_dateEdit->date(), ui->input_to_dateEdit->date(),
                                        "order by type, size, id" );
-    if ( PrinterHelpers::doItemSplitPrint( tr( "List of missing items" ),
+    if ( PrinterHelpers::printItemsSplitted( tr( "List of missing items" ),
                                       tr( "Printed at ") + QDateTime::currentDateTime().date().toString(),
                                       query, true, 1, 10 ) ) {
         QMessageBox::information( this, tr( "List printed" ),
