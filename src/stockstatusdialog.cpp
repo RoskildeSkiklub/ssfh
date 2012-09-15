@@ -5,12 +5,15 @@
 #include <QSqlQuery>
 #include <QVariant>
 #include <QMessageBox>
+#include <QFileDialog>
+#include <QStringList>
 
 // App
 #include "utility.h"
 #include "log.h"
 #include "db_consts.h"
 #include "printerhelpers.h"
+#include "item.h"
 using namespace Log;
 
 StockStatusDialog::StockStatusDialog(QWidget *parent) :
@@ -147,5 +150,77 @@ void StockStatusDialog::on_input_print_pushButton_clicked()
 void StockStatusDialog::on_input_savereport_pushButton_clicked()
 {
     Logger log("void StockStatusDialog::on_input_savereport_pushButton_clicked()");
-    TODO("Implement print functionality");
+    QString filename = QFileDialog::getSaveFileName( this, tr("Save HTML Report"),
+                                                    "",
+                                                    tr("Html files (*.html *.htm)") );
+    if ( filename.isEmpty() ) {
+        log.stream() << "No file selected, aborting";
+        return;
+    }
+    QFile file( filename );
+    file.open(QIODevice::WriteOnly | QIODevice::Text);
+    if ( !file.isOpen() ) {
+        QMessageBox::warning(this, tr( "Failed to open file for writing"),
+                             tr( "Could not write to selected file '%1'").arg( filename ) );
+        return;
+    }
+    // Do a report in HTML.
+    /* Structure <html><head><title/></head><body>[items]
+      [items] = item.toHtml() + itemevents table, limited to 10 */
+    QStringList report;
+
+    report << "<html><head><title>" << tr( "Report of missing items generated at " )
+           << QDateTime::currentDateTime().date().toString() << "</title></head><body>";
+    report << "<h1>" << tr( "Report of missing items generated at " )
+           << QDateTime::currentDateTime().date().toString() << "</h1>\n";
+
+    QSqlQuery query = createItemQuery( "id, type, size",
+                                       ui->input_from_dateEdit->date(), ui->input_to_dateEdit->date(),
+                                       "order by type, size, id" );
+    query_check_exec( query );
+
+    if ( ! query.first() ) {
+        report << "<p>" << tr( "No items missing" ) << "</p>";
+    } else {
+        int itemCount = 1;
+        QSqlQuery query_events;
+        QString item_id;
+        do {
+            item_id = query.value(0).toString();
+            report << "<h2>" + tr( "%1, item with id '%2'" ).arg(itemCount).arg(item_id) + "</h2>\n";
+            report << "<ul>\n"; // Lits of item info, and then all the itemevents.
+            Item item( Item::db_load( item_id ) );
+            report << "  " << item.toHtml() << "\n";
+            query_check_prepare( query_events,
+                                 "select time, event, note "
+                                 "from itemevents "
+                                 "where item_id = :item_id "
+                                 "order by time desc" );
+            query_events.bindValue( ":item_id", item_id );
+            query_check_exec( query_events );
+            if( ! query_events.first() ) {
+                report << "  <li>" << tr( "No events for item!" ) << "</li>\n";
+            } else {
+                do {
+                    report << "  <li>" << query_events.value( 0 ).toDateTime().toString( Qt::ISODate )
+                           << " : " << Item::tr( query_events.value( 1 ).toString().toLocal8Bit().constData() )
+                           << " : " << query_events.value( 2 ).toString() << "</li>\n";
+                } while( query_events.next() ); // itemsevents
+            }
+            report << "</ul>\n";
+            ++itemCount;
+        } while( query.next() ); // itemsQuery
+
+    }
+
+    // Close the report
+    report << "</body></html>";
+
+    // save the file
+    QTextStream out(&file);
+    out << report.join("");
+    file.close();
+
+    QMessageBox::information( this, tr( "File written" ),
+                              tr( "Report of missing items was written to'%1'." ).arg( filename ) );
 }

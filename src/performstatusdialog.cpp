@@ -80,12 +80,19 @@ void PerformStatusDialog::on_input_close_pushButton_clicked() {
 void PerformStatusDialog::on_input_save_pushButton_clicked()
 {
     Logger log("void PerformStatusDialog::on_input_save_pushButton_clicked()");
-    QString filename = QFileDialog::getSaveFileName();
+    QString filename = QFileDialog::getSaveFileName( this, tr("Save list of missing items"),
+                                                     "",
+                                                     tr("Text files (*.txt)") );
+    if ( filename.isEmpty() ) {
+        log.stream() << "No file selected, aborting";
+        return;
+    }
     QFile file( filename );
     file.open(QIODevice::WriteOnly | QIODevice::Text);
     if ( !file.isOpen() ) {
         QMessageBox::warning(this, tr( "Failed to open file for writing"),
                              tr( "Could not write to selected file '%1'").arg( filename ) );
+        return;
     }
     QTextStream out(&file);
     out << ui->output_scannednotinitems_textBrowser->toPlainText();
