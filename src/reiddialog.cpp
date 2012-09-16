@@ -42,8 +42,6 @@ ReIdDialog::ReIdDialog(QWidget *parent) :
     //! \todo Provide audio feedback when returning/adding items
     connect(this, SIGNAL(item_scanned()),
             Globals::getFeedbackObject(), SLOT(itemScanned()));
-    /* connect(this, SIGNAL(item_added()),
-            Globals::getFeedbackObject(), SLOT(itemAdded())); */
 }
 
 void ReIdDialog::clear() {
@@ -87,6 +85,7 @@ void ReIdDialog::scan_item(const QString &item_id) {
         ui->input_toId_lineEdit->setText( item_id );
         //! \todo
         doReId();
+        // BUG: Probably wrong to emit after
         emit item_scanned();
     } else {
         log.stream() << "fromId is writeable, inputting stuff into fromId";
@@ -94,6 +93,7 @@ void ReIdDialog::scan_item(const QString &item_id) {
         ui->input_fromId_lineEdit->setText( item_id );
         //! \todo
         fromIdSet();
+        // BUG: Probably wrong to emit after
         emit item_scanned();
     }
 }

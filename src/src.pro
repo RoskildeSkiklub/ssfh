@@ -40,7 +40,8 @@ SOURCES += main.cpp \
     printiddialog.cpp \
     performstatusdialog.cpp \
     printerhelpers.cpp \
-    stockstatusdialog.cpp
+    stockstatusdialog.cpp \
+    trackitemdialog.cpp
 HEADERS += mainwindow.h \
     rentdialog.h \
     stockdialog.h \
@@ -75,7 +76,8 @@ HEADERS += mainwindow.h \
     printiddialog.h \
     performstatusdialog.h \
     printerhelpers.h \
-    stockstatusdialog.h
+    stockstatusdialog.h \
+    trackitemdialog.h
 FORMS += mainwindow.ui \
     rentdialog.ui \
     stockdialog.ui \
@@ -92,7 +94,8 @@ FORMS += mainwindow.ui \
     reiddialog.ui \
     printiddialog.ui \
     performstatusdialog.ui \
-    stockstatusdialog.ui
+    stockstatusdialog.ui \
+    trackitemdialog.ui
 TRANSLATIONS = SnowStuffForHire_da_DK.ts
 
 # Keep moc and stuff out of the way - if possible

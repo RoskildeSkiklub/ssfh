@@ -25,6 +25,7 @@
 #include "printiddialog.h"
 #include "performstatusdialog.h"
 #include "stockstatusdialog.h"
+#include "trackitemdialog.h"
 
 // App
 #include "log.h"
@@ -205,6 +206,14 @@ void MainWindow::showStockStatusDialog() const {
     log.stream() << "Displaying StockStatusDialog";
     StockStatusDialog stockStatusDialog;
     stockStatusDialog.exec();
+    updateDbStatusDisplay();
+}
+
+void MainWindow::showTrackItemDialog() const {
+    Logger log( "void MainWindow::showTrackItemDialog() const" );
+    log.stream() << "Displaying TrackItemDialog";
+    TrackItemDialog trackItemDialog;
+    trackItemDialog.exec();
     updateDbStatusDisplay();
 }
 
@@ -439,4 +448,10 @@ void MainWindow::on_actionStock_status_triggered()
 {
     Logger log( "void MainWindow::on_actionStock_status_triggered()" );
     showStockStatusDialog();
+}
+
+void MainWindow::on_action_Track_Item_triggered()
+{
+    Logger log("void MainWindow::on_action_Track_Item_triggered()");
+    showTrackItemDialog();
 }
