@@ -61,7 +61,7 @@
       <enum>Qt::Vertical</enum>
      </property>
      <widget class="QTextBrowser" name="output_item_textBrowser"/>
-     <widget class="QTableView" name="output_itemevets_tableView"/>
+     <widget class="QTableView" name="output_itemevents_tableView"/>
     </widget>
    </item>
    <item row="2" column="0">

@@ -2,6 +2,7 @@
 #define TRACKITEMDIALOG_H
 
 #include <QDialog>
+#include <QSqlQueryModel>
 
 namespace Ui {
 class TrackItemDialog;
@@ -35,6 +36,11 @@ private:
     /** \brief Method to clear the contents of the dialog */
     void clear();
 
+    /** \brief The model that holds the data about the itemevents */
+    QSqlQueryModel itemevents_model;
+
+    /** \brief Update the item models, e.g. after from/to date change */
+    void updateItemeventsModel();
 };
 
 #endif // TRACKITEMDIALOG_H
