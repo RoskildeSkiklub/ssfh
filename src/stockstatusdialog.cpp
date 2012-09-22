@@ -165,14 +165,18 @@ void StockStatusDialog::on_input_savereport_pushButton_clicked()
         return;
     }
     // Do a report in HTML.
+    // TODO: Clearly move this html report somewhere else/dynamic/something.
     /* Structure <html><head><title/></head><body>[items]
       [items] = item.toHtml() + itemevents table, limited to 10 */
     QStringList report;
 
-    report << "<html><head><title>" << tr( "Report of missing items generated at " )
+    report << "<html><head>\n" << "<META HTTP-EQUIV='Content-Type' CONTENT='text/html; charset=UTF-8'>"
+           << "<title>" << tr( "Report of missing items generated at " )
            << QDateTime::currentDateTime().date().toString() << "</title></head><body>";
-    report << "<h1>" << tr( "Report of missing items generated at " )
-           << QDateTime::currentDateTime().date().toString() << "</h1>\n";
+    // Javascript part
+    report << "<body onLoad='setupPage()' style='text-align: left; font-size: 12px;'>"
+           << "<script type='text/javascript'>"
+           << "var iteminfos = [ \n";
 
     QSqlQuery query = createItemQuery( "id, type, size",
                                        ui->input_from_dateEdit->date(), ui->input_to_dateEdit->date(),
@@ -180,17 +184,14 @@ void StockStatusDialog::on_input_savereport_pushButton_clicked()
     query_check_exec( query );
 
     if ( ! query.first() ) {
-        report << "<p>" << tr( "No items missing" ) << "</p>";
+        // report << "<p>" << tr( "No items missing" ) << "</p>";
     } else {
-        int itemCount = 1;
         QSqlQuery query_events;
         QString item_id;
         do {
             item_id = query.value(0).toString();
-            report << "<h2>" + tr( "%1, item with id '%2'" ).arg(itemCount).arg(item_id) + "</h2>\n";
-            report << "<ul>\n"; // Lits of item info, and then all the itemevents.
             Item item( Item::db_load( item_id ) );
-            report << "  " << item.toHtml() << "\n";
+            report << "{id : '" + item_id + "', desc: '" + item.toHtml().replace( "\n", "" ) + "', \n events : [ ";
             query_check_prepare( query_events,
                                  "select time, event, note "
                                  "from itemevents "
@@ -199,22 +200,54 @@ void StockStatusDialog::on_input_savereport_pushButton_clicked()
             query_events.bindValue( ":item_id", item_id );
             query_check_exec( query_events );
             if( ! query_events.first() ) {
-                report << "  <li>" << tr( "No events for item!" ) << "</li>\n";
+                // report << "  <li>" << tr( "No events for item!" ) << "</li>\n";
             } else {
                 do {
-                    report << "  <li>" << query_events.value( 0 ).toDateTime().toString( Qt::ISODate )
+                    report << "'" << query_events.value( 0 ).toDateTime().toString( Qt::ISODate )
                            << " : " << Item::tr( query_events.value( 1 ).toString().toLocal8Bit().constData() )
-                           << " : " << query_events.value( 2 ).toString() << "</li>\n";
+                           << " : " << query_events.value( 2 ).toString().replace( "'", "\\'" ) << "',\n";
                 } while( query_events.next() ); // itemsevents
             }
-            report << "</ul>\n";
-            ++itemCount;
+            report << " ]},\n"; // end itemevents and item
         } while( query.next() ); // itemsQuery
 
     }
 
-    // Close the report
-    report << "</body></html>";
+    report << "]\n";
+
+    report <<
+    "var itemevents = {};\n"
+
+    "// show/hide the itemevents\n"
+    "var expandItemEvents = function( object, id ) {\n"
+    "  expanded = itemevents[id].expanded;\n"
+    "  var content = '';\n"
+    "  var events = itemevents[id].events;\n"
+    "  if ( !expanded ) {\n"
+    "    for ( var i = 0; i < events.length; ++i ) {\n"
+    "      content += events[i] + '<br>';\n"
+    "      }\n"
+    "  }\n"
+    "  document.getElementById( 'itemdiv' + id ).innerHTML = content;\n"
+    "  itemevents[id].expanded = !expanded; // toggle\n"
+    "}\n"
+
+    "var setupPage = function() {\n"
+    "  var content = '';\n"
+    "  for ( var i = 0; i < iteminfos.length ; ++i ) {\n"
+    "    content += '<h2>' + iteminfos[i].id + '</h2>'\n"
+    "             + iteminfos[i].desc\n"
+    "            +  \"<button onclick='expandItemEvents( this, \\\"\" + iteminfos[i].id + \"\\\" )'/>Vis/skjul itemevents</button>\"\n"
+    "            +  \"<div id='itemdiv\" + iteminfos[i].id + \"'></div>\";\n"
+    "    // Create hash for mapping from ids to events\n"
+    "    itemevents[iteminfos[i].id] = { expanded : false, events: iteminfos[i].events };\n"
+    "  };\n"
+    "  document.getElementById( \"listdiv\" ).innerHTML = content;\n"
+    "};\n"
+    "</script>\n"
+    "<h1>" + tr( "Report of missing items generated at " )
+           + QDateTime::currentDateTime().date().toString() + "</h1>\n"
+    "<div id='listdiv'/>\n</body></html>\n";
 
     // save the file
     QTextStream out(&file);
