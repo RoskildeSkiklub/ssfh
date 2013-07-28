@@ -141,6 +141,7 @@ QString capitalizeWords(const QString &input) {
 
 bool versionstring_qe( const QString &vera, const QString &verb ) {
     Logger log( "bool versionstring_qe( const QString &vera, const QString &verb )" );
+
     QStringList a = vera.split( "." );
     QStringList b = verb.split( "." );
     if ( a.size() != 3 ) {

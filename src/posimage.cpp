@@ -69,7 +69,7 @@ namespace Pos {
             res[1] = '*';
             res[2] = (unsigned char) m_gs_x;
             res[3] = (unsigned char) m_gs_y;
-            for ( size_t i = 0; i < m_bytes.size(); ++i ) {
+            for ( uint i = 0; i < m_bytes.size(); ++i ) {
                 res[ 4 + i ] = m_bytes.at( i );
             }
             return res;
