@@ -1,7 +1,13 @@
+2013-07-28  Mads Bondo Dydensborg  <mads@dydensborg.dk>
+
+	* Release
+	Version 0.7.4 is equal to svn rev. 714.
+	Item history look up dialog added.
+
 2012-09-15  Mads Bondo Dydensborg  <mads@dydensborg.dk>
 
         * Release
-        Version 0.7.3 is equal to svn rev. 691
+        Version 0.7.3 is equal to svn rev. ???
         Added stuff to support status making and simple report.
 
 2012-09-09  Mads Bondo Dydensborg  <mads@dydensborg.dk>
