@@ -74,10 +74,10 @@ void database_check_version( const QSqlDatabase & db, const QString & version );
 // VARIOUS STUFF
 
 /** \brief Compare two version strings
-  * \param vera Versionstring, on the form xx.yy.zz, all numbers
-  * \param verb Versionstring, on the form xx.yy.zz, all numbers
+  * \param vera Versionstring, on the form xx.yy.zz[.ff], all numbers
+  * \param verb Versionstring, on the form xx.yy.zz[.ff], all numbers
   *
-  * Compares vera with verb, and returns true if vera >= verb */
+  * Compares vera with verb, and returns true if vera >= verb. The optional .ff part is ignored, if present */
   bool versionstring_qe( const QString & vera, const QString & verb );
 /** \brief Show a todo dialog and log a message with level debug.
   * \param where Where the message is

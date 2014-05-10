@@ -144,11 +144,11 @@ bool versionstring_qe( const QString &vera, const QString &verb ) {
 
     QStringList a = vera.split( "." );
     QStringList b = verb.split( "." );
-    if ( a.size() != 3 ) {
+    if ( a.size() != 3 && a.size() != 4 ) {
         throw Exception( Errors::InternalError )
                 << ( log.stream( error ) << "Version a passed to versionstring_qe not on expected form: '" << vera << "'" );
     }
-    if ( b.size() != 3 ) {
+    if ( b.size() != 3 && b.size() != 4 ) {
         throw Exception( Errors::InternalError )
                 << ( log.stream( error ) << "Version b passed to versionstring_qe not on expected form: '" << verb << "'" );
     }
