@@ -1,0 +1,52 @@
+Jeg har brug for at tilføje support for at kunne "sælge" ting. Pakker
+/ rabat + fordelingen af børn/voksne.
+
+En kontrakt bliver nu også til "salg".
+
+Et salg kan f.eks. være et liftkort
+
+
+Datamodel mæssigt, skal jeg nok lave en 
+
+Kontrakt har 
+  hirer
+  duration
+  pris, mv
+  antal kontraktlinier
+
+Spørgsmålet er om kontraktlinier skal deles i to
+(contractitems og salesitems)
+
+Eller i een
+(contractlines)
+
+Hvor "contractlines" er polymorf.
+Der er ihvertfald tre typer af contractlines (uanset om de er delt op
+i to). Og jeg tror det er smart at have fire:
+
+- udlejningsgenstande (items)
+- salg (liftkort - andet?)
+- automatiske justeringer (pakkerabatter, andet?)
+- manualle justeringer (justeringer for at få det rigtige beløb).
+
+Jeg tror en enkelt contractlinie skal være fleksibel nok til at kunne
+rumme det hele. I databasen ved at have alle de nødvendige kolonner. I
+programmet ved at have en enkelt klasse. Jeg orker ikke klassehireaki,
+tror jeg.
+
+Alle contractlines kan refere til andre contractlines. Det er for at
+kunne se om et item allerede indgår i en (automatisk) rabat, og
+hvilken type.
+
+Der skal ihvertfald være en tabel, der ikke er items, men "goods".
+Alle goods kan sælges uendeligt, og skal ikke leveres tilbage, naturligvis.
+
+En kontrakt skal også kunne holde fordelingen af rentalgroups der er
+knyttet til.
+
+Rentalgroups skal på en eller anden måde kunne sorteres, så man kan
+knytte størrelser til. Med en sizegroup, tror jeg.
+
+Salg af liftkort - det er også noget besværligt noget, fordi der er
+hel og halvdags liftkort. De må indkodes som særskilte varer. Jeg
+orker ikke at lave mere... 
