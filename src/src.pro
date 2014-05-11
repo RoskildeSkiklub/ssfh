@@ -1,7 +1,7 @@
 
 include(../common.pri)
 
-QT += sql phonon
+QT += sql multimedia widgets
 TARGET = SnowStuffForHire.bin
 TEMPLATE = app
 

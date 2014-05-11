@@ -1,7 +1,7 @@
 #include "feedbackobject.h"
 
 // Qt
-#include <Phonon/MediaObject>
+#include <QAudioOutput>
 #include <QApplication>
 #include <QDir>
 #include <QFile>
@@ -13,13 +13,12 @@
 // App
 #include "log.h"
 
-using namespace Phonon;
 using namespace Log;
 
 //TODO This may leak files - but who cares... (valgrind does).
 
 FeedbackObject::FeedbackObject(QObject *parent) :
-    QObject(parent), m_media_object( 0 )
+    QObject(parent) // , m_media_object( 0 )
 {
     Logger log( "FeedbackObject::FeedbackObject(QObject *parent)");
     log.stream() << "Copying sounds to temporary dir";
@@ -35,8 +34,8 @@ FeedbackObject::FeedbackObject(QObject *parent) :
     // Copy all ressources
     log.stream() <<  "Creating sound objects";
     // Setup the media object - set actual sounds later.
-    m_media_object
-            = createPlayer( NotificationCategory );
+    // TODO: m_media_object
+    // = createPlayer( NotificationCategory );
 
     // Map EventTypes to file names.
     eventToFilename[ItemAdded]    = addSound( "item_added.wav", targetDir );
@@ -60,8 +59,6 @@ QString FeedbackObject::addSound(const QString &ressourceName, const QString &ta
 
 FeedbackObject::~FeedbackObject() {
     Logger log("FeedbackObject::~FeedbackObject()");
-    delete m_media_object;
-    m_media_object = 0;
 }
 
 void FeedbackObject::eventTriggered(const EventType &type) const {
@@ -73,12 +70,13 @@ void FeedbackObject::eventTriggered(const EventType &type) const {
     QStringList args; args << eventToFilename[type];
     QProcess::startDetached( "/usr/bin/mplayer", args );
     return;
+    /*
     if ( m_media_object ) {
         m_media_object->setCurrentSource( MediaSource( eventToFilename[type]) );
         m_media_object->play();
     } else {
         log.stream( warn ) << "No media object, not playing sounds";
-    }
+        }*/
 }
 
 // Below here should go at some point, really.

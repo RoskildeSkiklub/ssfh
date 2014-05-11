@@ -43,8 +43,8 @@ void query_check_exec( QSqlQuery & query ) {
         log.stream() << "Dumping bound values";
         while (i.hasNext()) {
             i.next();
-            log.stream() << "Bound: '" << i.key().toAscii().data() << "': '"
-                    << i.value().toString().toAscii().data() << "'";
+            log.stream() << "Bound: '" << i.key().toLatin1().data() << "': '"
+                    << i.value().toString().toLatin1().data() << "'";
         }
         log.stream() << "Done dumping bound values";
     }

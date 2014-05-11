@@ -122,7 +122,7 @@ Item Item::locate_and_book_in_db( const QString & id, qlonglong contract_id ) {
         throw Exception( Errors::ItemUnavailable )
                 << ( log.stream( warn )
                      << tr( "The item is not currently availably, it has state :")
-                     << tr( res.m_state.toAscii().constData() ) );
+                     << tr( res.m_state.toLatin1().constData() ) );
     }
 
     // Mark as booked

@@ -45,6 +45,17 @@ opening the relevant USB port, and writing commands directly to
 it. Opening the port will require some changes to work on another
 platform.
 
+### Requirements
+
+Qt version 5.
+
+(For audio feedback, currently mplayer - this will be changed to Qt's
+multimedia platform later).
+
+You also need a magnetic card reader, a barcode scanner, and a thermal
+printer. You can test the system without, but for actual use you will
+want at least a barcode scanner..
+
 ## What is the status of the system
 
 The system has been in use for the last three seasons and does not
@@ -60,3 +71,9 @@ The system does not support the calculating of prices.
 ## License
 
 SSFH is licensed under GPL v3 or later. This is not currently marked in any parts of the code.
+
+## Compiling
+
+SSFH uses the Qt tool qmake to build and compile. Run qmake, then
+make, to build it.
+

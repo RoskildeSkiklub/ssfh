@@ -5,9 +5,8 @@
 #include <QObject>
 #include <QMap>
 
-namespace Phonon {
-    class MediaObject;
-}
+// TODO: Migrate to QMultiMedia something. Right now, just eliminated everything, and
+// calls mplayer... 
 
 /** \brief Object to provide audio feedback on events */
 class FeedbackObject : public QObject
@@ -44,9 +43,6 @@ public slots:
     void itemScanned() const;
 
 private:
-    // item added sound
-    Phonon::MediaObject * m_media_object;
-
     // Ressourcename *without* sound
     QString addSound( const QString & ressourceName,
                       const QString & targetDir );
