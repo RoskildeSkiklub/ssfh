@@ -5,16 +5,18 @@
 # The purpose of the script is to backup the log and database prior
 # and after run, and pass the command parameters to the program.
 
+# This script is really only usefull under Linux/KDE.
+
 # Check if we are run in kiosk mode. 
 KIOSK=$1
 
 # Some constants.
 KPTITLE="Snow Stuff For Hire"
-KPTIMEOUT=5
+KPTIMEOUT=3
 KPBACKUPSTART="Starter backup af database"
 KPBACKUPEND="Afsluttet backup af database"
 
-# Datadir holds the database *and* the log
+# Datadir holds the database *and* the logs
 DATADIR=/store/SnowStuffForHire/data
 DATABASE=$DATADIR/ssfh.db
 LOGFILE=$DATADIR/ssfh.log
@@ -23,18 +25,13 @@ OUTFILE=$DATADIR/ssfh.out
 # This is where faubackup does its backups.
 BACKUPDIR=/store/SnowStuffForHire/backup
 
-# Path to kdialog
-KDIALOG=/usr/bin/kdialog
-
-# Path to kshutdown
-KSHUTDOWN=/usr/bin/kshutdown
-
-# Path to faubackup
-FAUBACKUP=/usr/sbin/faubackup
-
 # Our basedir
 RP=`realpath $0`
 BASEDIR=`dirname $RP`
+cd $BASEDIR || die "Unable to change dir to $BASEDIR"
+
+# Path to SnowStuffForHire - assumed to be this directory
+SSFH=$BASEDIR/SnowStuffForHire.bin
 
 ############################################################
 # Helper functions
@@ -52,26 +49,19 @@ function info() {
     echo $DATE $ARGS
 }
 
-cd $BASEDIR || die "Unable to change dir to $BASEDIR"
-
-# Path to SnowStuffForHire - assumed to be this directory
-SSFH=$BASEDIR/SnowStuffForHire.bin
 info Starting SnowStuffForHire
 
-############################################################
-# Check binaries, then directories
-if ! test -x $KDIALOG ; then
-    die "Kan ikke finde kdialog binær angivet til '$KDIALOG'"
-fi
-if ! test -x $KSHUTDOWN ; then
-    die "Kan ikke finde kshutdown binær angivet til '$KSHUTDOWN'"
-fi
-if ! test -x $FAUBACKUP ; then
-    die "Kan ikke finde faubackup binær angivet til '$FAUBACKUP'"
-fi
+################################################################################
+# Set up some bins
+KDIALOG=$(which kdialog) || die "Kan ikke finde kdialog binær"
+KSHUTDOWN=$(which kshutdown) || die "Kan ikke finde kshutdown"
+RSYNC=$(which rsync) || die "Kan ikke finde rsync"
 if ! test -x $SSFH ; then
     die "Kan ikke finde SnowStuffForHire binær angivet til '$SSFH'"
 fi
+
+############################################################
+# Check then directories
 
 if ! test -d $DATADIR -a -w $DATADIR ; then
     die "Kataloget '$DATADIR' der anvendes som data katalog, findes ikke, eller kan ikke skrives til"
@@ -86,12 +76,12 @@ info All checks passed, performing backup
 
 
 ############################################################
-# Repeat forever - exist if not in kioskmode
+# Repeat forever - exit if not in kioskmode
 while true ; do 
 
     # Take a backup before starting. This should be quick.
     $KDIALOG --title "$KPTITLE" --passivepopup "$KPBACKUPSTART" $KPTIMEOUT
-    $FAUBACKUP "$DATADIR" "$BACKUPDIR" || die "Kunne ikke lave backup af data inden start af SnowStuffForHire"
+    $RSYNC "$DATADIR"/* "$BACKUPDIR"/`date +"%Y-%m-%d@%H:%M:%S"` || die "Kunne ikke lave backup af data inden start af SnowStuffForHire"
     $KDIALOG --title "$KPTITLE" --passivepopup "$KPBACKUPEND" $KPTIMEOUT
     
     info Backup OK, starting binary
@@ -99,7 +89,7 @@ while true ; do
     
     info Binary terminated with exit code $? - doing post backup
     $KDIALOG --title "$KPTITLE" --passivepopup "$KPBACKUPSTART" $KPTIMEOUT
-    $FAUBACKUP "$DATADIR" "$BACKUPDIR" || die "Kunne ikke lave backup af data efter start af SnowStuffForHire"
+    $RSYNC "$DATADIR"/* "$BACKUPDIR"/`date +"%Y-%m-%d@%H:%M:%S"` || die "Kunne ikke lave backup af data efter start af SnowStuffForHire"
     $KDIALOG --title "$KPTITLE" --passivepopup "$KPBACKUPEND" $KPTIMEOUT
     info Postbackup done
     
