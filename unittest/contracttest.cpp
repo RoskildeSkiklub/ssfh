@@ -71,7 +71,7 @@ void ContractTest::activate() {
         UnitTestDB::resetDB( "ContractTest_activate_0" );
         Contract contract;
         log.stream() << "Activating contract with no hirer or items";
-        QSKIP("THIS TEST IS CURRENTLY DISABLED", SkipAll);
+        QSKIP("THIS TEST IS CURRENTLY DISABLED");
         QVERIFY_THROW( contract.activate(), Exception );
         UnitTestDB::closeDB();
     }

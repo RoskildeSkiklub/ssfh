@@ -1,6 +1,6 @@
 include(../common.pri)
 
-QT += testlib sql phonon
+QT += testlib sql widgets
 # QT -= gui
 TARGET = unittest
 CONFIG += console
