@@ -77,3 +77,17 @@ SSFH is licensed under GPL v3 or later. This is not currently marked in any part
 SSFH uses the Qt tool qmake to build and compile. Run qmake, then
 make, to build it.
 
+## Extremely quick test
+
+If you just want to check the program out, here are the steps to get you started:
+
+```shell
+git clone https://github.com/madsdyd/ssfh.git
+cd ssfh
+qmake
+make -j4
+cd schema
+make reset-db
+cd ../src
+./SnowStuffForHire.bin ../schema/test.db /tmp/ssfh.log
+```
