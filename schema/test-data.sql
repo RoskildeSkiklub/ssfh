@@ -14,7 +14,7 @@ insert or replace into items values ( '143', 'støvler', '42', 'Salomon', NULL, 
 insert or replace into items values ( '144', 'støvler', '41', NULL, NULL, NULL, 'brugt', 400, 'tilbehør','in', 'Baltazars støvler' );
 insert or replace into items values ( '145', 'støvler', '31', NULL, NULL, NULL, 'brugt', 600, 'tilbehør','in', 'Matildes støvler - snart for små til hende.' );
 
-insert or replace into hirers values( 0, '885', '3008711851', 'Mads Bondo', 'Dydensborg', 'Bakkekammen 51', '3600', 'Frederikssund', 'Denmark', 'Mads himself' );
+insert or replace into hirers values( 0, '885', '1212701234', 'Mads Bondo', 'Dydensborg', 'Bakkekammen 51', '3600', 'Frederikssund', 'Denmark', 'Mads himself' );
 insert or replace into hirers values( 1, '', '', 'Connie Bondo', 'Dydensborg', 'Bakkekammen 51', '3600', 'Frederikssund', 'Denmark', 'Mads kone' );
 insert or replace into hirers values( 2, '', '1231231230', 'Joe Doe', 'Boe', 'Lærkevej 42', '2100', 'København Ø', 'Denmark', 'En bruger med æøå ÆØÅ' );
 -- Really test stuff, barcode from a CD
