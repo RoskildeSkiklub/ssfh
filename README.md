@@ -47,14 +47,20 @@ platform.
 
 ### Requirements
 
-Qt version 5.
+Qt version 5, inclusive linguist.
+
+On *ubuntu, you need at least these packages:
+
+qt5-default qqt5-qmake tbase5-dev-tools qttools5-dev-tools
+
+which should bring in an development enviroment for qt5. Obviously, you need the gcc tools as well.
 
 (For audio feedback, currently mplayer - this will be changed to Qt's
 multimedia platform later).
 
 You also need a magnetic card reader, a barcode scanner, and a thermal
 printer. You can test the system without, but for actual use you will
-want at least a barcode scanner..
+want at least a barcode scanner.
 
 ## What is the status of the system
 
@@ -77,6 +83,18 @@ SSFH is licensed under GPL v3 or later. This is not currently marked in any part
 SSFH uses the Qt tool qmake to build and compile. Run qmake, then
 make, to build it.
 
+SSFH is built using qtcreator project. If you have qtcreator installed, you should be able to build it and run tests from within qtcreator. You may need to setup a debug configuration, an example (the one I use) is part of this source tree.
+
+If you do not have qtcreator, you can use the supplied file Makefile.noqtcreator to run the main build:
+
+```shell
+make -f Makefile.noqtcreator
+```
+
+This will take care of building stuff, running the unittests and compiling the language files.
+
+In order to use SSFH, you need to setup a database that reflects some basic information about your setup.
+
 ## Extremely quick test
 
 If you just want to check the program out, here are the steps to get you started:
@@ -84,10 +102,12 @@ If you just want to check the program out, here are the steps to get you started
 ```shell
 git clone https://github.com/madsdyd/ssfh.git
 cd ssfh
-qmake
-make -j4
+make -f Makefile.noqtcreator 
 cd schema
 make reset-db
 cd ../src
 ./SnowStuffForHire.bin ../schema/test.db /tmp/ssfh.log
 ```
+## Setting up a database
+
+TDB.
