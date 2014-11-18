@@ -356,12 +356,12 @@ void Item::db_reid( const QString &from_id, const QString &to_id ) {
         query_check_exec( query );
         log.stream( debug ) << "Modifying contractitems to point at the new id";
         // Now, update contract items and itemevents, to point at the new row
-        query_check_prepare( query, "update contractitems set item_id = :to_id where item_id = :fromid");
+        query_check_prepare( query, "update contractitems set item_id = :to_id where item_id = :from_id");
         query.bindValue( ":to_id", to_id );
         query.bindValue( ":from_id", from_id );
         query_check_exec( query );
         log.stream( debug ) << "Modifying itemevents to point at the new id";
-        query_check_prepare( query, "update itemevents set item_id = :to_id where item_id = :fromid");
+        query_check_prepare( query, "update itemevents set item_id = :to_id where item_id = :from_id");
         query.bindValue( ":to_id", to_id );
         query.bindValue( ":from_id", from_id );
         query_check_exec( query );
