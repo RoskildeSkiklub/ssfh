@@ -1,3 +1,23 @@
+-- 
+-- Snow Stuff For Hire - A POS-like system designed for very quick rental
+-- operations at small ski resorts
+-- Copyright (C) 2014 Mads Bondo Dydensborg <mads@dydensborg.dk>
+--
+-- This file is part of Snow Stuff For Hire.
+--
+-- Snow Stuff For Hire is free software: you can redistribute it and/or modify
+-- it under the terms of the GNU General Public License as published by
+-- the Free Software Foundation, either version 3 of the License, or
+-- (at your option) any later version.
+--
+-- Snow Stuff For Hire is distributed in the hope that it will be useful,
+-- but WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-- GNU General Public License for more details.
+--
+-- You should have received a copy of the GNU General Public License
+-- along with Snow Stuff For Hire.  If not, see <http://www.gnu.org/licenses/>.
+-- 
 -- Actual ski/stuff owned by RSK - the ids are wrong though...
 insert or replace into items values ( '242', 'ski',  '185', 'Atomic',   'Arc Sport HV', '~1995', 'brugt', 0, 'voksenski', 'in', 'Doneret af Charlotte Ægidius 2010' );
 insert or replace into items values ( '243', 'ski',  '150', 'Dynastar', 'Team X5', '~2000', 'trænger til vedligehold', 0, 'børneski', 'in', 'Doneret af Charlotte Ægidius 2010' );
