@@ -1,9 +1,10 @@
 DB=test.db
 UNITTESTDB=unittest.db
+EMPTYDB=empty.db
 SHELL=/bin/bash
 SRCDIR=../src/
 
-all:	reset-db unittest-db db_consts.cpp
+all:	reset-db unittest-db db_consts.cpp empty.db
 
 clean:
 	rm -f *~ $(DB) db_consts.cpp db_consts.h postnr.*
@@ -26,6 +27,12 @@ unittest-db:	postnr.utf8.csv
 	cat schema.sql | sqlite3 -init - $(UNITTESTDB) 
 	cat unittest-setup.sql unittest-data.sql | sqlite3 $(UNITTESTDB)
 	( echo .separator "\t" ; echo ".import postnr.utf8.csv zipcity" ) | sqlite3 $(UNITTESTDB)
+
+empty.db:   postnr.utf8.csv
+	@test -f $(EMPTYDB) && rm $(EMPTYDB) ; true
+	cat schema.sql | sqlite3 -init - $(EMPTYDB)
+	cat rsh-setup.sql | sqlite3 $(EMPTYDB)
+	( echo .separator "\t" ; echo ".import postnr.utf8.csv zipcity" ) | sqlite3 $(EMPTYDB)
 
 db_consts.cpp:	schema.sql
 	@./create-db-consts.pl < schema.sql 

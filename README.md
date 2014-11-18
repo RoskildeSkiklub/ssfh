@@ -103,11 +103,18 @@ If you just want to check the program out, here are the steps to get you started
 git clone https://github.com/madsdyd/ssfh.git
 cd ssfh
 make -f Makefile.noqtcreator 
-cd schema
-make reset-db
-cd ../src
+cd src
 ./SnowStuffForHire.bin ../schema/test.db /tmp/ssfh.log
 ```
+
+This should run the program, in Danish, if your locale matches Danish, or in English otherwise.
+
 ## Setting up a database
 
-TDB.
+In order for SSFH to work, it needs a database.
+
+SSFH uses sqlite as its database of choice, but needs a database file as an argument.
+
+When you start out, you can use one of the databases from schema directory: Either "test.db" which contains some sample data, or "empty.db" which has no items, but does contain some (danish) itemtypes.
+
+The database (model) is versioned in the "configuration" table, key db_version, and the database should match the version compiled into the binary. In the schema directory there are some scripts to control versioning of the database.
