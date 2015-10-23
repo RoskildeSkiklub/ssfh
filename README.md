@@ -4,7 +4,7 @@ ssfh
 Snow Stuff For Hire (SSFH) - a POS-like system designed for very quick
 rental operations at small ski resorts
 
-## What it ssfh
+## What is ssfh?
 
 SSFH is a Point of Sale (POS)-like GUI program written in C++/Qt to
 handle rental operations at
